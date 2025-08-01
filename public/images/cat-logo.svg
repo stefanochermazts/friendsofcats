@@ -1,0 +1,36 @@
+<svg width="150" height="50" viewBox="0 0 150 50" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .logo-text { font-family: Arial, sans-serif; font-weight: bold; font-size: 18px; fill: #000000; }
+    .cat-icon { fill: #000000; }
+  </style>
+  
+  <!-- Gatto stilizzato -->
+  <g class="cat-icon">
+    <!-- Testa del gatto -->
+    <circle cx="25" cy="25" r="12" fill="#000000"/>
+    
+    <!-- Orecchie -->
+    <polygon points="15,15 20,8 25,15" fill="#000000"/>
+    <polygon points="25,15 30,8 35,15" fill="#000000"/>
+    
+    <!-- Occhi -->
+    <circle cx="22" cy="22" r="2" fill="#ffffff"/>
+    <circle cx="28" cy="22" r="2" fill="#ffffff"/>
+    <circle cx="22" cy="22" r="1" fill="#000000"/>
+    <circle cx="28" cy="22" r="1" fill="#000000"/>
+    
+    <!-- Naso -->
+    <polygon points="25,26 23,28 27,28" fill="#ff6b6b"/>
+    
+    <!-- Baffi -->
+    <line x1="18" y1="26" x2="12" y2="24" stroke="#000000" stroke-width="1"/>
+    <line x1="18" y1="28" x2="12" y2="28" stroke="#000000" stroke-width="1"/>
+    <line x1="18" y1="30" x2="12" y2="32" stroke="#000000" stroke-width="1"/>
+    <line x1="32" y1="26" x2="38" y2="24" stroke="#000000" stroke-width="1"/>
+    <line x1="32" y1="28" x2="38" y2="28" stroke="#000000" stroke-width="1"/>
+    <line x1="32" y1="30" x2="38" y2="32" stroke="#000000" stroke-width="1"/>
+  </g>
+  
+  <!-- Testo del logo -->
+  <text x="45" y="30" class="logo-text">FriendsOfCats</text>
+</svg> 
