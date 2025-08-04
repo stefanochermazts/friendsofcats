@@ -60,6 +60,32 @@
                             <p class="text-xs text-blue-600 dark:text-blue-400">Visualizza tutti gli utenti</p>
                         </div>
                     </a>
+
+                    <a href="{{ route('filament.admin.resources.cats.index') }}" 
+                       class="flex items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-purple-800 dark:text-purple-200">Gestione Gatti</p>
+                            <p class="text-xs text-purple-600 dark:text-purple-400">Visualizza tutti i gatti</p>
+                        </div>
+                    </a>
+
+                    <a href="{{ route('filament.admin.resources.cats.create') }}" 
+                       class="flex items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-green-800 dark:text-green-200">Nuovo Gatto</p>
+                            <p class="text-xs text-green-600 dark:text-green-400">Aggiungi un nuovo gatto</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -87,6 +113,25 @@
                         <span class="text-sm text-gray-600 dark:text-gray-400">Utenti questo mese</span>
                         <span class="text-sm font-medium text-gray-900 dark:text-white">
                             {{ \App\Models\User::whereMonth('created_at', now()->month)->count() }}
+                        </span>
+                    </div>
+                    <hr class="my-3 border-gray-200 dark:border-gray-600">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">🐱 Gatti totali</span>
+                        <span class="text-sm font-medium text-gray-900 dark:text-white">
+                            {{ \App\Models\Cat::count() }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">💖 Disponibili per adozione</span>
+                        <span class="text-sm font-medium text-gray-900 dark:text-white">
+                            {{ \App\Models\Cat::where('disponibile_adozione', true)->count() }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">✅ Già adottati</span>
+                        <span class="text-sm font-medium text-gray-900 dark:text-white">
+                            {{ \App\Models\Cat::whereNotNull('data_adozione')->count() }}
                         </span>
                     </div>
                 </div>

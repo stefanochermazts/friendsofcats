@@ -56,7 +56,7 @@ Scopo: definire funzionalità, flussi utente e requisiti per la versione MVP e p
 
 ### 5.3 Piattaforma Adozioni
 
-* Vetrina pubblica con filtri (razza, età, sterilizzazione).
+* Vetrina pubblica con filtri (località, razza, età, sterilizzazione).
 * Modulo di contatto con questionario breve per potenziali adottanti.
 * Sezione “Storie di Successo” con testimonianze e foto.
 

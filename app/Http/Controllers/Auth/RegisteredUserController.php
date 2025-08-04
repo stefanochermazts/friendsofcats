@@ -42,6 +42,10 @@ class RegisteredUserController extends Controller
             'locale' => session('locale', 'it'),
         ]);
 
+        // Invia l'email di verifica manualmente usando il nostro template personalizzato
+        $user->sendEmailVerificationNotification();
+
+        // Invia l'evento per la notifica admin (senza listener automatici di Laravel)
         event(new Registered($user));
 
         Auth::login($user);

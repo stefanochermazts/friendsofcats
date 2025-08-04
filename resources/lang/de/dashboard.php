@@ -153,4 +153,19 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    
+    // Dashboard Inhalt - Fehlende Strings
+    'my_cats_title' => '❤️ Meine Katzen',
+    'available_title' => '🏠 Verfügbar',
+    'for_adoption' => 'Zur Adoption',
+    'adopted_title' => '💝 Adoptiert',
+    'successfully' => 'Erfolgreich',
+    'quick_actions' => 'Schnellaktionen',
+    'manage_my_cats' => '❤️ Meine Katzen verwalten',
+    'edit_association_details' => '✏️ Details bearbeiten',
+    'recent_cats_added' => '🐱 Kürzlich hinzugefügte Katzen',
+    'breed_not_specified' => 'Rasse nicht angegeben',
+    'available_status' => '🏠 Verfügbar',
+    'adopted_status' => '❤️ Adoptiert',
+    'manage_cats_info' => 'Verwalten Sie Ihre Katzen und deren Informationen',
 ]; 

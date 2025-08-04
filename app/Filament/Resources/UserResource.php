@@ -53,15 +53,14 @@ class UserResource extends Resource
                             ->label('Ruolo')
                             ->options([
                                 'admin' => 'Amministratore',
-                                'association' => 'Associazione',
-                                'volunteer' => 'Volontario',
-                                'owner' => 'Proprietario',
-                                'veterinarian' => 'Veterinario',
-                                'donor' => 'Donatore',
-                                'groomer' => 'Toelettatore',
+                                'associazione' => 'Associazione',
+                                'volontario' => 'Volontario',
+                                'proprietario' => 'Proprietario',
+                                'veterinario' => 'Veterinario',
+                                'toelettatore' => 'Toelettatore',
                             ])
                             ->required()
-                            ->default('owner'),
+                            ->default('proprietario'),
                         
                         Toggle::make('email_verified_at')
                             ->label('Email Verificata')
@@ -102,24 +101,23 @@ class UserResource extends Resource
                 BadgeColumn::make('role')
                     ->label('Ruolo')
                     ->colors([
-                        'danger' => 'admin',
-                        'warning' => 'association',
-                        'success' => 'volunteer',
-                        'info' => 'owner',
-                        'primary' => 'veterinarian',
-                        'secondary' => 'donor',
-                        'gray' => 'groomer',
+                        'danger' => 'admin',           // Rosso - Amministratore (autorità massima)
+                        'warning' => 'associazione',   // Arancione - Associazione (organizzazione)
+                        'success' => 'proprietario',   // Verde - Proprietario (utente standard)
+                        'info' => 'volontario',        // Blu chiaro - Volontario (supporto)
+                        'primary' => 'veterinario',    // Blu scuro - Veterinario (professionale medico)
+                        'secondary' => 'toelettatore', // Viola - Toelettatore (servizi estetici)
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'admin' => 'Amministratore',
-                        'association' => 'Associazione',
-                        'volunteer' => 'Volontario',
-                        'owner' => 'Proprietario',
-                        'veterinarian' => 'Veterinario',
-                        'donor' => 'Donatore',
-                        'groomer' => 'Toelettatore',
+                        'admin' => '👑 Amministratore',
+                        'associazione' => '🏢 Associazione',
+                        'volontario' => '🤝 Volontario',
+                        'proprietario' => '🐱 Proprietario',
+                        'veterinario' => '⚕️ Veterinario',
+                        'toelettatore' => '✂️ Toelettatore',
                         default => $state,
-                    }),
+                    })
+                    ->sortable(),
                 
                 ToggleColumn::make('email_verified_at')
                     ->label('Email Verificata')
@@ -135,12 +133,11 @@ class UserResource extends Resource
                     ->label('Ruolo')
                     ->options([
                         'admin' => 'Amministratore',
-                        'association' => 'Associazione',
-                        'volunteer' => 'Volontario',
-                        'owner' => 'Proprietario',
-                        'veterinarian' => 'Veterinario',
-                        'donor' => 'Donatore',
-                        'groomer' => 'Toelettatore',
+                        'associazione' => 'Associazione',
+                        'volontario' => 'Volontario',
+                        'proprietario' => 'Proprietario',
+                        'veterinario' => 'Veterinario',
+                        'toelettatore' => 'Toelettatore',
                     ]),
                 
                 Tables\Filters\TernaryFilter::make('email_verified_at')

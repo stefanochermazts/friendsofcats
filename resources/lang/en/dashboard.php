@@ -153,4 +153,19 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    
+    // Dashboard Content - Missing strings
+    'my_cats_title' => '❤️ My Cats',
+    'available_title' => '🏠 Available',
+    'for_adoption' => 'For adoption',
+    'adopted_title' => '💝 Adopted',
+    'successfully' => 'Successfully',
+    'quick_actions' => 'Quick Actions',
+    'manage_my_cats' => '❤️ Manage My Cats',
+    'edit_association_details' => '✏️ Edit Details',
+    'recent_cats_added' => '🐱 Recently Added Cats',
+    'breed_not_specified' => 'Breed not specified',
+    'available_status' => '🏠 Available',
+    'adopted_status' => '❤️ Adopted',
+    'manage_cats_info' => 'Manage your cats and their information',
 ]; 

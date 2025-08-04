@@ -10,9 +10,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendRegistrationNotification implements ShouldQueue
+class SendRegistrationNotification // Rimuovo ShouldQueue per invio immediato
 {
-    use InteractsWithQueue;
+    // use InteractsWithQueue;
 
     /**
      * Create the event listener.
@@ -27,6 +27,12 @@ class SendRegistrationNotification implements ShouldQueue
      */
     public function handle(Registered $event): void
     {
+        // Previeni invio duplicato nella stessa sessione
+        $sessionKey = 'admin_notification_sent_' . $event->user->id;
+        if (session()->has($sessionKey)) {
+            return;
+        }
+
         $adminEmail = config('mail.admin_email');
         
         if (!$adminEmail) {
@@ -38,5 +44,8 @@ class SendRegistrationNotification implements ShouldQueue
         app()->setLocale($locale);
 
         Mail::to($adminEmail)->send(new RegistrationNotification($event->user));
+        
+        // Marca come inviata per prevenire duplicati
+        session()->put($sessionKey, true);
     }
 } 

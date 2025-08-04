@@ -153,4 +153,19 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    
+    // Contenido Dashboard - Cadenas faltantes
+    'my_cats_title' => '❤️ Mis Gatos',
+    'available_title' => '🏠 Disponibles',
+    'for_adoption' => 'Para adopción',
+    'adopted_title' => '💝 Adoptados',
+    'successfully' => 'Con éxito',
+    'quick_actions' => 'Acciones Rápidas',
+    'manage_my_cats' => '❤️ Gestionar Mis Gatos',
+    'edit_association_details' => '✏️ Editar Detalles',
+    'recent_cats_added' => '🐱 Gatos Agregados Recientemente',
+    'breed_not_specified' => 'Raza no especificada',
+    'available_status' => '🏠 Disponible',
+    'adopted_status' => '❤️ Adoptado',
+    'manage_cats_info' => 'Gestiona tus gatos y su información',
 ]; 

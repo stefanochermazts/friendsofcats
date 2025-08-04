@@ -153,4 +153,19 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    
+    // Contenu Dashboard - Chaînes manquantes
+    'my_cats_title' => '❤️ Mes Chats',
+    'available_title' => '🏠 Disponibles',
+    'for_adoption' => 'Pour adoption',
+    'adopted_title' => '💝 Adoptés',
+    'successfully' => 'Avec succès',
+    'quick_actions' => 'Actions Rapides',
+    'manage_my_cats' => '❤️ Gérer Mes Chats',
+    'edit_association_details' => '✏️ Modifier les Détails',
+    'recent_cats_added' => '🐱 Chats Récemment Ajoutés',
+    'breed_not_specified' => 'Race non spécifiée',
+    'available_status' => '🏠 Disponible',
+    'adopted_status' => '❤️ Adopté',
+    'manage_cats_info' => 'Gérez vos chats et leurs informations',
 ]; 

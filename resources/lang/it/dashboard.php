@@ -153,4 +153,19 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    
+    // Dashboard Content - Stringhe mancanti
+    'my_cats_title' => '❤️ I Miei Gatti',
+    'available_title' => '🏠 Disponibili',
+    'for_adoption' => 'Per adozione',
+    'adopted_title' => '💝 Adottati',
+    'successfully' => 'Con successo',
+    'quick_actions' => 'Azioni Rapide',
+    'manage_my_cats' => '❤️ Gestisci i Miei Gatti',
+    'edit_association_details' => '✏️ Modifica Dettagli',
+    'recent_cats_added' => '🐱 Gatti Aggiunti di Recente',
+    'breed_not_specified' => 'Razza non specificata',
+    'available_status' => '🏠 Disponibile',
+    'adopted_status' => '❤️ Adottato',
+    'manage_cats_info' => 'Gestisci i tuoi gatti e le loro informazioni',
 ]; 

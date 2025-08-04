@@ -34,54 +34,154 @@
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.cats_for_adoption') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">12</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.available') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.my_cats_title') }}</h4>
+                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">{{ $stats['total_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.registered') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.active_volunteers') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">8</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.available') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.available_title') }}</h4>
+                                        <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ $stats['available_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.for_adoption') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.adoptions_this_month') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">5</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.completed') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.adopted_title') }}</h4>
+                                        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ $stats['adopted_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.successfully') }}</p>
                                     </div>
+                                </div>
+
+                                <!-- Link gestione gatti + gatti recenti -->
+                                <div class="mt-8 space-y-6">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.quick_actions') }}</h4>
+                                        <div class="flex space-x-3">
+                                            <a href="{{ route('association.edit') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                                {{ __('dashboard.edit_association_details') }}
+                                            </a>
+                                            <a href="{{ route('user.cats') }}" class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                                                {{ __('dashboard.manage_my_cats') }}
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    @if($stats['recent_cats']->count() > 0)
+                                        <div>
+                                            <h5 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-3">{{ __('dashboard.recent_cats_added') }}</h5>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                @foreach($stats['recent_cats'] as $cat)
+                                                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border">
+                                                        <div class="flex items-center space-x-3">
+                                                            <div class="text-2xl">🐱</div>
+                                                            <div>
+                                                                <h6 class="font-medium text-gray-900 dark:text-gray-100">{{ $cat->nome }}</h6>
+                                                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                                    {{ $cat->razza ?? __('dashboard.breed_not_specified') }} 
+                                                                    @if($cat->eta) - {{ $cat->eta_formattata }} @endif
+                                                                </p>
+                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $cat->disponibile_adozione ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' }}">
+                                                                    {{ $cat->disponibile_adozione ? __('dashboard.available_status') : __('dashboard.adopted_status') }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             @break
 
                         @case('volontario')
+                        @case('veterinario')
+                        @case('toelettatore')
                             <div class="space-y-6">
                                 <div class="flex items-center space-x-3">
                                     <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
+                                        @if(Auth::user()->role === 'volontario')
+                                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                        @elseif(Auth::user()->role === 'veterinario')
+                                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        @else
+                                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3h10M7 3v18h10V3M7 3a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2"></path>
+                                            </svg>
+                                        @endif
                                     </div>
                                     <div>
-                                        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ __('dashboard.volontario_dashboard') }}</h3>
-                                        <p class="text-gray-600 dark:text-gray-400">{{ __('dashboard.volontario_activities') }}</p>
+                                        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                            @if(Auth::user()->role === 'volontario')
+                                                {{ __('dashboard.volontario_dashboard') }}
+                                            @elseif(Auth::user()->role === 'veterinario')
+                                                {{ __('dashboard.veterinario_dashboard') }}
+                                            @else
+                                                {{ __('dashboard.toelettatore_dashboard') }}
+                                            @endif
+                                        </h3>
+                                        <p class="text-gray-600 dark:text-gray-400">
+                                            {{ __('dashboard.manage_cats_info') }}
+                                        </p>
                                     </div>
                                 </div>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.active_assignments') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">3</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.in_progress') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.my_cats_title') }}</h4>
+                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">{{ $stats['total_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.registered') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.volunteer_hours') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">24</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.this_month') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.available_title') }}</h4>
+                                        <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ $stats['available_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.for_adoption') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.cats_followed') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">7</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.currently') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.adopted_title') }}</h4>
+                                        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ $stats['adopted_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.successfully') }}</p>
                                     </div>
+                                </div>
+
+                                <!-- Link gestione gatti + gatti recenti -->
+                                <div class="mt-8 space-y-6">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.quick_actions') }}</h4>
+                                        <a href="{{ route('user.cats') }}" class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                                            {{ __('dashboard.manage_my_cats') }}
+                                        </a>
+                                    </div>
+
+                                    @if($stats['recent_cats']->count() > 0)
+                                        <div>
+                                            <h5 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-3">{{ __('dashboard.recent_cats_added') }}</h5>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                @foreach($stats['recent_cats'] as $cat)
+                                                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border">
+                                                        <div class="flex items-center space-x-3">
+                                                            <div class="text-2xl">🐱</div>
+                                                            <div>
+                                                                <h6 class="font-medium text-gray-900 dark:text-gray-100">{{ $cat->nome }}</h6>
+                                                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                                    {{ $cat->razza ?? __('dashboard.breed_not_specified') }} 
+                                                                    @if($cat->eta) - {{ $cat->eta_formattata }} @endif
+                                                                </p>
+                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $cat->disponibile_adozione ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' }}">
+                                                                    {{ $cat->disponibile_adozione ? __('dashboard.available_status') : __('dashboard.adopted_status') }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             @break
@@ -102,91 +202,60 @@
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.my_cats') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">2</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.my_cats_title') }}</h4>
+                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">{{ $stats['total_cats'] }}</p>
                                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.registered') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.upcoming_visits') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">1</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.scheduled') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.available_title') }}</h4>
+                                        <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ $stats['available_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.for_adoption') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.saved_memories') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">15</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.special_moments') }}</p>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.adopted_title') }}</h4>
+                                        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ $stats['adopted_cats'] }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.successfully') }}</p>
                                     </div>
+                                </div>
+
+                                <!-- Link gestione gatti + gatti recenti -->
+                                <div class="mt-8 space-y-6">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.quick_actions') }}</h4>
+                                        <a href="{{ route('user.cats') }}" class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                                            {{ __('dashboard.manage_my_cats') }}
+                                        </a>
+                                    </div>
+
+                                    @if($stats['recent_cats']->count() > 0)
+                                        <div>
+                                            <h5 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-3">{{ __('dashboard.recent_cats_added') }}</h5>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                @foreach($stats['recent_cats'] as $cat)
+                                                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border">
+                                                        <div class="flex items-center space-x-3">
+                                                            <div class="text-2xl">🐱</div>
+                                                            <div>
+                                                                <h6 class="font-medium text-gray-900 dark:text-gray-100">{{ $cat->nome }}</h6>
+                                                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                                    {{ $cat->razza ?? __('dashboard.breed_not_specified') }} 
+                                                                    @if($cat->eta) - {{ $cat->eta_formattata }} @endif
+                                                                </p>
+                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $cat->disponibile_adozione ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' }}">
+                                                                    {{ $cat->disponibile_adozione ? __('dashboard.available_status') : __('dashboard.adopted_status') }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             @break
 
-                        @case('veterinario')
-                            <div class="space-y-6">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ __('dashboard.veterinario_dashboard') }}</h3>
-                                        <p class="text-gray-600 dark:text-gray-400">{{ __('dashboard.veterinario_activities') }}</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.patients_today') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">8</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.scheduled_visits') }}</p>
-                                    </div>
-                                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.pending_reports') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">3</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.to_complete') }}</p>
-                                    </div>
-                                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.cats_followed_vet') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">45</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.regular') }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            @break
 
-                        @case('toelettatore')
-                            <div class="space-y-6">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3h10M7 3v18h10V3M7 3a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ __('dashboard.toelettatore_dashboard') }}</h3>
-                                        <p class="text-gray-600 dark:text-gray-400">{{ __('dashboard.toelettatore_activities') }}</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.appointments_today') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">6</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.scheduled_appointments') }}</p>
-                                    </div>
-                                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.loyal_clients') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">28</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.regular_clients') }}</p>
-                                    </div>
-                                    <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('dashboard.completed_services') }}</h4>
-                                        <p class="text-3xl font-bold text-orange-600 dark:text-orange-400">12</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.this_month_services') }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            @break
 
                         @case('admin')
                             <div class="space-y-6">

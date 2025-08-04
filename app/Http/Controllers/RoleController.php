@@ -43,6 +43,12 @@ class RoleController extends Controller
                 'role' => $request->role,
             ]);
 
+            // Se l'utente ha selezionato "associazione", reindirizza ai dettagli
+            if ($request->role === 'associazione') {
+                return redirect()->route('association.details')
+                    ->with('success', __('dashboard.role_saved_success'));
+            }
+
             return redirect()->route('dashboard')
                 ->with('success', __('dashboard.role_saved_success'));
         } catch (\Exception $e) {
