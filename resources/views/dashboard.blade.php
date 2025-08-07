@@ -81,8 +81,24 @@
                                                                     {{ $cat->razza ?? __('dashboard.breed_not_specified') }} 
                                                                     @if($cat->eta) - {{ $cat->eta_formattata }} @endif
                                                                 </p>
-                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $cat->disponibile_adozione ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' }}">
-                                                                    {{ $cat->disponibile_adozione ? __('dashboard.available_status') : __('dashboard.adopted_status') }}
+                                                                @php
+                                                                    // Logica corretta per determinare lo stato del gatto
+                                                                    if ($cat->data_adozione) {
+                                                                        $statusText = __('dashboard.adopted_status');
+                                                                        $statusClass = 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
+                                                                    } elseif ($cat->disponibile_adozione) {
+                                                                        $statusText = __('dashboard.available_status');
+                                                                        $statusClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+                                                                    } elseif (Auth::user()->role === 'proprietario') {
+                                                                        $statusText = __('dashboard.owned_status');
+                                                                        $statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+                                                                    } else {
+                                                                        $statusText = __('dashboard.evaluating_status');
+                                                                        $statusClass = 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200';
+                                                                    }
+                                                                @endphp
+                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $statusClass }}">
+                                                                    {{ $statusText }}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -172,8 +188,24 @@
                                                                     {{ $cat->razza ?? __('dashboard.breed_not_specified') }} 
                                                                     @if($cat->eta) - {{ $cat->eta_formattata }} @endif
                                                                 </p>
-                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $cat->disponibile_adozione ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' }}">
-                                                                    {{ $cat->disponibile_adozione ? __('dashboard.available_status') : __('dashboard.adopted_status') }}
+                                                                @php
+                                                                    // Logica corretta per determinare lo stato del gatto
+                                                                    if ($cat->data_adozione) {
+                                                                        $statusText = __('dashboard.adopted_status');
+                                                                        $statusClass = 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
+                                                                    } elseif ($cat->disponibile_adozione) {
+                                                                        $statusText = __('dashboard.available_status');
+                                                                        $statusClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+                                                                    } elseif (Auth::user()->role === 'proprietario') {
+                                                                        $statusText = __('dashboard.owned_status');
+                                                                        $statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+                                                                    } else {
+                                                                        $statusText = __('dashboard.evaluating_status');
+                                                                        $statusClass = 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200';
+                                                                    }
+                                                                @endphp
+                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $statusClass }}">
+                                                                    {{ $statusText }}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -212,9 +244,9 @@
                                         <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.for_adoption') }}</p>
                                     </div>
                                     <div class="bg-white dark:bg-gray-700 p-6 rounded-lg border border-gray-200 dark:border-gray-600">
-                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ __('dashboard.adopted_title') }}</h4>
+                                        <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🏠 {{ __('dashboard.given_adoption_title') }}</h4>
                                         <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ $stats['adopted_cats'] }}</p>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.successfully') }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('dashboard.given_adoption_desc') }}</p>
                                     </div>
                                 </div>
 
@@ -241,8 +273,24 @@
                                                                     {{ $cat->razza ?? __('dashboard.breed_not_specified') }} 
                                                                     @if($cat->eta) - {{ $cat->eta_formattata }} @endif
                                                                 </p>
-                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $cat->disponibile_adozione ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200' }}">
-                                                                    {{ $cat->disponibile_adozione ? __('dashboard.available_status') : __('dashboard.adopted_status') }}
+                                                                @php
+                                                                    // Logica corretta per determinare lo stato del gatto
+                                                                    if ($cat->data_adozione) {
+                                                                        $statusText = __('dashboard.adopted_status');
+                                                                        $statusClass = 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
+                                                                    } elseif ($cat->disponibile_adozione) {
+                                                                        $statusText = __('dashboard.available_status');
+                                                                        $statusClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+                                                                    } elseif (Auth::user()->role === 'proprietario') {
+                                                                        $statusText = __('dashboard.owned_status');
+                                                                        $statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+                                                                    } else {
+                                                                        $statusText = __('dashboard.evaluating_status');
+                                                                        $statusClass = 'bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200';
+                                                                    }
+                                                                @endphp
+                                                                <span class="inline-block px-2 py-1 text-xs rounded-full {{ $statusClass }}">
+                                                                    {{ $statusText }}
                                                                 </span>
                                                             </div>
                                                         </div>

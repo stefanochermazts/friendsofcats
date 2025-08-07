@@ -439,6 +439,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Additional Features
     'exclusively_cats' => 'Platform dedicated exclusively to cats and their welfare',

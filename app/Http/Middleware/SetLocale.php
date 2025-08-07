@@ -22,11 +22,11 @@ class SetLocale
         $locale = 'it';
         
         // Controlla se c'è un parametro locale nella URL
-        if ($request->has('locale') && in_array($request->get('locale'), ['it', 'en', 'de', 'fr', 'es'])) {
+        if ($request->has('locale') && in_array($request->get('locale'), ['it', 'en', 'de', 'fr', 'es', 'sl'])) {
             $locale = $request->get('locale');
         }
         // Altrimenti controlla se c'è una lingua salvata in sessione
-        elseif (Session::has('locale') && in_array(Session::get('locale'), ['it', 'en', 'de', 'fr', 'es'])) {
+        elseif (Session::has('locale') && in_array(Session::get('locale'), ['it', 'en', 'de', 'fr', 'es', 'sl'])) {
             $locale = Session::get('locale');
         }
         

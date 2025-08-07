@@ -94,6 +94,9 @@ return [
     'drag_drop_gallery' => 'Arrastra las fotos de la galería aquí o haz clic para seleccionar',
     'drop_files_here' => 'Suelta los archivos aquí',
     'or_click_to_select' => 'o haz clic para seleccionar',
+    'add_photos_to_gallery' => 'Las nuevas fotos se agregarán a las existentes',
+    'remove_photo' => 'Eliminar foto',
+    'gallery_photo_removed' => '¡Foto eliminada de la galería!',
     
     // Placeholders y Ayuda
     'name_placeholder' => 'ej. Minino, Luna, Simba...',
@@ -115,6 +118,8 @@ return [
     // Edad multilingüe
     'years' => 'año|años',
     'months' => 'mes|meses',
+    'days' => 'día|días',
+    'hours' => 'hora|horas',
     'and' => 'y',
     
     // Campos de Formulario Adicionales
@@ -168,4 +173,53 @@ return [
     'previous_photo' => 'Foto anterior',
     'next_photo' => 'Foto siguiente',
     'photo_of' => 'Foto :current de :total',
+    'supported_formats_dynamic' => 'Formatos soportados: JPG, PNG, GIF. Máx :max MB.',
+    'gallery_info_dynamic' => 'Puedes seleccionar varias fotos. Máx :max_photos fotos, :max MB cada una.',
+    
+    // Página de detalle del gato
+    'profile_subtitle' => 'Perfil detallado del gato',
+    'months_old' => 'meses de edad',
+    'characteristics' => 'Características',
+    'story' => 'Su historia',
+    'health' => 'Salud y cuidado',
+    'health_notes' => 'Notas de salud',
+    'health_status' => 'Estado de salud',
+    'vaccinated' => 'Vacunado',
+    'not_vaccinated' => 'No vacunado',
+    'sterilized' => 'Esterilizado/Castrado',
+    'microchipped' => 'Con microchip',
+    'recent_posts' => 'Publicaciones recientes',
+    'association_info' => 'Información de la asociación',
+    'association_name' => 'Nombre de contacto',
+    'organization' => 'Organización',
+    'location' => 'Ubicación',
+    'contact_association' => 'Contactar asociación',
+    'status' => 'Estado',
+    'available_for_adoption' => 'Disponible para adopción',
+    'interested_adoption' => '¿Interesado en adopción?',
+    'adoption_description' => 'Contacta a la asociación para más información sobre la adopción.',
+    'contact_for_adoption' => 'Contactar para adopción',
+    'similar_cats' => 'Gatos similares',
+    'adoptable' => 'Adoptable',
+    'view_profile' => 'Ver perfil',
+    'total_likes' => 'Total de likes',
+    'total_posts' => 'Total de publicaciones',
+    'days_since_arrival' => 'Días desde llegada',
+    'available_adoption' => 'Disponible',
+    'click_to_view_fullsize' => 'Clic para ver en pantalla completa',
+    
+    // Meta tags y SEO
+    'meet_cat' => 'Conoce a :name, un :breed de :age meses buscando un hogar amoroso en FriendsOfCats.',
+    'mixed_breed' => 'mestizo',
+    'photo_of_cat' => 'Foto de :name',
+    'seo_keywords' => 'gato, :name, :breed, adopción, gatos, animales, FriendsOfCats',
+    
+    // Compartir en redes sociales
+    'share_cat_profile' => 'Comparte el perfil de este gato',
+    'share_description' => '¡Ayuda a :name a encontrar una familia compartiendo su perfil!',
+    'tweet_text' => '¡Mira qué hermoso es :name! 🐱',
+    'whatsapp_text' => 'Hola! Mira este adorable gato en FriendsOfCats: :name. :url',
+    'copy_link' => 'Copiar enlace',
+    'copied' => '¡Copiado!',
+    'copy_error' => 'Error al copiar el enlace',
 ];

@@ -54,11 +54,57 @@ Scopo: definire funzionalità, flussi utente e requisiti per la versione MVP e p
 * Filtri avanzati (razza, età, sterilizzazione, livello di socialità).
 * Lista d’attesa per adozioni e organizzazione di open-day.
 
-### 5.3 Piattaforma Adozioni
+### 5.3 Piattaforma di presentazione per i  Gatti
 
-* Vetrina pubblica con filtri (località, razza, età, sterilizzazione).
-* Modulo di contatto con questionario breve per potenziali adottanti.
-* Sezione “Storie di Successo” con testimonianze e foto.
+5.3.1. Vetrina “Card” a Griglia
+Card minimal: sfondo bianco, bordo sottilissimo nero, foto in alto che occupa ~70% della card, sotto nome, età, razza e “badge” (adottabile, sterilizzato, vaccinato).
+
+Hover / Focus: al passaggio del mouse o al tocco, la card “si solleva” con un’ombra lieve e compare una call-to-action (“Scopri di più”, “Metti like”).
+
+Layout responsive: 4 colonne su desktop, 2 su tablet, 1 su mobile.
+
+5.3.2. Scheda Dettaglio “Pet Profile”
+Hero image: full-width con overlay semitrasparente per nome razza/età.
+
+Info: caratteristiche, microchip, storia.
+
+Salute: vaccini, eventuali cure.
+
+Gallery: griglia di foto e video inviate da volontari e proprietari.
+
+Storie & Commenti: mini‐feed dove gli utenti possono lasciare un pensiero o un ringraziamento.
+
+5.3.3. Feed Sociale “CatBook”
+Per fare questo punto ti prego di gestire gli og:tags corretti per le condivisioni sugli altri social.
+
+Timeline cronologica: post brevi (foto + descrizione di 200 caratteri max) caricati da volontari, proprietari e staff delle associazioni.
+
+Interazioni: like / ❤️, commenti, share (link diretto, WhatsApp, social esterni).
+
+Hashtag & Tag: #Adozione, #GattoAnziano, #FIV+, #GattoDelMese per filtrare e scoprire contenuti.
+
+Segui: possibilità di seguire un gatto specifico o un volontario/proprietario, per ricevere notifiche sui loro aggiornamenti.
+
+5.3.4. Gamification & Community
+Badge e punti: chi lascia commenti di supporto, condivide post o carica foto guadagna “punti” e badge (es. “SuperVolunteer”, “CatLover”).
+
+Leaderboard: classifica mensile dei contributori più attivi.
+
+Eventi: creazione di mini-eventi (Open-day, raccolte fondi) con timeline dedicata e RSVP integrato.
+
+5.3.5. Filtri & Scoperte
+Mappa interattiva: geolocalizzazione dei rifugi con gatti disponibili vicini all’utente.
+
+Smart filters: età, sterilizzazione, compatibilità con altri animali, caratteristiche caratteriali (giocherellone, timido, coccolone).
+
+Random “Cat Surprise”: un pulsante per farti scoprire un gatto a caso della community.
+
+6. Notifiche & Personalizzazione
+Watchlist: salva i tuoi gatti preferiti in una lista e ricevi alert quando cambiano status (es. “adottato”, “nuova foto”).
+
+Reminder: per seguire i progressi di un gatto o per essere informato di nuovi post in certi hashtag.
+
+Dark Mode Engagement: in dark mode le immagini risaltano ancora meglio, crea uno slider che mostri “prima/dopo” (per cure, trasformazioni).
 
 ### 5.4 Registro Salute & Promemoria (Proprietari & Veterinari)
 

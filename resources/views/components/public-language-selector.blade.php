@@ -44,7 +44,7 @@
            class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'it' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
            role="menuitem">
             <span class="mr-3 text-lg">🇮🇹</span>
-            <span class="font-medium">{{ __('italiano') }}</span>
+            <span class="font-medium">{{ __('messages.italiano') }}</span>
             @if(app()->getLocale() === 'it')
                 <svg class="w-4 h-4 ml-auto text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -57,7 +57,7 @@
            class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'en' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
            role="menuitem">
             <span class="mr-3 text-lg">🇬🇧</span>
-            <span class="font-medium">{{ __('inglese') }}</span>
+            <span class="font-medium">{{ __('messages.inglese') }}</span>
             @if(app()->getLocale() === 'en')
                 <svg class="w-4 h-4 ml-auto text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -70,7 +70,7 @@
            class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'fr' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
            role="menuitem">
             <span class="mr-3 text-lg">🇫🇷</span>
-            <span class="font-medium">{{ __('francese') }}</span>
+            <span class="font-medium">{{ __('messages.francese') }}</span>
             @if(app()->getLocale() === 'fr')
                 <svg class="w-4 h-4 ml-auto text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -83,7 +83,7 @@
            class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'de' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
            role="menuitem">
             <span class="mr-3 text-lg">🇩🇪</span>
-            <span class="font-medium">{{ __('tedesco') }}</span>
+            <span class="font-medium">{{ __('messages.tedesco') }}</span>
             @if(app()->getLocale() === 'de')
                 <svg class="w-4 h-4 ml-auto text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -96,8 +96,21 @@
            class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'es' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
            role="menuitem">
             <span class="mr-3 text-lg">🇪🇸</span>
-            <span class="font-medium">{{ __('spagnolo') }}</span>
+            <span class="font-medium">{{ __('messages.spagnolo') }}</span>
             @if(app()->getLocale() === 'es')
+                <svg class="w-4 h-4 ml-auto text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            @endif
+        </a>
+        
+        {{-- Slovenian --}}
+        <a href="{{ route('locale.change', 'sl') }}" 
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'sl' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
+           role="menuitem">
+            <span class="mr-3 text-lg">🇸🇮</span>
+            <span class="font-medium">{{ __('messages.sloveno') }}</span>
+            @if(app()->getLocale() === 'sl')
                 <svg class="w-4 h-4 ml-auto text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>

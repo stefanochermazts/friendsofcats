@@ -153,6 +153,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Dashboard Inhalt - Fehlende Strings
     'my_cats_title' => '❤️ Meine Katzen',

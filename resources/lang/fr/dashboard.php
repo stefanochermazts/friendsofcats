@@ -153,6 +153,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Contenu Dashboard - Chaînes manquantes
     'my_cats_title' => '❤️ Mes Chats',

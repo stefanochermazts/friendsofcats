@@ -117,4 +117,36 @@ class User extends Authenticatable implements MustVerifyEmail
         // Ripristina la lingua originale
         app()->setLocale($originalLocale);
     }
+
+    /**
+     * Relazione con i gatti dell'utente
+     */
+    public function cats()
+    {
+        return $this->hasMany(\App\Models\Cat::class);
+    }
+
+    /**
+     * Relazione con i post dell'utente
+     */
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class);
+    }
+
+    /**
+     * Relazione con i like dell'utente
+     */
+    public function postLikes()
+    {
+        return $this->hasMany(\App\Models\PostLike::class);
+    }
+
+    /**
+     * Relazione con i commenti dell'utente
+     */
+    public function postComments()
+    {
+        return $this->hasMany(\App\Models\PostComment::class);
+    }
 }

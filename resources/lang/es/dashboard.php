@@ -153,6 +153,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Contenido Dashboard - Cadenas faltantes
     'my_cats_title' => '❤️ Mis Gatos',

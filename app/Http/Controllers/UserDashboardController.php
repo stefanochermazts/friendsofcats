@@ -14,10 +14,26 @@ class UserDashboardController extends Controller
     {
         $userId = auth()->id();
         
+        $user = auth()->user();
+        
+        // Per i proprietari, i gatti "adottati" sono quelli che erano in adozione e ora hanno data_adozione
+        // Per associazioni/rifugi, i gatti "adottati" sono quelli dati in adozione ad altri
+        if ($user->role === 'proprietario') {
+            $adoptedCats = Cat::where('user_id', $userId)
+                            ->whereNotNull('data_adozione')
+                            ->count();
+        } else {
+            // Per associazioni: gatti che erano disponibili e ora sono adottati
+            $adoptedCats = Cat::where('user_id', $userId)
+                            ->where('disponibile_adozione', false)
+                            ->whereNotNull('data_adozione')
+                            ->count();
+        }
+        
         $stats = [
             'total_cats' => Cat::where('user_id', $userId)->count(),
             'available_cats' => Cat::where('user_id', $userId)->where('disponibile_adozione', true)->count(),
-            'adopted_cats' => Cat::where('user_id', $userId)->where('disponibile_adozione', false)->count(),
+            'adopted_cats' => $adoptedCats,
             'recent_cats' => Cat::where('user_id', $userId)->latest()->take(3)->get(),
         ];
         

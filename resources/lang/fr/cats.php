@@ -94,6 +94,9 @@ return [
     'drag_drop_gallery' => 'Glissez les photos de la galerie ici ou cliquez pour sélectionner',
     'drop_files_here' => 'Déposez les fichiers ici',
     'or_click_to_select' => 'ou cliquez pour sélectionner',
+    'add_photos_to_gallery' => 'Les nouvelles photos seront ajoutées aux existantes',
+    'remove_photo' => 'Supprimer la photo',
+    'gallery_photo_removed' => 'Photo supprimée de la galerie !',
     
     // Placeholders et Aide
     'name_placeholder' => 'ex. Minou, Luna, Simba...',
@@ -115,6 +118,8 @@ return [
     // Âge multilingue
     'years' => 'an|ans',
     'months' => 'mois|mois',
+    'days' => 'jour|jours',
+    'hours' => 'heure|heures',
     'and' => 'et',
     
     // Champs de Formulaire Supplémentaires
@@ -168,4 +173,53 @@ return [
     'previous_photo' => 'Photo précédente',
     'next_photo' => 'Photo suivante',
     'photo_of' => 'Photo :current sur :total',
+    'supported_formats_dynamic' => 'Formats supportés : JPG, PNG, GIF. Max :max Mo.',
+    'gallery_info_dynamic' => 'Vous pouvez sélectionner plusieurs photos. Max :max_photos photos, :max Mo chacune.',
+    
+    // Page de détail du chat
+    'profile_subtitle' => 'Profil détaillé du chat',
+    'months_old' => 'mois',
+    'characteristics' => 'Caractéristiques',
+    'story' => 'Son histoire',
+    'health' => 'Santé et soins',
+    'health_notes' => 'Notes de santé',
+    'health_status' => 'État de santé',
+    'vaccinated' => 'Vacciné',
+    'not_vaccinated' => 'Non vacciné',
+    'sterilized' => 'Stérilisé/Castré',
+    'microchipped' => 'Avec puce électronique',
+    'recent_posts' => 'Publications récentes',
+    'association_info' => 'Informations de l\'association',
+    'association_name' => 'Nom du contact',
+    'organization' => 'Organisation',
+    'location' => 'Localisation',
+    'contact_association' => 'Contacter l\'association',
+    'status' => 'Statut',
+    'available_for_adoption' => 'Disponible pour adoption',
+    'interested_adoption' => 'Intéressé par l\'adoption ?',
+    'adoption_description' => 'Contactez l\'association pour plus d\'informations sur l\'adoption.',
+    'contact_for_adoption' => 'Contacter pour adoption',
+    'similar_cats' => 'Chats similaires',
+    'adoptable' => 'Adoptable',
+    'view_profile' => 'Voir le profil',
+    'total_likes' => 'Total des likes',
+    'total_posts' => 'Total des publications',
+    'days_since_arrival' => 'Jours depuis l\'arrivée',
+    'available_adoption' => 'Disponible',
+    'click_to_view_fullsize' => 'Cliquer pour voir en plein écran',
+    
+    // Meta tags et SEO
+    'meet_cat' => 'Rencontrez :name, un :breed de :age mois cherchant un foyer aimant sur FriendsOfCats.',
+    'mixed_breed' => 'croisé',
+    'photo_of_cat' => 'Photo de :name',
+    'seo_keywords' => 'chat, :name, :breed, adoption, chats, animaux, FriendsOfCats',
+    
+    // Partage sur les réseaux sociaux
+    'share_cat_profile' => 'Partagez le profil de ce chat',
+    'share_description' => 'Aidez :name à trouver une famille en partageant son profil !',
+    'tweet_text' => 'Regardez comme :name est beau ! 🐱',
+    'whatsapp_text' => 'Salut ! Regarde ce chat adorable sur FriendsOfCats : :name. :url',
+    'copy_link' => 'Copier le lien',
+    'copied' => 'Copié !',
+    'copy_error' => 'Erreur lors de la copie du lien',
 ];

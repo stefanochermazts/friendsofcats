@@ -39,7 +39,7 @@ return [
     'available_adoption' => 'Disponibile per Adozione',
     'arrival_date' => 'Data Arrivo',
     'adoption_date' => 'Data Adozione',
-    'main_photo' => 'Foto Principale',
+    'main_photo' => 'Principale',
     'photo_gallery' => '📸 Galleria Foto',
     
     // Opzioni
@@ -86,6 +86,7 @@ return [
     'loading_gallery' => '⏳ Caricamento galleria in corso...',
     'supported_formats' => 'Formati supportati: JPG, PNG, GIF. Max 2MB.',
     'gallery_info' => 'Puoi selezionare multiple foto. Max 10 foto, 2MB ciascuna.',
+    'gallery_info_dynamic' => 'Puoi selezionare multiple foto. Max :max_photos foto, :max MB ciascuna.',
     'no_file_selected' => 'Nessun file selezionato',
     
     // Drag and Drop
@@ -94,6 +95,19 @@ return [
     'drag_drop_gallery' => 'Trascina qui le foto della galleria o clicca per selezionare',
     'drop_files_here' => 'Rilascia i file qui',
     'or_click_to_select' => 'oppure clicca per selezionare',
+    'add_photos_to_gallery' => 'Le nuove foto verranno aggiunte a quelle esistenti',
+    'remove_photo' => 'Rimuovi foto',
+    'gallery_photo_removed' => 'Foto rimossa dalla galleria!',
+    
+    // Dettaglio gatto
+    'gallery' => 'Galleria',
+    'photos' => 'foto',
+    'gender' => 'Sesso',
+    'male' => 'Maschio',
+    'female' => 'Femmina',
+    'color' => 'Colore',
+    'behavior' => 'Comportamento',
+    'health_status' => 'Stato Sanitario',
     
     // Placeholders e Help
     'name_placeholder' => 'es. Micio, Luna, Simba...',
@@ -115,6 +129,8 @@ return [
     // Età multilingua
     'years' => 'anno|anni',
     'months' => 'mese|mesi', 
+    'days' => 'giorno|giorni',
+    'hours' => 'ora|ore',
     'and' => 'e',
     
     // Campi Form Aggiuntivi
@@ -154,7 +170,7 @@ return [
         'Scottish Fold' => 'Scottish Fold',
         'Selkirk Rex' => 'Selkirk Rex',
         'Siamese' => 'Siamese',
-        'Siberian' => 'Siberiano',
+        'Siberiano' => 'Siberiano',
         'Sphynx' => 'Sphynx',
         'Tonkinese' => 'Tonkinese',
         'Turkish Van' => 'Van Turco',
@@ -168,4 +184,52 @@ return [
     'previous_photo' => 'Foto precedente', 
     'next_photo' => 'Foto successiva',
     'photo_of' => 'Foto :current di :total',
+    'supported_formats_dynamic' => 'Formati supportati: JPG, PNG, GIF. Max :max MB.',
+    
+    // Pagina dettaglio gatto
+    'profile_subtitle' => 'Scheda dettagliata del gatto',
+    'months_old' => 'mesi',
+    'characteristics' => 'Caratteristiche',
+    'story' => 'La sua storia',
+    'health' => 'Salute e cura',
+    'health_notes' => 'Note sulla salute',
+    'health_status' => 'Stato di salute',
+    'vaccinated' => 'Vaccinato',
+    'not_vaccinated' => 'Non vaccinato',
+    'sterilized' => 'Sterilizzato',
+    'microchipped' => 'Con microchip',
+    'recent_posts' => 'Post recenti',
+    'association_info' => 'Informazioni associazione',
+    'association_name' => 'Nome contatto',
+    'organization' => 'Organizzazione',
+    'location' => 'Ubicazione',
+    'contact_association' => 'Contatta l\'associazione',
+    'status' => 'Stato',
+    'available_for_adoption' => 'Disponibile per adozione',
+    'interested_adoption' => 'Interessato all\'adozione?',
+    'adoption_description' => 'Contatta l\'associazione per maggiori informazioni sull\'adozione.',
+    'contact_for_adoption' => 'Contatta per adozione',
+    'similar_cats' => 'Gatti simili',
+    'adoptable' => 'Adottabile',
+    'view_profile' => 'Vedi profilo',
+    'total_likes' => 'Like totali',
+    'total_posts' => 'Post totali',
+    'days_since_arrival' => 'Giorni da arrivo',
+    'available_adoption' => 'Disponibile',
+    'click_to_view_fullsize' => 'Clicca per visualizzare a schermo intero',
+    
+    // Meta tags e SEO
+    'meet_cat' => 'Conosci :name, un :breed di :age mesi in cerca di una famiglia amorevole su FriendsOfCats.',
+    'mixed_breed' => 'meticcio',
+    'photo_of_cat' => 'Foto di :name',
+    'seo_keywords' => 'gatto, :name, :breed, adozione, gatti, animali, FriendsOfCats',
+    
+    // Condivisione social
+    'share_cat_profile' => 'Condividi il profilo di questo gatto',
+    'share_description' => 'Aiuta :name a trovare una famiglia condividendo il suo profilo!',
+    'tweet_text' => 'Guardate che bello è :name! 🐱',
+    'whatsapp_text' => 'Ciao! Guarda questo adorabile gatto su FriendsOfCats: :name. :url',
+    'copy_link' => 'Copia link',
+    'copied' => 'Copiato!',
+    'copy_error' => 'Errore nella copia del link',
 ];

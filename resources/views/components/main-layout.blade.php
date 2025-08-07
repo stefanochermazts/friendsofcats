@@ -5,6 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -27,6 +28,9 @@
                 }
             })();
         </script>
+
+        <!-- Meta tags for social sharing -->
+        {{ $meta ?? '' }}
 
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -104,6 +108,23 @@
                                         </button>
                                     </form>
                                 </div>
+                            </div>
+                        @else
+                            {{-- Auth Links for Guests --}}
+                            <div class="flex items-center space-x-3">
+                                @if (Route::has('login'))
+                                    <a href="{{ route('login') }}" 
+                                       class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors duration-200">
+                                        {{ __('login') }}
+                                    </a>
+                                    
+                                    @if (Route::has('register'))
+                                        <a href="{{ route('register') }}" 
+                                           class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                            {{ __('register') }}
+                                        </a>
+                                    @endif
+                                @endif
                             </div>
                         @endauth
                     </div>

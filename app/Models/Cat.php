@@ -10,6 +10,27 @@ class Cat extends Model
 {
     use HasFactory;
 
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        // Assegna automaticamente una foto placeholder se manca la foto principale
+        static::saving(function (Cat $cat) {
+            if (empty($cat->foto_principale) || $cat->foto_principale === null) {
+                $cat->assignPlaceholderPhoto();
+            }
+        });
+        
+        // Assegna anche dopo la creazione se l'ID non era disponibile durante il saving
+        static::created(function (Cat $cat) {
+            if (empty($cat->foto_principale) || $cat->foto_principale === null) {
+                $cat->assignPlaceholderPhoto();
+                $cat->saveQuietly(); // Save without triggering events again
+            }
+        });
+    }
+
     protected $fillable = [
         'nome',
         'razza',
@@ -26,6 +47,8 @@ class Cat extends Model
         'livello_socialita',
         'note_comportamentali',
         'disponibile_adozione',
+        'likes_count',
+        'last_liked_at',
         'data_arrivo',
         'data_adozione',
         'foto_principale',
@@ -114,18 +137,38 @@ class Cat extends Model
      */
     public function getEtaFormattataAttribute(): string
     {
-        if ($this->eta < 12) {
-            return $this->eta . ' ' . trans_choice('cats.months', $this->eta);
+        if (!$this->eta) {
+            return 'N/A';
         }
         
-        $anni = intval($this->eta / 12);
-        $mesi = $this->eta % 12;
-        
-        if ($mesi === 0) {
-            return $anni . ' ' . trans_choice('cats.years', $anni);
+        try {
+            if ($this->eta < 12) {
+                return $this->eta . ' ' . trans_choice('cats.months', $this->eta);
+            }
+            
+            $anni = intval($this->eta / 12);
+            $mesi = $this->eta % 12;
+            
+            if ($mesi === 0) {
+                return $anni . ' ' . trans_choice('cats.years', $anni);
+            }
+            
+            return $anni . ' ' . trans_choice('cats.years', $anni) . ' ' . __('cats.and') . ' ' . $mesi . ' ' . trans_choice('cats.months', $mesi);
+        } catch (\Exception $e) {
+            // Fallback se le traduzioni falliscono
+            if ($this->eta < 12) {
+                return $this->eta . ' ' . ($this->eta == 1 ? 'mese' : 'mesi');
+            }
+            
+            $anni = intval($this->eta / 12);
+            $mesi = $this->eta % 12;
+            
+            if ($mesi === 0) {
+                return $anni . ' ' . ($anni == 1 ? 'anno' : 'anni');
+            }
+            
+            return $anni . ' ' . ($anni == 1 ? 'anno' : 'anni') . ' e ' . $mesi . ' ' . ($mesi == 1 ? 'mese' : 'mesi');
         }
-        
-        return $anni . ' ' . trans_choice('cats.years', $anni) . ' ' . __('cats.and') . ' ' . $mesi . ' ' . trans_choice('cats.months', $mesi);
     }
 
     /**
@@ -134,5 +177,52 @@ class Cat extends Model
     public function getSterilizzazioneTestoAttribute(): string
     {
         return $this->sterilizzazione ? 'Sterilizzato' : 'Non sterilizzato';
+    }
+
+    /**
+     * Assegna una foto placeholder casuale al gatto
+     */
+    public function assignPlaceholderPhoto(): void
+    {
+        $placeholderPhotos = [
+            'cats/placeholders/cat-placeholder-1.svg',
+            'cats/placeholders/cat-placeholder-2.svg', 
+            'cats/placeholders/cat-placeholder-3.svg',
+            'cats/placeholders/cat-placeholder-4.svg',
+            'cats/placeholders/cat-placeholder-5.svg',
+        ];
+        
+        // Verifica che i file placeholder esistano, altrimenti usa un fallback
+        $validPlaceholders = array_filter($placeholderPhotos, function($photo) {
+            return file_exists(storage_path('app/public/' . $photo));
+        });
+        
+        if (empty($validPlaceholders)) {
+            // Fallback se non ci sono placeholder disponibili
+            \Log::warning('Nessun placeholder disponibile per il gatto ID: ' . ($this->id ?? 'nuovo'));
+            return;
+        }
+        
+        // Sceglie una foto placeholder in base all'ID del gatto per mantenere coerenza
+        // Se il gatto non ha ancora un ID (creazione), usa il nome come seed per la casualità
+        if ($this->id) {
+            $index = $this->id % count($validPlaceholders);
+        } elseif ($this->nome) {
+            $index = crc32($this->nome) % count($validPlaceholders);
+        } else {
+            $index = array_rand($validPlaceholders);
+        }
+        
+        $this->foto_principale = array_values($validPlaceholders)[$index];
+        
+        \Log::info("Assegnata foto placeholder al gatto '{$this->nome}' (ID: " . ($this->id ?? 'nuovo') . "): {$this->foto_principale}");
+    }
+
+    /**
+     * Relazione con i post del gatto
+     */
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class);
     }
 }

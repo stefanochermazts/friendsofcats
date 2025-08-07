@@ -73,7 +73,7 @@
             @if($cats->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($cats as $cat)
-                        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-shadow">
+                        <div wire:key="cat-{{ $cat->id }}" class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-shadow">
                             <!-- Foto Principale e Galleria -->
                             @php 
                                 $totalPhotos = $this->getTotalPhotos($cat);
@@ -147,6 +147,7 @@
                                 <!-- Azioni -->
                                 <div class="flex space-x-2">
                                     <button 
+                                        wire:key="edit-btn-{{ $cat->id }}"
                                         wire:click="openModal({{ $cat->id }})"
                                         class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
                                     >
@@ -158,6 +159,7 @@
                                     
                                     <!-- Pulsante toggle adozione per tutti -->
                                     <button 
+                                        wire:key="toggle-btn-{{ $cat->id }}"
                                         wire:click="toggleAdoption({{ $cat->id }})"
                                         class="bg-{{ $cat->disponibile_adozione ? 'green' : 'orange' }}-500 hover:bg-{{ $cat->disponibile_adozione ? 'green' : 'orange' }}-600 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
                                     >
@@ -168,6 +170,7 @@
                                         @endif
                                     </button>
                                     <button 
+                                        wire:key="delete-btn-{{ $cat->id }}"
                                         wire:click="deleteCat({{ $cat->id }})"
                                         wire:confirm="{{ __('cats.confirm_delete') }} {{ $cat->nome }}?"
                                         class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
@@ -421,23 +424,35 @@
                                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                             </div>
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-1">{{ __('cats.supported_formats') }}</p>
+                                        <p class="text-xs text-gray-500 mt-1">
+                                            {{ __('cats.supported_formats_dynamic', ['max' => $maxFileSizeMB]) }}
+                                        </p>
                                         @error('foto_principale') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <div>
+<div>
                                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('cats.photo_gallery') }}</label>
                                         
-                                        <!-- Galleria esistente -->
+                                        <!-- Galleria esistente con possibilità di rimozione -->
                                         @if($editingCat && $editingCat->galleria_foto && count($editingCat->galleria_foto) > 0)
                                             <div class="mb-3 p-3 bg-gray-50 dark:bg-gray-600 rounded-lg">
-                                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{{ __('cats.current_gallery') }}</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{{ __('cats.current_gallery') }} ({{ count($editingCat->galleria_foto) }})</p>
                                                 <div class="grid grid-cols-6 gap-2">
-                                                    @foreach($editingCat->galleria_foto as $foto)
-                                                        <img src="{{ Storage::url($foto) }}" 
-                                                             alt="{{ __('cats.current_gallery') }}" 
-                                                             class="w-12 h-12 object-cover rounded border"
-                                                             onerror="this.style.display='none';">
+                                                    @foreach($editingCat->galleria_foto as $index => $foto)
+                                                        <div class="relative group">
+                                                            <img src="{{ Storage::url($foto) }}" 
+                                                                 alt="{{ __('cats.current_gallery') }}" 
+                                                                 class="w-12 h-12 object-cover rounded border"
+                                                                 onerror="this.style.display='none';">
+                                                            
+                                                            <!-- Pulsante rimozione -->
+                                                            <button type="button"
+                                                                    wire:click="removeGalleryPhoto({{ $index }})"
+                                                                    class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+                                                                    title="{{ __('cats.remove_photo') }}">
+                                                                ×
+                                                            </button>
+                                                        </div>
                                                     @endforeach
                                                 </div>
                                             </div>
@@ -510,7 +525,14 @@
                                                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                             </div>
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-1">{{ __('cats.gallery_info') }}</p>
+                                        <p class="text-xs text-gray-500 mt-1">
+                                            {{ __('cats.gallery_info_dynamic', ['max' => $maxFileSizeMB, 'max_photos' => 10]) }}
+                                        </p>
+                                        @if($editingCat && $editingCat->galleria_foto && count($editingCat->galleria_foto) > 0)
+                                            <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                                                💡 {{ __('cats.add_photos_to_gallery') }}
+                                            </p>
+                                        @endif
                                         @error('galleria_foto') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                                     </div>
                                 </div>

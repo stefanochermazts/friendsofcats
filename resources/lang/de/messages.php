@@ -435,6 +435,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Features
     'key_features' => 'Hauptmerkmale',
@@ -467,4 +468,4 @@ return [
     'join_community_desc' => 'Werden Sie Teil der größten Gemeinschaft für Katzen',
     'get_started' => 'Loslegen',
 
-}; 
+]; 

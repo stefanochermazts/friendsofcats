@@ -12,7 +12,7 @@ class LocaleController extends Controller
      */
     public function changeLocale(Request $request, $locale)
     {
-        $supportedLocales = ['it', 'en', 'de', 'fr', 'es'];
+        $supportedLocales = ['it', 'en', 'de', 'fr', 'es', 'sl'];
         
         if (in_array($locale, $supportedLocales)) {
             Session::put('locale', $locale);

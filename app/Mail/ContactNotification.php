@@ -29,8 +29,16 @@ class ContactNotification extends Mailable
      */
     public function envelope(): Envelope
     {
+        // Personalizza l'oggetto se è una richiesta di adozione
+        $subject = $this->isAdoptionRequest() 
+            ? EmailTranslations::get('emails.contact_notification.adoption_subject', [
+                'app_name' => config('app.name'),
+                'cat_name' => $this->extractCatNameFromSubject()
+            ])
+            : EmailTranslations::get('emails.contact_notification.subject', ['app_name' => config('app.name')]);
+            
         return new Envelope(
-            subject: EmailTranslations::get('emails.contact_notification.subject', ['app_name' => config('app.name')]),
+            subject: $subject,
         );
     }
 
@@ -46,7 +54,9 @@ class ContactNotification extends Mailable
                 'appName' => config('app.name'),
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
-                'title' => 'Nuovo messaggio di contatto',
+                'title' => $this->isAdoptionRequest() ? 'Richiesta di adozione' : 'Nuovo messaggio di contatto',
+                'isAdoptionRequest' => $this->isAdoptionRequest(),
+                'catName' => $this->extractCatNameFromSubject(),
             ],
         );
     }
@@ -59,5 +69,25 @@ class ContactNotification extends Mailable
     public function attachments(): array
     {
         return [];
+    }
+
+    /**
+     * Verifica se è una richiesta di adozione
+     */
+    private function isAdoptionRequest(): bool
+    {
+        return str_contains(strtolower($this->contact->subject), 'richiesta adozione');
+    }
+
+    /**
+     * Estrae il nome del gatto dall'oggetto della richiesta
+     */
+    private function extractCatNameFromSubject(): ?string
+    {
+        if (preg_match('/richiesta adozione per (.+?)$/i', $this->contact->subject, $matches)) {
+            return trim($matches[1]);
+        }
+        
+        return null;
     }
 }

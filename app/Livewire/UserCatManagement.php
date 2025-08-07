@@ -37,6 +37,8 @@ class UserCatManagement extends Component
     public $data_adozione = '';
     public $foto_principale;
     public $galleria_foto = [];
+    public $maxFileSizeMB;
+    public $maxFileSizeKB;
 
     protected $rules = [
         'nome' => 'required|string|max:255',
@@ -62,18 +64,63 @@ class UserCatManagement extends Component
     public function mount()
     {
         $this->data_arrivo = today()->format('Y-m-d');
-        
+        $this->maxFileSizeMB = $this->getMaxUploadSizeMB(); // per la view
+        $this->maxFileSizeKB = $this->maxFileSizeMB * 1024; // per la validazione
         // Per i proprietari, di default i gatti non sono disponibili per adozione
         if (auth()->user()->role === 'proprietario') {
             $this->disponibile_adozione = false;
         }
     }
 
+    private function getMaxUploadSizeMB()
+    {
+        $size = ini_get('upload_max_filesize');
+        $unit = strtolower(substr(trim($size), -1));
+        $value = (float) $size;
+        
+        switch ($unit) {
+            case 'g':
+                $value *= 1024;
+                break;
+            case 'k':
+                $value = $value / 1024;
+                break;
+            // 'm' is già MB
+        }
+        
+        return max(1, (int) round($value));
+    }
+
+    public function rules()
+    {
+        return [
+            'nome' => 'required|string|max:255',
+            'razza' => 'nullable|string|max:255',
+            'eta' => 'nullable|integer|min:0|max:300',
+            'sesso' => 'nullable|in:maschio,femmina',
+            'peso' => 'nullable|numeric|min:0|max:15',
+            'colore' => 'nullable|string|max:255',
+            'stato_sanitario' => 'nullable|string',
+            'microchip' => 'boolean',
+            'numero_microchip' => 'nullable|string|max:255',
+            'sterilizzazione' => 'boolean',
+            'comportamento' => 'nullable|string',
+            'livello_socialita' => 'required|in:basso,medio,alto',
+            'note_comportamentali' => 'nullable|string',
+            'disponibile_adozione' => 'boolean',
+            'data_arrivo' => 'nullable|date',
+            'data_adozione' => 'nullable|date',
+            'foto_principale' => 'nullable|image|max:' . $this->maxFileSizeKB,
+            'galleria_foto.*' => 'nullable|image|max:' . $this->maxFileSizeKB,
+        ];
+    }
+
     public function render()
     {
         $cats = Cat::where('user_id', auth()->id())->with('user')
             ->when($this->search, function ($query) {
-                $query->where('nome', 'like', '%' . $this->search . '%');
+                $searchTerm = strtolower($this->search);
+                $query->whereRaw('LOWER(nome) LIKE ?', ['%' . $searchTerm . '%']);
             })
             ->when($this->filterRazza, function ($query) {
                 $query->where('razza', $this->filterRazza);
@@ -99,11 +146,14 @@ class UserCatManagement extends Component
 
     public function openModal($catId = null)
     {
+        logger('OpenModal called with catId: ' . $catId);
+        
         $this->resetForm();
         
         if ($catId) {
             $this->editingCat = Cat::where('user_id', auth()->id())->findOrFail($catId);
             $this->loadCatData();
+            logger('Loading cat data for: ' . $this->editingCat->nome);
         }
         
         $this->showModal = true;
@@ -150,16 +200,22 @@ class UserCatManagement extends Component
             $data['foto_principale'] = $this->editingCat->foto_principale;
         }
 
-        // Gestione upload galleria foto
+        // Gestione upload galleria foto - AGGIUNTA alle foto esistenti
+        $existingGallery = [];
+        if ($this->editingCat && $this->editingCat->galleria_foto && is_array($this->editingCat->galleria_foto)) {
+            $existingGallery = $this->editingCat->galleria_foto;
+        }
+
         if ($this->galleria_foto && count($this->galleria_foto) > 0) {
-            $galleryPaths = [];
+            $newGalleryPaths = [];
             foreach ($this->galleria_foto as $foto) {
-                $galleryPaths[] = $foto->store('cats/gallery', 'public');
+                $newGalleryPaths[] = $foto->store('cats/gallery', 'public');
             }
-            $data['galleria_foto'] = $galleryPaths;
-        } elseif ($this->editingCat && $this->editingCat->galleria_foto) {
+            // Unisci le foto esistenti con quelle nuove
+            $data['galleria_foto'] = array_merge($existingGallery, $newGalleryPaths);
+        } else {
             // Mantieni la galleria esistente se non ne sono state caricate nuove
-            $data['galleria_foto'] = $this->editingCat->galleria_foto;
+            $data['galleria_foto'] = $existingGallery;
         }
 
         if ($this->editingCat) {
@@ -245,16 +301,19 @@ class UserCatManagement extends Component
     public function updatedSearch()
     {
         $this->resetPage();
+        $this->dispatch('refreshComponent');
     }
 
     public function updatedFilterRazza()
     {
         $this->resetPage();
+        $this->dispatch('refreshComponent');
     }
 
     public function updatedFilterDisponibile()
     {
         $this->resetPage();
+        $this->dispatch('refreshComponent');
     }
 
     /**
@@ -293,20 +352,7 @@ class UserCatManagement extends Component
      */
     public function getStatoGatto($cat)
     {
-        if ($cat->user && $cat->user->role === 'proprietario') {
-            return [
-                'testo' => __('cats.owned'),
-                'classe' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-            ];
-        }
-
-        if ($cat->disponibile_adozione) {
-            return [
-                'testo' => __('cats.available'),
-                'classe' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-            ];
-        }
-
+        // 1. Priorità massima: Se ha data_adozione -> Adottato
         if ($cat->data_adozione) {
             return [
                 'testo' => __('cats.adopted'),
@@ -314,10 +360,48 @@ class UserCatManagement extends Component
             ];
         }
 
+        // 2. Se disponibile per adozione -> Disponibile
+        if ($cat->disponibile_adozione) {
+            return [
+                'testo' => __('cats.available'),
+                'classe' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+            ];
+        }
+
+        // 3. Se il proprietario è un 'proprietario' e NON disponibile -> Di proprietà
+        if ($cat->user && $cat->user->role === 'proprietario') {
+            return [
+                'testo' => __('cats.owned'),
+                'classe' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+            ];
+        }
+
+        // 4. Altrimenti -> In valutazione (per associazioni/rifugi)
         return [
             'testo' => __('cats.evaluating'),
             'classe' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
         ];
+    }
+
+    /**
+     * Rimuove una foto specifica dalla galleria
+     */
+    public function removeGalleryPhoto($photoIndex)
+    {
+        if ($this->editingCat && isset($this->editingCat->galleria_foto[$photoIndex])) {
+            $galleria = $this->editingCat->galleria_foto;
+            
+            // Rimuovi la foto dall'array
+            unset($galleria[$photoIndex]);
+            
+            // Riordina l'array per evitare indici sparsi
+            $galleria = array_values($galleria);
+            
+            // Aggiorna il gatto
+            $this->editingCat->update(['galleria_foto' => $galleria]);
+            
+            session()->flash('success', __('cats.gallery_photo_removed'));
+        }
     }
 
 

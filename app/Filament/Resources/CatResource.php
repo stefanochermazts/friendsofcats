@@ -440,8 +440,8 @@ class CatResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
-            ->paginated([10, 25, 50, 100])
-            ->defaultPaginationPageOption(25);
+            ->paginated([12, 25, 50, 100])
+            ->defaultPaginationPageOption(12);
     }
 
     public static function getRelations(): array

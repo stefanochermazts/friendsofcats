@@ -20,7 +20,7 @@ class GeocodingService
         try {
             // Costruisce l'indirizzo completo
             $fullAddress = $this->buildFullAddress($address, $city, $province, $country);
-            
+
             // Effettua la richiesta all'API di Nominatim
             $response = Http::withHeaders([
                 'User-Agent' => self::USER_AGENT,
@@ -35,7 +35,7 @@ class GeocodingService
 
             if ($response->successful()) {
                 $data = $response->json();
-                
+
                 if (!empty($data) && isset($data[0]['lat']) && isset($data[0]['lon'])) {
                     return [
                         'latitude' => (float) $data[0]['lat'],
@@ -77,13 +77,13 @@ class GeocodingService
         $addressDetails = $result['address'] ?? [];
 
         // Controlla corrispondenza città
-        if (isset($addressDetails['city']) && 
+        if (isset($addressDetails['city']) &&
             strtolower(trim($addressDetails['city'])) === strtolower(trim($city))) {
             $confidence += 0.5;
         }
 
         // Controlla corrispondenza provincia
-        if (isset($addressDetails['state']) && 
+        if (isset($addressDetails['state']) &&
             strtolower(trim($addressDetails['state'])) === strtolower(trim($province))) {
             $confidence += 0.3;
         }
@@ -101,7 +101,7 @@ class GeocodingService
      */
     public function isValidCoordinates(float $latitude, float $longitude): bool
     {
-        return $latitude >= -90 && $latitude <= 90 && 
+        return $latitude >= -90 && $latitude <= 90 &&
                $longitude >= -180 && $longitude <= 180;
     }
 
@@ -112,15 +112,55 @@ class GeocodingService
     {
         $earthRadius = 6371; // Raggio della Terra in km
 
-        $latDelta = deg2rad($lat2 - $lat1);
-        $lonDelta = deg2rad($lon2 - $lon1);
+        $latFrom = deg2rad($lat1);
+        $lngFrom = deg2rad($lon1);
+        $latTo = deg2rad($lat2);
+        $lngTo = deg2rad($lon2);
+
+        $latDelta = $latTo - $latFrom;
+        $lngDelta = $lngTo - $lngFrom;
 
         $a = sin($latDelta / 2) * sin($latDelta / 2) +
-             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-             sin($lonDelta / 2) * sin($lonDelta / 2);
-
+             cos($latFrom) * cos($latTo) *
+             sin($lngDelta / 2) * sin($lngDelta / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return $earthRadius * $c;
+        return round($earthRadius * $c, 1);
     }
-} 
+
+    /**
+     * Metodo semplificato per ottenere solo le coordinate da un nome città
+     */
+    public function getCoordinates(string $cityName): ?array
+    {
+        try {
+            $response = Http::withHeaders([
+                'User-Agent' => self::USER_AGENT,
+                'Accept' => 'application/json',
+            ])->get(self::NOMINATIM_BASE_URL . '/search', [
+                'q' => $cityName,
+                'format' => 'json',
+                'limit' => 1,
+                'addressdetails' => 1,
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+
+                if (!empty($data) && isset($data[0]['lat']) && isset($data[0]['lon'])) {
+                    return [
+                        'latitude' => (float) $data[0]['lat'],
+                        'longitude' => (float) $data[0]['lon'],
+                    ];
+                }
+            }
+
+            Log::warning('Geocodifica fallita per città: ' . $cityName);
+            return null;
+
+        } catch (\Exception $e) {
+            Log::error('Errore durante la geocodifica della città: ' . $e->getMessage());
+            return null;
+        }
+    }
+}

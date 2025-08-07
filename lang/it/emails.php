@@ -29,4 +29,25 @@ return [
         'footer_text' => 'Questa è una notifica automatica inviata da :app_name.',
         'date_time' => 'Data e ora: :datetime',
     ],
+
+    // Email di notifica contatti
+    'contact_notification' => [
+        'subject' => 'Nuovo messaggio di contatto - :app_name',
+        'adoption_subject' => 'Richiesta adozione per :cat_name - :app_name',
+        'title' => '📧 Nuovo messaggio di contatto',
+        'adoption_title' => '🐱 Richiesta di adozione',
+        'subtitle' => 'Hai ricevuto un nuovo messaggio tramite il form di contatto.',
+        'adoption_subtitle' => 'Qualcuno è interessato ad adottare uno dei tuoi gatti!',
+        'message' => 'Ecco i dettagli del messaggio ricevuto:',
+        'adoption_message' => 'Ecco i dettagli della richiesta di adozione:',
+        'contact_details' => 'Dettagli del contatto:',
+        'name' => 'Nome',
+        'email' => 'Email',
+        'subject_label' => 'Oggetto',
+        'message_label' => 'Messaggio',
+        'date' => 'Data',
+        'action_required' => 'Azione richiesta:',
+        'action_message' => 'Ti preghiamo di rispondere a questo messaggio il prima possibile.',
+        'adoption_action_message' => 'Ti consigliamo di rispondere rapidamente per non perdere questa opportunità di adozione!',
+    ],
 ]; 

@@ -380,6 +380,7 @@ return [
     'features' => 'Funzionalità',
     'pricing' => 'Prezzi',
     'contact' => 'Contatti',
+    'adoptions' => 'Adozioni',
     'home' => 'Home',
     'login' => 'Accedi',
     'register' => 'Registrati',
@@ -493,6 +494,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Features
     'key_features' => 'Caratteristiche Principali',
@@ -522,6 +524,6 @@ return [
     // CTA
     'join_community' => 'Unisciti alla Community',
     'join_community_desc' => 'Fai parte della più grande community dedicata ai gatti',
-    'get_started' => 'Inizia Ora',
+    'get_started' => 'Inizia Ora'
 
 ]; 

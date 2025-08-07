@@ -40,6 +40,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Homepage FriendsOfCats
     'friends_of_cats' => 'Friends of Cats',

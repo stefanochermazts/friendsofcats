@@ -94,6 +94,9 @@ return [
     'drag_drop_gallery' => 'Galerie-Fotos hierher ziehen oder klicken zum Auswählen',
     'drop_files_here' => 'Dateien hier ablegen',
     'or_click_to_select' => 'oder klicken zum Auswählen',
+    'add_photos_to_gallery' => 'Neue Fotos werden zu den vorhandenen hinzugefügt',
+    'remove_photo' => 'Foto entfernen',
+    'gallery_photo_removed' => 'Foto aus der Galerie entfernt!',
     
     // Platzhalter und Hilfe
     'name_placeholder' => 'z.B. Mietze, Luna, Simba...',
@@ -115,6 +118,8 @@ return [
     // Mehrsprachiges Alter
     'years' => 'Jahr|Jahre',
     'months' => 'Monat|Monate',
+    'days' => 'Tag|Tage',
+    'hours' => 'Stunde|Stunden',
     'and' => 'und',
     
     // Zusätzliche Formularfelder
@@ -168,4 +173,53 @@ return [
     'previous_photo' => 'Vorheriges Foto',
     'next_photo' => 'Nächstes Foto',
     'photo_of' => 'Foto :current von :total',
+    'supported_formats_dynamic' => 'Unterstützte Formate: JPG, PNG, GIF. Max :max MB.',
+    'gallery_info_dynamic' => 'Sie können mehrere Fotos auswählen. Max :max_photos Fotos, jeweils :max MB.',
+    
+    // Detailseite der Katze
+    'profile_subtitle' => 'Detailliertes Katzenprofil',
+    'months_old' => 'Monate alt',
+    'characteristics' => 'Eigenschaften',
+    'story' => 'Seine/ihre Geschichte',
+    'health' => 'Gesundheit und Pflege',
+    'health_notes' => 'Gesundheitsnotizen',
+    'health_status' => 'Gesundheitszustand',
+    'vaccinated' => 'Geimpft',
+    'not_vaccinated' => 'Nicht geimpft',
+    'sterilized' => 'Sterilisiert/Kastriert',
+    'microchipped' => 'Mit Mikrochip',
+    'recent_posts' => 'Neueste Beiträge',
+    'association_info' => 'Vereinsinformationen',
+    'association_name' => 'Kontaktname',
+    'organization' => 'Organisation',
+    'location' => 'Standort',
+    'contact_association' => 'Verein kontaktieren',
+    'status' => 'Status',
+    'available_for_adoption' => 'Zur Adoption verfügbar',
+    'interested_adoption' => 'Interessiert an einer Adoption?',
+    'adoption_description' => 'Kontaktieren Sie den Verein für weitere Informationen zur Adoption.',
+    'contact_for_adoption' => 'Für Adoption kontaktieren',
+    'similar_cats' => 'Ähnliche Katzen',
+    'adoptable' => 'Adoptierbar',
+    'view_profile' => 'Profil ansehen',
+    'total_likes' => 'Gesamte Likes',
+    'total_posts' => 'Gesamte Beiträge',
+    'days_since_arrival' => 'Tage seit Ankunft',
+    'available_adoption' => 'Verfügbar',
+    'click_to_view_fullsize' => 'Klicken für Vollbildansicht',
+    
+    // Meta Tags und SEO
+    'meet_cat' => 'Lernen Sie :name kennen, eine :age Monate alte :breed, die ein liebevolles Zuhause auf FriendsOfCats sucht.',
+    'mixed_breed' => 'Mischling',
+    'photo_of_cat' => 'Foto von :name',
+    'seo_keywords' => 'Katze, :name, :breed, Adoption, Katzen, Tiere, FriendsOfCats',
+    
+    // Social Sharing
+    'share_cat_profile' => 'Teilen Sie dieses Katzenprofil',
+    'share_description' => 'Helfen Sie :name, eine Familie zu finden, indem Sie ihr Profil teilen!',
+    'tweet_text' => 'Schaut, wie schön :name ist! 🐱',
+    'whatsapp_text' => 'Hallo! Schau dir diese süße Katze auf FriendsOfCats an: :name. :url',
+    'copy_link' => 'Link kopieren',
+    'copied' => 'Kopiert!',
+    'copy_error' => 'Fehler beim Kopieren des Links',
 ];

@@ -224,6 +224,14 @@
                     <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
                         @csrf
                         
+                        <!-- Campi hidden per i parametri di adozione -->
+                        @if(request('gatto'))
+                            <input type="hidden" name="gatto" value="{{ request('gatto') }}">
+                        @endif
+                        @if(request('associazione'))
+                            <input type="hidden" name="associazione" value="{{ request('associazione') }}">
+                        @endif
+                        
                         <!-- Nome -->
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -264,7 +272,7 @@
                             <input type="text" 
                                    id="subject" 
                                    name="subject" 
-                                   value="{{ old('subject') }}"
+                                   value="{{ old('subject', request('gatto') ? 'Richiesta adozione per ' . request('gatto') : '') }}"
                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
                                    required>
                             @error('subject')
@@ -281,7 +289,15 @@
                                       name="message" 
                                       rows="5"
                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
-                                      required>{{ old('message') }}</textarea>
+                                      required>{{ old('message', request('gatto') && request('associazione') ? 'Ciao ' . request('associazione') . ',
+
+Sono interessato/a all\'adozione di ' . request('gatto') . ', il gatto che ho visto sul vostro profilo su FriendsOfCats.
+
+Potreste fornirmi maggiori informazioni sul processo di adozione e su come procedere?
+
+Grazie per il vostro lavoro con i gatti!
+
+Cordiali saluti' : '') }}</textarea>
                             @error('message')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror

@@ -61,6 +61,56 @@
         </div>
     </section>
 
+    {{-- Featured Cats Section --}}
+    <section class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    {{ __('adoptions.featured_cats') }}
+                </h2>
+                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+                    {{ __('adoptions.subtitle') }}
+                </p>
+            </div>
+            
+            <!-- Container per gatti caricati dinamicamente -->
+            <div id="featured-cats-container" class="mt-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Skeleton loading cards -->
+                    @for($i = 0; $i < 6; $i++)
+                        <div class="featured-cat-skeleton animate-pulse">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <!-- Skeleton foto -->
+                                <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-600"></div>
+                                
+                                <!-- Skeleton contenuto -->
+                                <div class="p-4 space-y-3">
+                                    <div class="h-5 bg-gray-200 dark:bg-gray-600 rounded w-3/4"></div>
+                                    <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/2"></div>
+                                    <div class="flex space-x-2">
+                                        <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded-full w-16"></div>
+                                        <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded-full w-16"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+            </div>
+            
+            <!-- CTA per vedere tutti i gatti -->
+            <div class="text-center mt-12">
+                <a href="{{ route('public.adoptions.index') }}" 
+                   class="inline-flex items-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-200">
+                    {{ __('adoptions.view_all_cats') }}
+                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
     {{-- Target Audience Section --}}
     <section id="audience" class="py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -314,7 +364,7 @@
                         {{ __('multilingual_support') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        5 lingue supportate
+                        6 lingue supportate
                     </p>
                 </div>
                 
@@ -353,3 +403,245 @@
         </div>
     </section>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Carica i gatti in evidenza tramite AJAX
+    fetch('{{ route("api.featured-cats") }}')
+        .then(response => response.json())
+        .then(cats => {
+            const container = document.getElementById('featured-cats-container');
+            
+            if (cats.length > 0) {
+                // Sostituisci skeleton con vere card gatti
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${cats.map(cat => `
+                            <div class="group">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                                    <!-- Foto -->
+                                    <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-600 overflow-hidden">
+                                        <img src="/storage/${cat.foto_principale}" 
+                                             alt="${cat.nome}"
+                                             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="hidden w-full h-full items-center justify-center text-6xl">🐱</div>
+                                    </div>
+
+                                    <!-- Informazioni -->
+                                    <div class="p-4 space-y-3">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                                            ${cat.nome}
+                                        </h3>
+
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                <span class="font-medium">${cat.eta_formattata_display || cat.eta + ' mesi'}</span>
+                                            </p>
+                                            ${cat.razza ? `<p class="text-sm text-gray-600 dark:text-gray-400">${cat.razza}</p>` : ''}
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
+                                                {{ __('adoptions.adoptable') }}
+                                            </span>
+                                            ${cat.sterilizzazione ? `
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+                                                    {{ __('adoptions.sterilized') }}
+                                                </span>
+                                            ` : ''}
+                                        </div>
+
+                                        <!-- CTA -->
+                                        <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 space-y-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+                                            <a href="/adoptions/${cat.id}" 
+                                               class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                                                {{ __('adoptions.discover_more') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                // Nessun gatto disponibile
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">🐱</div>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                            {{ __('adoptions.no_cats_found') }}
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            {{ __('adoptions.no_cats_message') }}
+                        </p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Errore nel caricamento dei gatti:', error);
+            
+            // Mostra messaggio di errore
+            const container = document.getElementById('featured-cats-container');
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-6xl mb-4">😿</div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                        Errore nel caricamento
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Non è stato possibile caricare i gatti in evidenza.
+                    </p>
+                </div>
+            `;
+        });
+});
+</script>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        {{ __('multilingual_support') }}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        6 lingue supportate
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        {{ __('secure_gdpr') }}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Conformità GDPR
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- CTA Section --}}
+    <section class="bg-orange-500 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white sm:text-4xl">
+                {{ __('join_community') }}
+            </h2>
+            <p class="mt-4 text-lg text-orange-100">
+                {{ __('join_community_desc') }}
+            </p>
+            <div class="mt-8">
+                <a href="{{ route('register') }}" 
+                   class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400 transition-colors duration-200">
+                    {{ __('get_started') }}
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Carica i gatti in evidenza tramite AJAX
+    fetch('{{ route("api.featured-cats") }}')
+        .then(response => response.json())
+        .then(cats => {
+            const container = document.getElementById('featured-cats-container');
+            
+            if (cats.length > 0) {
+                // Sostituisci skeleton con vere card gatti
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${cats.map(cat => `
+                            <div class="group">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                                    <!-- Foto -->
+                                    <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-600 overflow-hidden">
+                                        <img src="/storage/${cat.foto_principale}" 
+                                             alt="${cat.nome}"
+                                             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="hidden w-full h-full items-center justify-center text-6xl">🐱</div>
+                                    </div>
+
+                                    <!-- Informazioni -->
+                                    <div class="p-4 space-y-3">
+                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                                            ${cat.nome}
+                                        </h3>
+
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                                <span class="font-medium">${cat.eta_formattata_display || cat.eta + ' mesi'}</span>
+                                            </p>
+                                            ${cat.razza ? `<p class="text-sm text-gray-600 dark:text-gray-400">${cat.razza}</p>` : ''}
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
+                                                {{ __('adoptions.adoptable') }}
+                                            </span>
+                                            ${cat.sterilizzazione ? `
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+                                                    {{ __('adoptions.sterilized') }}
+                                                </span>
+                                            ` : ''}
+                                        </div>
+
+                                        <!-- CTA -->
+                                        <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 space-y-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+                                            <a href="/adoptions/${cat.id}" 
+                                               class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                                                {{ __('adoptions.discover_more') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                // Nessun gatto disponibile
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">🐱</div>
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                            {{ __('adoptions.no_cats_found') }}
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            {{ __('adoptions.no_cats_message') }}
+                        </p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Errore nel caricamento dei gatti:', error);
+            
+            // Mostra messaggio di errore
+            const container = document.getElementById('featured-cats-container');
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="text-6xl mb-4">😿</div>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                        Errore nel caricamento
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Non è stato possibile caricare i gatti in evidenza.
+                    </p>
+                </div>
+            `;
+        });
+});
+</script>

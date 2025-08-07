@@ -24,5 +24,19 @@ class AppServiceProvider extends ServiceProvider
     {
         // Registra la CatPolicy
         Gate::policy(Cat::class, CatPolicy::class);
+
+        // Macro globale per intercettare tutte le traduzioni che restituiscono array
+        \Illuminate\Translation\Translator::macro('get', function ($key, $replace = [], $locale = null, $fallback = true) {
+            $translation = $this->getFromJson($key, $replace, $locale);
+            if (is_array($translation)) {
+                \Log::error('[TRADUZIONE ARRAY]', [
+                    'key' => $key,
+                    'locale' => $locale ?? app()->getLocale(),
+                    'result' => $translation,
+                    'trace' => (new \Exception())->getTraceAsString(),
+                ]);
+            }
+            return $translation;
+        });
     }
 }

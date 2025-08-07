@@ -39,7 +39,7 @@ return [
     'available_adoption' => 'Available for Adoption',
     'arrival_date' => 'Arrival Date',
     'adoption_date' => 'Adoption Date',
-    'main_photo' => 'Main Photo',
+    'main_photo' => 'Main',
     'photo_gallery' => '📸 Photo Gallery',
     
     // Options
@@ -94,6 +94,19 @@ return [
     'drag_drop_gallery' => 'Drag gallery photos here or click to select',
     'drop_files_here' => 'Drop files here',
     'or_click_to_select' => 'or click to select',
+    'add_photos_to_gallery' => 'New photos will be added to existing ones',
+    'remove_photo' => 'Remove photo',
+    'gallery_photo_removed' => 'Photo removed from gallery!',
+    
+    // Cat detail
+    'gallery' => 'Gallery',
+    'photos' => 'photos',
+    'gender' => 'Gender',
+    'male' => 'Male',
+    'female' => 'Female', 
+    'color' => 'Color',
+    'behavior' => 'Behavior',
+    'health_status' => 'Health Status',
     
     // Placeholders and Help
     'name_placeholder' => 'e.g. Kitty, Luna, Simba...',
@@ -115,6 +128,8 @@ return [
     // Multilingual Age
     'years' => 'year|years',
     'months' => 'month|months',
+    'days' => 'day|days',
+    'hours' => 'hour|hours',
     'and' => 'and',
     
     // Additional Form Fields
@@ -168,4 +183,53 @@ return [
     'previous_photo' => 'Previous photo',
     'next_photo' => 'Next photo', 
     'photo_of' => 'Photo :current of :total',
+    'supported_formats_dynamic' => 'Supported formats: JPG, PNG, GIF. Max :max MB.',
+    'gallery_info_dynamic' => 'You can select multiple photos. Max :max_photos photos, :max MB each.',
+    
+    // Cat detail page
+    'profile_subtitle' => 'Detailed cat profile',
+    'months_old' => 'months old',
+    'characteristics' => 'Characteristics',
+    'story' => 'His/her story',
+    'health' => 'Health and care',
+    'health_notes' => 'Health notes',
+    'health_status' => 'Health status',
+    'vaccinated' => 'Vaccinated',
+    'not_vaccinated' => 'Not vaccinated',
+    'sterilized' => 'Neutered/Spayed',
+    'microchipped' => 'Microchipped',
+    'recent_posts' => 'Recent posts',
+    'association_info' => 'Association info',
+    'association_name' => 'Contact name',
+    'organization' => 'Organization',
+    'location' => 'Location',
+    'contact_association' => 'Contact association',
+    'status' => 'Status',
+    'available_for_adoption' => 'Available for adoption',
+    'interested_adoption' => 'Interested in adoption?',
+    'adoption_description' => 'Contact the association for more information about adoption.',
+    'contact_for_adoption' => 'Contact for adoption',
+    'similar_cats' => 'Similar cats',
+    'adoptable' => 'Adoptable',
+    'view_profile' => 'View profile',
+    'total_likes' => 'Total likes',
+    'total_posts' => 'Total posts',
+    'days_since_arrival' => 'Days since arrival',
+    'available_adoption' => 'Available',
+    'click_to_view_fullsize' => 'Click to view fullsize',
+    
+    // Meta tags and SEO
+    'meet_cat' => 'Meet :name, a :age month old :breed looking for a loving home on FriendsOfCats.',
+    'mixed_breed' => 'mixed breed',
+    'photo_of_cat' => 'Photo of :name',
+    'seo_keywords' => 'cat, :name, :breed, adoption, cats, animals, FriendsOfCats',
+    
+    // Social sharing
+    'share_cat_profile' => 'Share this cat\'s profile',
+    'share_description' => 'Help :name find a family by sharing their profile!',
+    'tweet_text' => 'Look how beautiful :name is! 🐱',
+    'whatsapp_text' => 'Hi! Check out this adorable cat on FriendsOfCats: :name. :url',
+    'copy_link' => 'Copy link',
+    'copied' => 'Copied!',
+    'copy_error' => 'Error copying link',
 ];

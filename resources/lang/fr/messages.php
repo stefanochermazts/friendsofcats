@@ -435,6 +435,7 @@ return [
     'francese' => 'Français',
     'tedesco' => 'Deutsch',
     'spagnolo' => 'Español',
+    'sloveno' => 'Slovenščina',
     
     // Features
     'key_features' => 'Caractéristiques Principales',
@@ -467,4 +468,4 @@ return [
     'join_community_desc' => 'Faites partie de la plus grande communauté dédiée aux chats',
     'get_started' => 'Commencer',
 
-}; 
+]; 
