@@ -468,4 +468,11 @@ return [
     'join_community_desc' => 'Werden Sie Teil der größten Gemeinschaft für Katzen',
     'get_started' => 'Loslegen',
 
+    // SEO
+    'seo' => [
+        'default_description' => 'Katzen- und Kätzchenadoption. Tierheime und Vereine, Tierärzte und Groomer. Finde Katzen in deiner Nähe und adoptiere verantwortungsvoll.',
+        'global_keywords' => 'katzen adoption, katzen zur adoption, kätzchen zur adoption, katze adoptieren, katzenschutz, katzen in der nähe, tierheim katze, tierarzt praxis, katzen grooming, verantwortungsvolle adoption',
+        'adoptions_keywords' => 'katzen zur adoption, katze adoptieren, kätzchen zur adoption, tierheim katze, sterilisierte katze, geimpfte katzen',
+        'professionals_keywords' => 'tierarzt praxis, katzen tierarzt, katzen grooming, katzen pflege, katzen dienstleistungen',
+    ],
 ]; 

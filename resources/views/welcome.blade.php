@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ __('friends_of_cats') }} - {{ __('platform_for_cats') }}</title>
+        @include('layouts.partials.seo')
         <meta name="description" content="{{ __('platform_description') }}">
 
         <!-- Fonts -->

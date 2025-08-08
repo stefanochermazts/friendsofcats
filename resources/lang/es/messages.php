@@ -96,4 +96,11 @@ return [
     // Common
     'all_rights_reserved' => 'Todos los derechos reservados.',
 
+    // SEO
+    'seo' => [
+        'default_description' => 'Adopción de gatos y gatitos. Refugios y asociaciones, veterinarios y peluqueros. Encuentra gatos cerca de ti y adopta de forma responsable.',
+        'global_keywords' => 'adopción de gatos, gatos en adopción, gatitos en adopción, adoptar un gato, refugio de gatos, gatos cerca de mí, clínica veterinaria, peluquería de gatos, adopción responsable',
+        'adoptions_keywords' => 'gatos en adopción, adoptar gato, gatitos en adopción, refugio de gatos, gato esterilizado, gatos vacunados',
+        'professionals_keywords' => 'clínica veterinaria, veterinario de gatos, peluquería de gatos, cuidado de gatos, servicios para gatos',
+    ],
 ];

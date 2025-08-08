@@ -1,4 +1,7 @@
 <x-main-layout>
+    <x-slot name="meta">
+        <meta name="keywords" content="{{ __('seo.professionals_keywords') }}">
+    </x-slot>
     <x-slot name="header">
         <div class="text-center py-8">
             <div class="max-w-4xl mx-auto">

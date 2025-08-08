@@ -25,182 +25,204 @@ class PublicAdoptionsController extends Controller
         try {
             $query = Cat::with(['user'])
                 ->where('disponibile_adozione', true)
-                ->whereNotNull('foto_principale')
-                ->orderBy('created_at', 'desc');
+                ->whereNotNull('cats.foto_principale')
+                ->orderBy('cats.created_at', 'desc');
 
-        // Filtri opzionali
-        if ($request->filled('razza')) {
-            $query->where('razza', $request->razza);
-        }
+            // Filtri opzionali
+            if ($request->filled('razza')) {
+                $query->where('razza', $request->razza);
+            }
 
-        if ($request->filled('eta_min')) {
-            $query->where('eta', '>=', $request->eta_min);
-        }
+            if ($request->filled('eta_min')) {
+                $query->where('eta', '>=', $request->eta_min);
+            }
 
-        if ($request->filled('eta_max')) {
-            $query->where('eta', '<=', $request->eta_max);
-        }
+            if ($request->filled('eta_max')) {
+                $query->where('eta', '<=', $request->eta_max);
+            }
 
-        if ($request->filled('sterilizzazione')) {
-            $query->where('sterilizzazione', $request->sterilizzazione === 'true');
-        }
-
-        if ($request->filled('livello_socialita')) {
-            $query->where('livello_socialita', $request->livello_socialita);
-        }
-
-        if ($request->filled('cerca')) {
-            $searchTerm = strtolower($request->cerca);
-            $query->where(function($q) use ($searchTerm) {
-                $q->whereRaw('LOWER(nome) LIKE ?', ['%' . $searchTerm . '%'])
-                  ->orWhereRaw('LOWER(razza) LIKE ?', ['%' . $searchTerm . '%'])
-                  ->orWhereRaw('LOWER(comportamento) LIKE ?', ['%' . $searchTerm . '%']);
-            });
-        }
-
-        // Filtro geografico per vicinanza
-        $searchLocation = null;
-        if ($request->filled('citta') && $request->filled('raggio')) {
-            $cityName = $request->citta;
-            $radius = (int) $request->raggio;
-            
-            // Geocodifica la città di ricerca
-            $coordinates = $this->geocodingService->getCoordinates($cityName);
-            
-            if ($coordinates) {
-                $searchLocation = [
-                    'city' => $cityName,
-                    'lat' => $coordinates['latitude'],
-                    'lng' => $coordinates['longitude'],
-                    'radius' => $radius
-                ];
-                
-                // Query con calcolo distanza usando formula Haversine
-                $query->whereHas('user', function($q) use ($coordinates, $radius) {
-                    $q->whereNotNull('latitude')
-                      ->whereNotNull('longitude')
-                      ->whereRaw(
-                          "(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) <= ?",
-                          [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude'], $radius]
-                      );
+            // Nuovo: filtro per range età (mesi)
+            if ($request->filled('eta_range')) {
+                $etaRange = $request->eta_range;
+                $query->where(function ($q) use ($etaRange) {
+                    match ($etaRange) {
+                        'kitten' => $q->where('eta', '<=', 6),
+                        'young'  => $q->whereBetween('eta', [7, 24]),
+                        'adult'  => $q->whereBetween('eta', [25, 84]),
+                        'senior' => $q->where('eta', '>', 84),
+                        default  => null,
+                    };
                 });
+            }
+
+            if ($request->filled('sterilizzazione')) {
+                $query->where('sterilizzazione', $request->sterilizzazione === 'true');
+            }
+
+            if ($request->filled('livello_socialita')) {
+                $query->where('livello_socialita', $request->livello_socialita);
+            }
+
+            if ($request->filled('cerca')) {
+                $searchTerm = strtolower($request->cerca);
+                $query->where(function($q) use ($searchTerm) {
+                    $q->whereRaw('LOWER(nome) LIKE ?', ['%' . $searchTerm . '%'])
+                      ->orWhereRaw('LOWER(razza) LIKE ?', ['%' . $searchTerm . '%'])
+                      ->orWhereRaw('LOWER(comportamento) LIKE ?', ['%' . $searchTerm . '%']);
+                });
+            }
+
+            // Filtro geografico per vicinanza
+            $searchLocation = null;
+            if ($request->filled('citta') && $request->filled('raggio')) {
+                $cityName = $request->citta;
+                $radius = (int) $request->raggio;
                 
-                // Ordina per distanza quando si usa ricerca geografica
-                $query = Cat::with(['user'])
-                    ->where('disponibile_adozione', true)
-                    ->whereNotNull('foto_principale')
-                    ->whereHas('user', function($q) use ($coordinates, $radius) {
-                        $q->whereNotNull('latitude')
-                          ->whereNotNull('longitude')
-                          ->whereRaw(
-                              "(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) <= ?",
-                              [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude'], $radius]
-                          );
-                    })
-                    ->select('cats.*')
-                    ->selectRaw(
-                        "(6371 * acos(cos(radians(?)) * cos(radians(users.latitude)) * cos(radians(users.longitude) - radians(?)) + sin(radians(?)) * sin(radians(users.latitude)))) AS distance",
-                        [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude']]
-                    )
-                    ->join('users', 'cats.user_id', '=', 'users.id')
-                    ->orderBy('distance', 'asc');
+                // Geocodifica la città di ricerca
+                $coordinates = $this->geocodingService->getCoordinates($cityName);
+                
+                if ($coordinates) {
+                    $searchLocation = [
+                        'city' => $cityName,
+                        'lat' => $coordinates['latitude'],
+                        'lng' => $coordinates['longitude'],
+                        'radius' => $radius
+                    ];
                     
-                // Applica gli altri filtri al nuovo query
-                if ($request->filled('razza')) {
-                    $query->where('cats.razza', $request->razza);
-                }
-                if ($request->filled('sterilizzazione')) {
-                    $query->where('cats.sterilizzazione', $request->sterilizzazione === 'true');
-                }
-                if ($request->filled('livello_socialita')) {
-                    $query->where('cats.livello_socialita', $request->livello_socialita);
-                }
-                if ($request->filled('cerca')) {
-                    $searchTerm = strtolower($request->cerca);
-                    $query->where(function($q) use ($searchTerm) {
-                        $q->whereRaw('LOWER(cats.nome) LIKE ?', ['%' . $searchTerm . '%'])
-                          ->orWhereRaw('LOWER(cats.razza) LIKE ?', ['%' . $searchTerm . '%'])
-                          ->orWhereRaw('LOWER(cats.comportamento) LIKE ?', ['%' . $searchTerm . '%']);
-                    });
+                    // Ordina per distanza quando si usa ricerca geografica (query basata su join)
+                    $query = Cat::with(['user'])
+                        ->where('cats.disponibile_adozione', true)
+                        ->whereNotNull('cats.foto_principale')
+                        ->whereHas('user', function($q) use ($coordinates, $radius) {
+                            $q->whereNotNull('latitude')
+                              ->whereNotNull('longitude')
+                              ->whereRaw(
+                                  "(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) <= ?",
+                                  [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude'], $radius]
+                              );
+                        })
+                        ->select('cats.*')
+                        ->selectRaw(
+                            "(6371 * acos(cos(radians(?)) * cos(radians(users.latitude)) * cos(radians(users.longitude) - radians(?)) + sin(radians(?)) * sin(radians(users.latitude)))) AS distance",
+                            [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude']]
+                        )
+                        ->join('users', 'cats.user_id', '=', 'users.id')
+                        ->orderBy('distance', 'asc');
+                        
+                    // Applica gli altri filtri al nuovo query
+                    if ($request->filled('razza')) {
+                        $query->where('cats.razza', $request->razza);
+                    }
+                    if ($request->filled('eta_min')) {
+                        $query->where('cats.eta', '>=', $request->eta_min);
+                    }
+                    if ($request->filled('eta_max')) {
+                        $query->where('cats.eta', '<=', $request->eta_max);
+                    }
+                    if ($request->filled('eta_range')) {
+                        $etaRange = $request->eta_range;
+                        $query->where(function ($q) use ($etaRange) {
+                            match ($etaRange) {
+                                'kitten' => $q->where('cats.eta', '<=', 6),
+                                'young'  => $q->whereBetween('cats.eta', [7, 24]),
+                                'adult'  => $q->whereBetween('cats.eta', [25, 84]),
+                                'senior' => $q->where('cats.eta', '>', 84),
+                                default  => null,
+                            };
+                        });
+                    }
+                    if ($request->filled('sterilizzazione')) {
+                        $query->where('cats.sterilizzazione', $request->sterilizzazione === 'true');
+                    }
+                    if ($request->filled('livello_socialita')) {
+                        $query->where('cats.livello_socialita', $request->livello_socialita);
+                    }
+                    if ($request->filled('cerca')) {
+                        $searchTerm = strtolower($request->cerca);
+                        $query->where(function($q) use ($searchTerm) {
+                            $q->whereRaw('LOWER(cats.nome) LIKE ?', ['%' . $searchTerm . '%'])
+                              ->orWhereRaw('LOWER(cats.razza) LIKE ?', ['%' . $searchTerm . '%'])
+                              ->orWhereRaw('LOWER(cats.comportamento) LIKE ?', ['%' . $searchTerm . '%']);
+                        });
+                    }
                 }
             }
-        }
 
-        // Per la vista principale, carica solo i primi 12
-        if ($request->ajax()) {
-            $cats = $query->paginate(12);
-        } else {
-            $cats = $query->paginate(12);
-        }
-        
-        // Aggiungi informazioni di distanza ai risultati se disponibili
-        if ($searchLocation && $cats->count() > 0) {
-            $cats->getCollection()->transform(function ($cat) use ($searchLocation) {
-                if ($cat->user && $cat->user->latitude && $cat->user->longitude) {
-                    $cat->distance = $this->calculateDistance(
-                        $searchLocation['lat'], $searchLocation['lng'],
-                        $cat->user->latitude, $cat->user->longitude
-                    );
-                }
-                return $cat;
-            });
-        }
+            // Per la vista principale, carica solo i primi 12
+            if ($request->ajax()) {
+                $cats = $query->paginate(12);
+            } else {
+                $cats = $query->paginate(12);
+            }
+            
+            // Aggiungi informazioni di distanza ai risultati se disponibili
+            if ($searchLocation && $cats->count() > 0) {
+                $cats->getCollection()->transform(function ($cat) use ($searchLocation) {
+                    if ($cat->user && $cat->user->latitude && $cat->user->longitude) {
+                        $cat->distance = $this->calculateDistance(
+                            $searchLocation['lat'], $searchLocation['lng'],
+                            $cat->user->latitude, $cat->user->longitude
+                        );
+                    }
+                    return $cat;
+                });
+            }
 
-        // Statistiche per i filtri
-        $stats = [
-            'total' => Cat::where('disponibile_adozione', true)->count(),
-            'breeds' => Cat::where('disponibile_adozione', true)
-                          ->whereNotNull('razza')
-                          ->distinct()
-                          ->pluck('razza')
-                          ->sort()
-                          ->values(),
-            'age_ranges' => [
-                'kitten' => Cat::where('disponibile_adozione', true)->where('eta', '<=', 6)->count(),
-                'young' => Cat::where('disponibile_adozione', true)->whereBetween('eta', [7, 24])->count(),
-                'adult' => Cat::where('disponibile_adozione', true)->whereBetween('eta', [25, 84])->count(),
-                'senior' => Cat::where('disponibile_adozione', true)->where('eta', '>', 84)->count(),
-            ]
-        ];
-
-        // Per richieste AJAX, restituisci solo i dati JSON
-        if ($request->ajax()) {
-            $catsData = $cats->getCollection()->map(function ($cat) {
-                return [
-                    'id' => $cat->id,
-                    'nome' => $cat->nome,
-                    'razza' => $cat->razza,
-                    'eta' => $cat->eta,
-                    'eta_formattata' => $cat->eta_formattata,
-                    'sesso' => $cat->sesso,
-                    'colore' => $cat->colore,
-                    'sterilizzazione' => $cat->sterilizzazione,
-                    'microchip' => $cat->microchip,
-                    'numero_microchip' => $cat->numero_microchip,
-                    'livello_socialita' => $cat->livello_socialita,
-                    'descrizione' => $cat->descrizione,
-                    'foto_principale' => $cat->foto_principale,
-                    'galleria_foto' => $cat->galleria_foto,
-                    'likes_count' => $cat->likes_count,
-                    'distance' => $cat->distance ?? null,
-                    'user' => $cat->user ? [
-                        'id' => $cat->user->id,
-                        'name' => $cat->user->name,
-                        'ragione_sociale' => $cat->user->ragione_sociale,
-                    ] : null
-                ];
-            });
-
-            return response()->json([
-                'cats' => $catsData,
-                'pagination' => [
-                    'current_page' => $cats->currentPage(),
-                    'has_more_pages' => $cats->hasMorePages(),
-                    'last_page' => $cats->lastPage(),
-                    'total' => $cats->total()
+            // Statistiche per i filtri
+            $stats = [
+                'total' => Cat::where('disponibile_adozione', true)->count(),
+                'breeds' => Cat::where('disponibile_adozione', true)
+                              ->whereNotNull('razza')
+                              ->distinct()
+                              ->pluck('razza')
+                              ->sort()
+                              ->values(),
+                'age_ranges' => [
+                    'kitten' => Cat::where('disponibile_adozione', true)->where('eta', '<=', 6)->count(),
+                    'young' => Cat::where('disponibile_adozione', true)->whereBetween('eta', [7, 24])->count(),
+                    'adult' => Cat::where('disponibile_adozione', true)->whereBetween('eta', [25, 84])->count(),
+                    'senior' => Cat::where('disponibile_adozione', true)->where('eta', '>', 84)->count(),
                 ]
-            ]);
-        }
+            ];
+
+            // Per richieste AJAX, restituisci solo i dati JSON
+            if ($request->ajax()) {
+                $catsData = $cats->getCollection()->map(function ($cat) {
+                    return [
+                        'id' => $cat->id,
+                        'nome' => $cat->nome,
+                        'razza' => $cat->razza,
+                        'eta' => $cat->eta,
+                        'eta_formattata' => $cat->eta_formattata,
+                        'sesso' => $cat->sesso,
+                        'colore' => $cat->colore,
+                        'sterilizzazione' => $cat->sterilizzazione,
+                        'microchip' => $cat->microchip,
+                        'numero_microchip' => $cat->numero_microchip,
+                        'livello_socialita' => $cat->livello_socialita,
+                        'descrizione' => $cat->descrizione,
+                        'foto_principale' => $cat->foto_principale,
+                        'galleria_foto' => $cat->galleria_foto,
+                        'likes_count' => $cat->likes_count,
+                        'distance' => $cat->distance ?? null,
+                        'user' => $cat->user ? [
+                            'id' => $cat->user->id,
+                            'name' => $cat->user->name,
+                            'ragione_sociale' => $cat->user->ragione_sociale,
+                        ] : null
+                    ];
+                });
+
+                return response()->json([
+                    'cats' => $catsData,
+                    'pagination' => [
+                        'current_page' => $cats->currentPage(),
+                        'has_more_pages' => $cats->hasMorePages(),
+                        'last_page' => $cats->lastPage(),
+                        'total' => $cats->total()
+                    ]
+                ]);
+            }
 
             return view('public.adoptions.index', compact('cats', 'stats', 'searchLocation'));
         } catch (\Exception $e) {

@@ -13,6 +13,11 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
+        @include('layouts.partials.seo')
+        {{ $meta ?? '' }}
+        @stack('head')
+        @include('layouts.partials.analytics')
+
         <!-- Theme Script (prevents flash) -->
         <script>
             (function() {
@@ -28,9 +33,6 @@
                 }
             })();
         </script>
-
-        <!-- Meta tags for social sharing -->
-        {{ $meta ?? '' }}
 
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])

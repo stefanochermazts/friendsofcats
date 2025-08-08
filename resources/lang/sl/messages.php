@@ -240,4 +240,12 @@ return [
     'memorial_section_desc' => 'Prostor za spomin na posvojene ali preminule mačke',
     'community_feed' => 'Skupnostni feed',
     'community_feed_desc' => 'Deljenje zgodb, posvojitev in novosti iz skupnosti',
+
+    // SEO
+    'seo' => [
+        'default_description' => 'Posvojitev mačk in muckov. Zavetišča in društva, veterinarji in negovalci. Najdi mačke v bližini in posvoji odgovorno.',
+        'global_keywords' => 'posvojitev mačk, mačke za posvojitev, mucki za posvojitev, posvoji mačko, zavetišče za mačke, mačke v bližini, veterinarska klinika, negovanje mačk, odgovorna posvojitev',
+        'adoptions_keywords' => 'mačke za posvojitev, posvoji mačko, mucki za posvojitev, zavetišče za mačke, sterilizirana mačka, cepljene mačke',
+        'professionals_keywords' => 'veterinarska klinika, veterinar za mačke, negovanje mačk, skrb za mačke, storitve za mačke',
+    ],
 ];

@@ -470,4 +470,11 @@ return [
     'join_community_desc' => 'Be part of the largest community dedicated to cats',
     'get_started' => 'Get Started',
 
+    // SEO
+    'seo' => [
+        'default_description' => 'Cat adoption platform: adopt a cat or kitten, find rescue cats near you, connect with shelters, veterinarians and groomers.',
+        'global_keywords' => 'cat adoption, cats for adoption, kittens for adoption, adopt a cat, rescue cats, cats near me, cat shelter, veterinary clinic, cat grooming, responsible adoption',
+        'adoptions_keywords' => 'cats for adoption, adopt a cat, kittens for adoption, rescue cats, sterilized cat, vaccinated cats',
+        'professionals_keywords' => 'veterinary clinic, cat veterinarian, cat grooming, cat care, cat services',
+    ],
 ]; 

@@ -19,6 +19,9 @@
         @if($post->image)
             <meta name="twitter:image" content="{{ Storage::url($post->image) }}" />
         @endif
+        {{-- SEO standard --}}
+        <meta name="description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
+        <meta name="keywords" content="{{ __('seo.global_keywords') }}">
     </x-slot>
 
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">

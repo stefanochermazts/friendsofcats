@@ -1,4 +1,7 @@
 <x-main-layout>
+    <x-slot name="meta">
+        <meta name="keywords" content="{{ __('seo.adoptions_keywords') }}">
+    </x-slot>
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">

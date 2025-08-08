@@ -468,4 +468,11 @@ return [
     'join_community_desc' => 'Faites partie de la plus grande communauté dédiée aux chats',
     'get_started' => 'Commencer',
 
+    // SEO
+    'seo' => [
+        'default_description' => 'Adoption de chats et chatons. Refuges et associations, vétérinaires et toiletteurs. Trouvez un chat près de chez vous et adoptez de manière responsable.',
+        'global_keywords' => 'adoption chat, chats à adopter, chatons à adopter, adopter un chat, refuge chat, chats près de moi, clinique vétérinaire, toilettage chat, adoption responsable',
+        'adoptions_keywords' => 'chats à adopter, adopter un chat, chatons à adopter, refuge chat, chat stérilisé, chats vaccinés',
+        'professionals_keywords' => 'clinique vétérinaire, vétérinaire chat, toilettage chat, soins chat, services chat',
+    ],
 ]; 

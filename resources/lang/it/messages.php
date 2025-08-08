@@ -524,6 +524,13 @@ return [
     // CTA
     'join_community' => 'Unisciti alla Community',
     'join_community_desc' => 'Fai parte della più grande community dedicata ai gatti',
-    'get_started' => 'Inizia Ora'
+    'get_started' => 'Inizia Ora',
 
+    // SEO
+    'seo' => [
+        'default_description' => 'Adozione gatti, cuccioli e adulti. Rifugi e associazioni, veterinari e toelettatori. Trova gatti vicino a te e adotta in modo responsabile.',
+        'global_keywords' => 'adozione gatti, gatti in adozione, cuccioli gatti, rifugio gatti, adotta gatto, gatti vicino, gatti randagi, veterinario gatti, toelettatura gatti, adozione responsabile',
+        'adoptions_keywords' => 'gatti in adozione, adotta gatto, cuccioli in adozione, rifugio gatti, gatto sterilizzato, gatti vaccinati',
+        'professionals_keywords' => 'veterinario gatti, clinica veterinaria, toelettatura gatti, cura gatti, servizi gatti',
+    ],
 ]; 
