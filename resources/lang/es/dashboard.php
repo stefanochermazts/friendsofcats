@@ -24,7 +24,7 @@ return [
     'associazione_desc' => 'Refugio, ONG, asociación animalista',
     'associazione_activities' => 'Gestiona gatos en adopción, voluntarios y actividades de concienciación',
     'volontario_desc' => 'Foster, cat sitter, voluntario',
-    'volontario_activities' => 'Ayudas en el cuidado y socialización de los gatos',
+    'volontario_activities' => 'Gestiona tus gatos y ayudas a asociaciones en el cuidado y socialización',
     'proprietario_desc' => 'Propietario de gatos',
     'proprietario_activities' => 'Gestiona la salud y los recuerdos de tus gatos',
     'veterinario_desc' => 'Médico veterinario',
@@ -169,4 +169,24 @@ return [
     'available_status' => '🏠 Disponible',
     'adopted_status' => '❤️ Adoptado',
     'manage_cats_info' => 'Gestiona tus gatos y su información',
+    'edit_professional_details' => 'Editar Detalles',
+    
+    // Traducciones Select2
+    'search_association_placeholder' => 'Buscar asociación por nombre o ciudad...',
+    'select2_min_chars' => 'Ingrese al menos 2 caracteres para buscar',
+    'select2_searching' => 'Buscando...',
+    'select2_no_results' => 'No se encontraron asociaciones',
+    'select2_loading_more' => 'Cargando resultados...',
+    
+    // Editar asociación voluntario
+    'edit_volunteer_association_subtitle' => 'Edita tu asociación de referencia',
+    'current_status' => 'Estado Actual',
+    'currently_linked_to' => 'Actualmente vinculado a',
+    'currently_independent' => 'Actualmente eres un voluntario independiente',
+    'select_new_association' => 'Seleccionar Nueva Asociación',
+    'change_to_different_association' => 'Cambiar a una asociación diferente',
+    'become_independent_volunteer' => 'Convertirse en voluntario independiente',
+    'link_to_association_later' => 'Vincular a una asociación más tarde',
+    'update_association' => 'Actualizar Asociación',
+    'errors_found' => 'Ocurrieron algunos errores:',
 ]; 

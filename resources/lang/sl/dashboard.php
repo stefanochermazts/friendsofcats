@@ -117,4 +117,24 @@ return [
     'evaluating_status' => 'V ocenjevanju',
     'given_adoption_desc' => 'Mačke, ki ste jih oddali v posvojitev',
     'given_adoption_title' => 'Oddane v posvojitev',
+    'edit_professional_details' => 'Uredi Podrobnosti',
+    
+    // Select2 prevodi
+    'search_association_placeholder' => 'Poiščite društvo po imenu ali mestu...',
+    'select2_min_chars' => 'Vnesite vsaj 2 znaka za iskanje',
+    'select2_searching' => 'Iskanje...',
+    'select2_no_results' => 'Najdeno ni bilo nobeno društvo',
+    'select2_loading_more' => 'Nalaganje rezultatov...',
+    
+    // Urejanje društva prostovoljca
+    'edit_volunteer_association_subtitle' => 'Uredite svoje referenčno društvo',
+    'current_status' => 'Trenutno stanje',
+    'currently_linked_to' => 'Trenutno povezano z',
+    'currently_independent' => 'Trenutno ste neodvisni prostovoljec',
+    'select_new_association' => 'Izberite novo društvo',
+    'change_to_different_association' => 'Spremenite na drugo društvo',
+    'become_independent_volunteer' => 'Postanite neodvisni prostovoljec',
+    'link_to_association_later' => 'Povežite se z društvom pozneje',
+    'update_association' => 'Posodobite društvo',
+    'errors_found' => 'Prišlo je do nekaterih napak:',
 ];

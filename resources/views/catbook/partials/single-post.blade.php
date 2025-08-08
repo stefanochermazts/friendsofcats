@@ -1,7 +1,7 @@
 {{-- Single Post Component --}}
-<article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6" data-post-id="{{ $post->id }}">
+<article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-4 sm:mb-6" data-post-id="{{ $post->id }}">
     {{-- Post Header --}}
-    <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+    <div class="p-3 sm:p-4 border-b border-gray-100 dark:border-gray-700">
         <div class="flex items-start space-x-3">
             {{-- User Avatar --}}
             <div class="flex-shrink-0">
@@ -27,9 +27,16 @@
                     @endif
                     
                     {{-- Cat Name --}}
-                    @if($post->cat)
+                    @if($post->cat && $post->cat->nome)
                         <span class="text-sm text-gray-500 dark:text-gray-400">
-                            con {{ $post->cat->nome }}
+                            {{ __('catbook.with') }} <a href="{{ route('cats.show', $post->cat->id) }}" 
+                                   class="inline-flex items-center text-orange-500 hover:text-orange-600 hover:underline font-medium transition-all duration-200 hover:bg-orange-50 dark:hover:bg-orange-900/20 px-1 py-0.5 rounded"
+                                   title="{{ __('cats.view_profile') }} {{ $post->cat->nome }}">
+                                <svg class="w-3 h-3 mr-1 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                {{ $post->cat->nome }}
+                            </a>
                         </span>
                     @endif
                 </div>
@@ -52,15 +59,15 @@
                     <div class="py-1">
                         <button onclick="sharePost({{ $post->id }}, 'link')" 
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            Copia link
+                            {{ __('cats.copy_link') }}
                         </button>
                         <button onclick="sharePost({{ $post->id }}, 'whatsapp')" 
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            Condividi su WhatsApp
+                            {{ __('catbook.share_on_whatsapp') }}
                         </button>
                         <button onclick="sharePost({{ $post->id }}, 'facebook')" 
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
-                            Condividi su Facebook
+                            {{ __('catbook.share_on_facebook') }}
                         </button>
                     </div>
                 </div>
@@ -69,7 +76,7 @@
     </div>
     
     {{-- Post Content --}}
-    <div class="p-4">
+    <div class="p-3 sm:p-4">
         {{-- Text Content --}}
         <div class="text-gray-900 dark:text-white mb-3">
             {!! nl2br(e($post->content)) !!}
@@ -101,10 +108,10 @@
     <div class="px-4 py-3 border-t border-gray-100 dark:border-gray-700">
         {{-- Stats --}}
         <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-3">
-            <span>{{ $post->likes_count }} mi piace</span>
+            <span>{{ $post->likes_count }} {{ __('catbook.likes') }}</span>
             <div class="flex space-x-4">
-                <span>{{ $post->comments_count }} commenti</span>
-                <span>{{ $post->shares_count }} condivisioni</span>
+                <span>{{ $post->comments_count }} {{ __('catbook.comments') }}</span>
+                <span>{{ $post->shares_count }} {{ __('catbook.shares') }}</span>
             </div>
         </div>
         
@@ -117,7 +124,7 @@
                     <svg class="w-5 h-5" fill="{{ $post->isLikedBy(auth()->id()) ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
-                    <span>Mi piace</span>
+                    <span>{{ __('catbook.like') }}</span>
                 </button>
                 
                 {{-- Comment Button --}}
@@ -126,7 +133,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
-                    <span>Commenta</span>
+                    <span>{{ __('catbook.comment') }}</span>
                 </button>
                 
                 {{-- Share Button --}}
@@ -135,7 +142,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
                     </svg>
-                    <span>Condividi</span>
+                    <span>{{ __('catbook.share') }}</span>
                 </button>
             </div>
         </div>
@@ -144,7 +151,7 @@
     {{-- Comments Section --}}
     <div id="comments-section-{{ $post->id }}" class="hidden border-t border-gray-100 dark:border-gray-700">
         {{-- Add Comment Form --}}
-        <div class="p-4 border-b border-gray-100 dark:border-gray-700">
+        <div class="p-3 sm:p-4 border-b border-gray-100 dark:border-gray-700">
             <form onsubmit="addComment(event, {{ $post->id }})" class="flex space-x-3">
                 <div class="flex-shrink-0">
                     <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
@@ -155,13 +162,13 @@
                 </div>
                 <div class="flex-1">
                     <textarea name="content" 
-                              placeholder="Scrivi un commento..." 
+                              placeholder="{{ __('catbook.write_comment_placeholder') }}" 
                               class="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg resize-none dark:bg-gray-700 dark:text-white"
                               rows="2" maxlength="300"></textarea>
                     <div class="flex justify-end mt-2">
                         <button type="submit" 
                                 class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded-lg transition-colors">
-                            Commenta
+                            {{ __('catbook.comment') }}
                         </button>
                     </div>
                 </div>

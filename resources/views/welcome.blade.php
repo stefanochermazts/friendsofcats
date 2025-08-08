@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title><?php var_dump(__('friends_of_cats')); ?> - {{ __('platform_for_cats') }}</title>
+        <title>{{ __('friends_of_cats') }} - {{ __('platform_for_cats') }}</title>
         <meta name="description" content="{{ __('platform_description') }}">
 
         <!-- Fonts -->
@@ -38,7 +38,7 @@
     </head>
     <body class="font-['Inter'] bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
         {{-- Header --}}
-        <header class="border-b border-gray-100 dark:border-gray-800">
+        <header class="border-b border-gray-100 dark:border-gray-800 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     {{-- Logo --}}
@@ -50,8 +50,8 @@
                         </x-cat-logo>
                     </div>
                     
-                    {{-- Navigation --}}
-                    <div class="flex items-center space-x-4">
+                    {{-- Desktop Navigation --}}
+                    <div class="hidden md:flex items-center space-x-4">
                         {{-- Main Navigation Menu --}}
                         <x-main-navigation />
                         
@@ -92,6 +92,9 @@
                             @endif
                         </div>
                     </div>
+
+                    {{-- Mobile Menu Toggle --}}
+                    <x-mobile-menu />
                 </div>
             </div>
         </header>

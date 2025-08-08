@@ -1,44 +1,94 @@
 {{-- Homepage Main Content --}}
 <main class="min-h-screen">
     {{-- Hero Section --}}
-    <section class="relative py-24 sm:py-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="relative bg-gradient-to-r from-orange-50 to-orange-100 dark:from-gray-900 dark:to-gray-800 py-20 sm:py-32 overflow-hidden">
+        {{-- Background Pattern --}}
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {{-- Content --}}
                 <div class="text-center lg:text-left">
-                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-                        {{ __('platform_for_cats') }}
+                    <div class="inline-flex items-center bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-medium mb-6">
+                        🌍 {{ __('homepage.available_in_6_languages') }}
+                    </div>
+                    
+                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl">
+                        {{ __('homepage.hero_title') }}
                     </h1>
-                    <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300 max-w-3xl lg:max-w-none mx-auto">
-                        {{ __('platform_description') }}
+                    
+                    <p class="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-300 max-w-3xl lg:max-w-none mx-auto">
+                        {{ __('homepage.hero_subtitle') }}
                     </p>
-                    <div class="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
+                    
+                    {{-- Stats --}}
+                    <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-orange-600 dark:text-orange-400" id="hero-cats">0</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('homepage.cats_helped') }}</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-orange-600 dark:text-orange-400" id="hero-adoptions">0</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('homepage.successful_adoptions') }}</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-orange-600 dark:text-orange-400" id="hero-languages">6</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('homepage.languages') }}</div>
+                        </div>
+                    </div>
+                    
+                    {{-- CTA Buttons --}}
+                    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                         <a href="{{ route('register') }}" 
-                           class="rounded-lg bg-orange-500 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 transition-colors duration-200">
-                            {{ __('get_started') }}
+                           class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                            🚀 {{ __('homepage.start_journey') }}
                         </a>
-                        <a href="#features" 
-                           class="text-base font-semibold leading-6 text-gray-900 dark:text-white hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
-                            {{ __('key_features') }}
-                            <span aria-hidden="true">→</span>
+                        
+                        <a href="{{ route('public.adoptions.index') }}" 
+                           class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold rounded-xl border-2 border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-500 transition-all duration-300">
+                            🐱 {{ __('homepage.discover_cats') }}
                         </a>
                     </div>
                 </div>
                 
-                {{-- Hero Image Placeholder --}}
+                {{-- Hero Visual --}}
                 <div class="relative">
-                    <div class="aspect-square w-full max-w-md mx-auto lg:max-w-lg">
-                        <div class="w-full h-full bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/20 dark:to-orange-800/20 rounded-2xl border-2 border-dashed border-orange-300 dark:border-orange-600 flex items-center justify-center">
-                            <div class="text-center">
-                                <svg class="w-16 h-16 text-orange-400 dark:text-orange-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <p class="text-sm font-medium text-orange-600 dark:text-orange-400">
-                                    {{ __('hero_image_placeholder') }}
-                                </p>
-                                <p class="text-xs text-orange-500 dark:text-orange-500 mt-1">
-                                    {{ __('recommended_size') }}: 600x600px
-                                </p>
+                    <div class="aspect-square w-full max-w-lg mx-auto">
+                        {{-- Floating Cards --}}
+                        <div class="relative w-full h-full">
+                            {{-- Main Circle --}}
+                            <div class="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full opacity-10 animate-pulse"></div>
+                            
+                            {{-- Feature Cards --}}
+                            <div class="absolute top-8 left-8 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg transform rotate-12 hover:rotate-6 transition-transform duration-500">
+                                <div class="text-3xl mb-2">📱</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">CatBook</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('homepage.social_network') }}</div>
+                            </div>
+                            
+                            <div class="absolute top-16 right-4 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg transform -rotate-12 hover:-rotate-6 transition-transform duration-500">
+                                <div class="text-3xl mb-2">🏠</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ __('homepage.adoptions') }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('homepage.find_companion') }}</div>
+                            </div>
+                            
+                            <div class="absolute bottom-8 left-16 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg transform rotate-6 hover:rotate-3 transition-transform duration-500">
+                                <div class="text-3xl mb-2">👥</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ __('homepage.professionals') }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('homepage.vets_groomers') }}</div>
+                            </div>
+                            
+                            <div class="absolute bottom-16 right-8 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg transform -rotate-6 hover:-rotate-3 transition-transform duration-500">
+                                <div class="text-3xl mb-2">🌍</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ __('homepage.multilingual') }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">6 {{ __('homepage.languages') }}</div>
+                            </div>
+                            
+                            {{-- Center Cat Icon --}}
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-32 h-32 bg-orange-500 rounded-full flex items-center justify-center text-6xl shadow-2xl animate-bounce">
+                                    🐱
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -47,45 +97,179 @@
         </div>
     </section>
 
-    {{-- Mission Section --}}
-    <section class="py-24 bg-gray-50 dark:bg-gray-900">
+    {{-- Core Features Section --}}
+    <section class="py-24 bg-white dark:bg-gray-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
+            <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                    {{ __('our_mission') }}
+                    {{ __('homepage.everything_cats_need') }}
                 </h2>
-                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    {{ __('mission_description') }}
+                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    {{ __('homepage.complete_platform_description') }}
                 </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {{-- CatBook Social --}}
+                <div class="group relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                     onclick="window.location.href='{{ route('catbook.index') }}'">
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </div>
+                    
+                    <div class="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="text-3xl">📱</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.catbook_title') }}
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.catbook_description') }}
+                    </p>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                            {{ __('homepage.catbook_feature_1') }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                            {{ __('homepage.catbook_feature_2') }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                            {{ __('homepage.catbook_feature_3') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                        {{ __('homepage.explore_catbook') }}
+                        <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                {{-- Adoptions --}}
+                <div class="group relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                     onclick="window.location.href='{{ route('public.adoptions.index') }}'">
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </div>
+                    
+                    <div class="w-16 h-16 bg-green-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="text-3xl">🏠</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.adoptions_title') }}
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.adoptions_description') }}
+                    </p>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-3"></span>
+                            {{ __('homepage.adoptions_feature_1') }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-3"></span>
+                            {{ __('homepage.adoptions_feature_2') }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-green-400 rounded-full mr-3"></span>
+                            {{ __('homepage.adoptions_feature_3') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 inline-flex items-center text-green-600 dark:text-green-400 font-medium group-hover:text-green-700 dark:group-hover:text-green-300">
+                        {{ __('homepage.find_perfect_cat') }}
+                        <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                {{-- Professional Network --}}
+                <div class="group relative bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+                     onclick="window.location.href='{{ route('register') }}'">
+                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </div>
+                    
+                    <div class="w-16 h-16 bg-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="text-3xl">👩‍⚕️</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.professionals_title') }}
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.professionals_description') }}
+                    </p>
+                    
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
+                            {{ __('homepage.professionals_feature_1') }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
+                            {{ __('homepage.professionals_feature_2') }}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <span class="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
+                            {{ __('homepage.professionals_feature_3') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 inline-flex items-center text-purple-600 dark:text-purple-400 font-medium group-hover:text-purple-700 dark:group-hover:text-purple-300">
+                        {{ __('homepage.join_professionals') }}
+                        <svg class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     {{-- Featured Cats Section --}}
-    <section class="py-24">
+    <section class="py-24 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
+            <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                    {{ __('adoptions.featured_cats') }}
+                    {{ __('homepage.cats_waiting_love') }}
                 </h2>
-                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                    {{ __('adoptions.subtitle') }}
+                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                    {{ __('homepage.cats_waiting_description') }}
                 </p>
             </div>
             
             <!-- Container per gatti caricati dinamicamente -->
-            <div id="featured-cats-container" class="mt-16">
+            <div id="featured-cats-container" class="mb-12">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Skeleton loading cards -->
                     @for($i = 0; $i < 6; $i++)
                         <div class="featured-cat-skeleton animate-pulse">
-                            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                                 <!-- Skeleton foto -->
                                 <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-600"></div>
                                 
                                 <!-- Skeleton contenuto -->
-                                <div class="p-4 space-y-3">
-                                    <div class="h-5 bg-gray-200 dark:bg-gray-600 rounded w-3/4"></div>
+                                <div class="p-6 space-y-3">
+                                    <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded w-3/4"></div>
                                     <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/2"></div>
                                     <div class="flex space-x-2">
                                         <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded-full w-16"></div>
@@ -98,512 +282,306 @@
                 </div>
             </div>
             
-            <!-- CTA per vedere tutti i gatti -->
-            <div class="text-center mt-12">
-                <a href="{{ route('public.adoptions.index') }}" 
-                   class="inline-flex items-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-200">
-                    {{ __('adoptions.view_all_cats') }}
-                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
-                </a>
+            <!-- Big CTA for Adoptions -->
+            <div class="text-center">
+                <div class="bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl p-8 md:p-12">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
+                        {{ __('homepage.ready_adopt_title') }}
+                    </h3>
+                    <p class="text-orange-100 text-lg mb-8 max-w-2xl mx-auto">
+                        {{ __('homepage.ready_adopt_description') }}
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="{{ route('public.adoptions.index') }}" 
+                           class="inline-flex items-center justify-center px-8 py-4 bg-white text-orange-600 font-bold rounded-xl hover:bg-gray-50 transition-all duration-300 transform hover:scale-105">
+                            🔍 {{ __('homepage.browse_all_cats') }}
+                        </a>
+                        <a href="{{ route('register') }}" 
+                           class="inline-flex items-center justify-center px-8 py-4 bg-orange-600 text-white font-bold rounded-xl border-2 border-white hover:bg-orange-700 transition-all duration-300 transform hover:scale-105">
+                            ❤️ {{ __('homepage.start_adoption_journey') }}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    {{-- Target Audience Section --}}
-    <section id="audience" class="py-24">
+    {{-- Roles & Community Section --}}
+    <section class="py-24 bg-white dark:bg-gray-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
+            <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                    {{ __('who_we_serve') }}
+                    {{ __('homepage.join_community_title') }}
                 </h2>
-                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                    {{ __('platform_description') }}
+                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    {{ __('homepage.join_community_description') }}
                 </p>
             </div>
             
-            <div class="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {{-- Associations --}}
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('associations') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('associations_desc') }}
-                    </p>
-                </div>
-
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {{-- Cat Owners --}}
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
+                <div class="text-center p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition-shadow">
+                    <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🏠</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('cat_owners') }}
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.cat_owners_title') }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('cat_owners_desc') }}
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.cat_owners_description') }}
                     </p>
-                </div>
-
-                {{-- Veterinarians --}}
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('veterinarians') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('veterinarians_desc') }}
-                    </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                        <li>✓ {{ __('homepage.cat_owners_feature_1') }}</li>
+                        <li>✓ {{ __('homepage.cat_owners_feature_2') }}</li>
+                        <li>✓ {{ __('homepage.cat_owners_feature_3') }}</li>
+                    </ul>
                 </div>
 
                 {{-- Volunteers --}}
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
+                <div class="text-center p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition-shadow">
+                    <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🤝</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('volunteers') }}
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.volunteers_title') }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('volunteers_desc') }}
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.volunteers_description') }}
                     </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                        <li>✓ {{ __('homepage.volunteers_feature_1') }}</li>
+                        <li>✓ {{ __('homepage.volunteers_feature_2') }}</li>
+                        <li>✓ {{ __('homepage.volunteers_feature_3') }}</li>
+                    </ul>
                 </div>
 
-                {{-- Donors --}}
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                {{-- Associations --}}
+                <div class="text-center p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition-shadow">
+                    <div class="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🏢</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('donors') }}
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.associations_title') }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('donors_desc') }}
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.associations_description') }}
                     </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                        <li>✓ {{ __('homepage.associations_feature_1') }}</li>
+                        <li>✓ {{ __('homepage.associations_feature_2') }}</li>
+                        <li>✓ {{ __('homepage.associations_feature_3') }}</li>
+                    </ul>
+                </div>
+
+                {{-- Veterinarians --}}
+                <div class="text-center p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition-shadow">
+                    <div class="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">👩‍⚕️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.veterinarians_title') }}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.veterinarians_description') }}
+                    </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                        <li>✓ {{ __('homepage.veterinarians_feature_1') }}</li>
+                        <li>✓ {{ __('homepage.veterinarians_feature_2') }}</li>
+                        <li>✓ {{ __('homepage.veterinarians_feature_3') }}</li>
+                    </ul>
                 </div>
 
                 {{-- Groomers --}}
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200">
-                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                        </svg>
+                <div class="text-center p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition-shadow">
+                    <div class="w-20 h-20 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">✂️</span>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                        {{ __('groomers') }}
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                        {{ __('homepage.groomers_title') }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('groomers_desc') }}
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ __('homepage.groomers_description') }}
                     </p>
+                    <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                        <li>✓ {{ __('homepage.groomers_feature_1') }}</li>
+                        <li>✓ {{ __('homepage.groomers_feature_2') }}</li>
+                        <li>✓ {{ __('homepage.groomers_feature_3') }}</li>
+                    </ul>
+                </div>
+
+                {{-- CTA Card --}}
+                <div class="text-center p-6 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border border-orange-200 dark:border-orange-700 rounded-xl">
+                    <div class="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl text-white">🚀</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-orange-900 dark:text-orange-100 mb-3">
+                        {{ __('homepage.ready_to_start') }}
+                    </h3>
+                    <p class="text-orange-700 dark:text-orange-300 mb-6">
+                        {{ __('homepage.choose_your_role') }}
+                    </p>
+                    <a href="{{ route('register') }}" 
+                       class="inline-flex items-center justify-center w-full px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-lg transition-colors">
+                        {{ __('homepage.join_now') }}
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Features Section --}}
-    <section id="features" class="py-24 bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                    {{ __('key_features') }}
-                </h2>
-                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                    {{ __('exclusively_cats') }}
-                </p>
-            </div>
-            
-            <div class="mt-20 grid grid-cols-1 gap-12 lg:grid-cols-2">
-                <div class="space-y-8">
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ __('cat_management') }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">
-                            {{ __('cat_management_desc') }}
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ __('adoption_platform') }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">
-                            {{ __('adoption_platform_desc') }}
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ __('health_registry') }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">
-                            {{ __('health_registry_desc') }}
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="space-y-8">
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ __('volunteer_workflow') }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">
-                            {{ __('volunteer_workflow_desc') }}
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ __('memorial_section') }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">
-                            {{ __('memorial_section_desc') }}
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ __('community_feed') }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-300">
-                            {{ __('community_feed_desc') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    {{-- Why Choose Us Section --}}
-    <section class="py-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-                {{-- Content --}}
-                <div class="text-center lg:text-left">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                        {{ __('why_choose_us') }}
-                    </h2>
-                    <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        {{ __('focus_description') }}
-                    </p>
-                </div>
-                
-                {{-- Why Choose Us Image Placeholder --}}
-                <div class="relative">
-                    <div class="aspect-video w-full max-w-md mx-auto lg:max-w-lg">
-                        <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center">
-                            <div class="text-center">
-                                <svg class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    {{ __('why_choose_image_placeholder') }}
-                                </p>
-                                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                                    {{ __('recommended_size') }}: 800x450px
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ __('complete_solution') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('complete_solution_desc') }}
-                    </p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ __('expert_team') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        {{ __('expert_team_desc') }}
-                    </p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ __('multilingual_support') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        6 lingue supportate
-                    </p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ __('secure_gdpr') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        Conformità GDPR
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    {{-- CTA Section --}}
-    <section class="bg-orange-500 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white sm:text-4xl">
-                {{ __('join_community') }}
+    {{-- Final CTA Section --}}
+    <section class="py-24 bg-gradient-to-r from-orange-600 to-pink-600 relative overflow-hidden">
+        {{-- Background Pattern --}}
+        <div class="absolute inset-0 bg-white/10 bg-grid-pattern"></div>
+        
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+                {{ __('homepage.final_cta_title') }}
             </h2>
-            <p class="mt-4 text-lg text-orange-100">
-                {{ __('join_community_desc') }}
+            
+            <p class="text-xl text-orange-100 mb-12 max-w-2xl mx-auto">
+                {{ __('homepage.final_cta_description') }}
             </p>
-            <div class="mt-8">
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <a href="{{ route('register') }}" 
-                   class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400 transition-colors duration-200">
-                    {{ __('get_started') }}
+                   class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-5 bg-white text-orange-600 font-bold text-lg rounded-2xl hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    🚀 {{ __('homepage.start_your_journey') }}
+                </a>
+                
+                <a href="{{ route('public.adoptions.index') }}" 
+                   class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-5 bg-orange-700 text-white font-bold text-lg rounded-2xl border-2 border-white hover:bg-orange-800 transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    🐱 {{ __('homepage.meet_cats') }}
                 </a>
             </div>
+            
+            <p class="mt-8 text-sm text-orange-200">
+                {{ __('homepage.free_to_join') }} • {{ __('homepage.no_hidden_fees') }} • {{ __('homepage.start_immediately') }}
+            </p>
         </div>
     </section>
 </main>
 
+{{-- CSS for animations and grid pattern --}}
+<style>
+.bg-grid-pattern {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count-up {
+    animation: countUp 0.8s ease-out forwards;
+}
+</style>
+
+{{-- JavaScript for stats counter and featured cats --}}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Carica i gatti in evidenza tramite AJAX
-    fetch('{{ route("api.featured-cats") }}')
+    // Load platform statistics from API
+    fetch('{{ route("api.platform-stats") }}')
         .then(response => response.json())
-        .then(cats => {
-            const container = document.getElementById('featured-cats-container');
+        .then(stats => {
+            console.log('📊 Statistiche caricate:', stats);
             
-            if (cats.length > 0) {
-                // Sostituisci skeleton con vere card gatti
-                container.innerHTML = `
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        ${cats.map(cat => `
-                            <div class="group">
-                                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
-                                    <!-- Foto -->
-                                    <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-600 overflow-hidden">
-                                        <img src="/storage/${cat.foto_principale}" 
-                                             alt="${cat.nome}"
-                                             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div class="hidden w-full h-full items-center justify-center text-6xl">🐱</div>
-                                    </div>
-
-                                    <!-- Informazioni -->
-                                    <div class="p-4 space-y-3">
-                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                                            ${cat.nome}
-                                        </h3>
-
-                                        <div class="space-y-1">
-                                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                                <span class="font-medium">${cat.eta_formattata_display || cat.eta + ' mesi'}</span>
-                                            </p>
-                                            ${cat.razza ? `<p class="text-sm text-gray-600 dark:text-gray-400">${cat.razza}</p>` : ''}
-                                        </div>
-
-                                        <div class="flex flex-wrap gap-1">
-                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
-                                                {{ __('adoptions.adoptable') }}
-                                            </span>
-                                            ${cat.sterilizzazione ? `
-                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
-                                                    {{ __('adoptions.sterilized') }}
-                                                </span>
-                                            ` : ''}
-                                        </div>
-
-                                        <!-- CTA -->
-                                        <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 space-y-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-                                            <a href="/adoptions/${cat.id}" 
-                                               class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                                                {{ __('adoptions.discover_more') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else {
-                // Nessun gatto disponibile
-                container.innerHTML = `
-                    <div class="text-center py-12">
-                        <div class="text-6xl mb-4">🐱</div>
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                            {{ __('adoptions.no_cats_found') }}
-                        </h3>
-                        <p class="text-gray-600 dark:text-gray-400">
-                            {{ __('adoptions.no_cats_message') }}
-                        </p>
-                    </div>
-                `;
-            }
+            // Animate counters with real data
+            setTimeout(() => {
+                animateCounter('hero-cats', stats.cats_helped || 0);
+                animateCounter('hero-adoptions', stats.successful_adoptions || 0);
+                // Languages is always 6
+                document.getElementById('hero-languages').textContent = '6';
+            }, 500);
         })
         .catch(error => {
-            console.error('Errore nel caricamento dei gatti:', error);
-            
-            // Mostra messaggio di errore
-            const container = document.getElementById('featured-cats-container');
-            container.innerHTML = `
-                <div class="text-center py-12">
-                    <div class="text-6xl mb-4">😿</div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                        Errore nel caricamento
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-400">
-                        Non è stato possibile caricare i gatti in evidenza.
-                    </p>
-                </div>
-            `;
+            console.error('❌ Errore nel caricamento delle statistiche:', error);
+            // Fallback to 0 values
+            document.getElementById('hero-cats').textContent = '0';
+            document.getElementById('hero-adoptions').textContent = '0';
+            document.getElementById('hero-languages').textContent = '6';
         });
-});
-</script>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ __('multilingual_support') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        6 lingue supportate
-                    </p>
-                </div>
-                
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ __('secure_gdpr') }}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        Conformità GDPR
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- CTA Section --}}
-    <section class="bg-orange-500 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white sm:text-4xl">
-                {{ __('join_community') }}
-            </h2>
-            <p class="mt-4 text-lg text-orange-100">
-                {{ __('join_community_desc') }}
-            </p>
-            <div class="mt-8">
-                <a href="{{ route('register') }}" 
-                   class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-orange-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400 transition-colors duration-200">
-                    {{ __('get_started') }}
-                </a>
-            </div>
-        </div>
-    </section>
-</main>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Carica i gatti in evidenza tramite AJAX
+    
+    // Animate counters
+    function animateCounter(elementId, endValue, duration = 2000) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+            console.warn('⚠️ Elemento non trovato:', elementId);
+            return;
+        }
+        
+        if (endValue === 0) {
+            element.textContent = '0';
+            return;
+        }
+        
+        const startValue = 0;
+        const increment = endValue / (duration / 16);
+        let currentValue = startValue;
+        
+        const timer = setInterval(() => {
+            currentValue += increment;
+            if (currentValue >= endValue) {
+                element.textContent = endValue > 0 ? endValue + '+' : '0';
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(currentValue) + (endValue > 0 ? '+' : '');
+            }
+        }, 16);
+    }
+    
+    // Load featured cats
     fetch('{{ route("api.featured-cats") }}')
         .then(response => response.json())
         .then(cats => {
             const container = document.getElementById('featured-cats-container');
             
             if (cats.length > 0) {
-                // Sostituisci skeleton con vere card gatti
                 container.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         ${cats.map(cat => `
-                            <div class="group">
-                                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                            <div class="group cursor-pointer" onclick="window.location.href='/cats/${cat.id}'">
+                                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-2">
                                     <!-- Foto -->
                                     <div class="aspect-[4/3] bg-gray-200 dark:bg-gray-600 overflow-hidden">
                                         <img src="/storage/${cat.foto_principale}" 
                                              alt="${cat.nome}"
-                                             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
                                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div class="hidden w-full h-full items-center justify-center text-6xl">🐱</div>
+                                        <div class="hidden w-full h-full items-center justify-center text-6xl bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/20 dark:to-orange-800/20">🐱</div>
                                     </div>
 
                                     <!-- Informazioni -->
-                                    <div class="p-4 space-y-3">
-                                        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                                            ${cat.nome}
-                                        </h3>
-
-                                        <div class="space-y-1">
-                                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                                <span class="font-medium">${cat.eta_formattata_display || cat.eta + ' mesi'}</span>
+                                    <div class="p-6 space-y-4">
+                                        <div>
+                                            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                                                ${cat.nome}
+                                            </h3>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                                ${cat.eta_formattata_display || cat.eta + ' mesi'} ${cat.razza ? '• ' + cat.razza : ''}
                                             </p>
-                                            ${cat.razza ? `<p class="text-sm text-gray-600 dark:text-gray-400">${cat.razza}</p>` : ''}
                                         </div>
 
-                                        <div class="flex flex-wrap gap-1">
-                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
-                                                {{ __('adoptions.adoptable') }}
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
+                                                ❤️ {{ __('adoptions.adoptable') }}
                                             </span>
                                             ${cat.sterilizzazione ? `
-                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
-                                                    {{ __('adoptions.sterilized') }}
+                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+                                                    ✅ {{ __('adoptions.sterilized') }}
                                                 </span>
                                             ` : ''}
                                         </div>
 
-                                        <!-- CTA -->
-                                        <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 space-y-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-                                            <a href="/adoptions/${cat.id}" 
-                                               class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                                                {{ __('adoptions.discover_more') }}
-                                            </a>
+                                        <!-- Hover CTA -->
+                                        <div class="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                            <div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white text-center py-3 rounded-lg font-medium">
+                                                💕 {{ __('homepage.meet_this_cat') }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -612,16 +590,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
             } else {
-                // Nessun gatto disponibile
                 container.innerHTML = `
-                    <div class="text-center py-12">
-                        <div class="text-6xl mb-4">🐱</div>
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                            {{ __('adoptions.no_cats_found') }}
+                    <div class="text-center py-16">
+                        <div class="text-8xl mb-6">😺</div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                            {{ __('homepage.no_cats_yet') }}
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-400">
-                            {{ __('adoptions.no_cats_message') }}
+                        <p class="text-gray-600 dark:text-gray-400 mb-8">
+                            {{ __('homepage.be_first_add_cat') }}
                         </p>
+                        <a href="{{ route('register') }}" 
+                           class="inline-flex items-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors">
+                            {{ __('homepage.get_started') }}
+                        </a>
                     </div>
                 `;
             }
@@ -629,16 +610,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Errore nel caricamento dei gatti:', error);
             
-            // Mostra messaggio di errore
             const container = document.getElementById('featured-cats-container');
             container.innerHTML = `
-                <div class="text-center py-12">
-                    <div class="text-6xl mb-4">😿</div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                        Errore nel caricamento
+                <div class="text-center py-16">
+                    <div class="text-8xl mb-6">😿</div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                        {{ __('homepage.loading_error') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-400">
-                        Non è stato possibile caricare i gatti in evidenza.
+                        {{ __('homepage.try_again_later') }}
                     </p>
                 </div>
             `;

@@ -14,6 +14,8 @@ return [
     'add_to_favorites' => 'Ajouter aux favoris',
     'contact_shelter' => 'Contacter le Refuge',
     'load_more' => 'Charger plus de chats',
+    'loading_more' => 'Chargement de plus de chats...',
+    'all_cats_loaded' => 'Tous les chats ont été chargés',
     'age_months' => ':count mois|:count mois',
     'age_years' => ':count an|:count ans',
     'age_display' => ':years et :months',

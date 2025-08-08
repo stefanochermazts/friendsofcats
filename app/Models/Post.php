@@ -2,12 +2,25 @@
 
 namespace App\Models;
 
+use App\Jobs\SendFollowNotification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        // Invia notifiche ai followers quando viene creato un nuovo post
+        static::created(function (Post $post) {
+            // Dispatch job per inviare notifiche ai followers
+            SendFollowNotification::dispatchForPost($post);
+        });
+    }
+
     protected $fillable = [
         'user_id',
         'cat_id',
@@ -19,7 +32,8 @@ class Post extends Model
         'comments_count',
         'shares_count',
         'is_pinned',
-        'is_active'
+        'is_active',
+        'locale'
     ];
 
     protected $casts = [
@@ -88,6 +102,35 @@ class Post extends Model
     }
 
     /**
+     * Scope per post in una lingua specifica
+     */
+    public function scopeInLocale($query, $locale)
+    {
+        return $query->where('locale', $locale);
+    }
+
+    /**
+     * Scope per post nell'area linguistica dell'utente
+     * (include anche le lingue "compatibili")
+     */
+    public function scopeInUserArea($query, $userLocale)
+    {
+        // Definisce gruppi di lingue compatibili
+        $languageGroups = [
+            'it' => ['it'],
+            'en' => ['en'],
+            'de' => ['de'],
+            'fr' => ['fr'],
+            'es' => ['es'],
+            'sl' => ['sl']
+        ];
+        
+        $compatibleLocales = $languageGroups[$userLocale] ?? [$userLocale];
+        
+        return $query->whereIn('locale', $compatibleLocales);
+    }
+
+    /**
      * Verifica se l'utente ha messo like a questo post
      */
     public function isLikedBy($userId): bool
@@ -121,7 +164,8 @@ class Post extends Model
             'content' => $content,
             'image' => $cat->foto_principale,
             'hashtags' => ['Adozione', 'CercoFamiglia', 'GattoSpeciale'],
-            'is_active' => true
+            'is_active' => true,
+            'locale' => $cat->user->locale ?? 'it' // Per i post automatici, usa la lingua dell'utente proprietario
         ]);
     }
 }

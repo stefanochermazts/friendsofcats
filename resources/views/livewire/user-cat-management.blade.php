@@ -157,18 +157,27 @@
                                         $isProprietario = $cat->user && $cat->user->role === 'proprietario';
                                     @endphp
                                     
-                                    <!-- Pulsante toggle adozione per tutti -->
-                                    <button 
-                                        wire:key="toggle-btn-{{ $cat->id }}"
-                                        wire:click="toggleAdoption({{ $cat->id }})"
-                                        class="bg-{{ $cat->disponibile_adozione ? 'green' : 'orange' }}-500 hover:bg-{{ $cat->disponibile_adozione ? 'green' : 'orange' }}-600 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
-                                    >
-                                        @if($isProprietario)
-                                            {{ $cat->disponibile_adozione ? '🔒 ' . __('cats.remove_availability') : '🏠 ' . __('cats.make_available') }}
-                                        @else
-                                            {{ $cat->disponibile_adozione ? '🔒 ' . __('cats.toggle_not_available') : '🏠 ' . __('cats.toggle_available') }}
-                                        @endif
-                                    </button>
+                                    <!-- Select per lo stato -->
+                                    <div class="flex-1">
+                                        <select 
+                                            wire:key="status-select-{{ $cat->id }}"
+                                            wire:change="updateStato({{ $cat->id }}, $event.target.value)"
+                                            class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 text-sm rounded focus:ring-blue-500 focus:border-blue-500 p-2"
+                                        >
+                                            <option value="di_proprieta" {{ $cat->stato === 'di_proprieta' ? 'selected' : '' }}>
+                                                {{ __('cats.owned') }}
+                                            </option>
+                                            <option value="adottabile" {{ $cat->stato === 'adottabile' ? 'selected' : '' }}>
+                                                {{ __('cats.available') }}
+                                            </option>
+                                            <option value="non_adottabile" {{ $cat->stato === 'non_adottabile' ? 'selected' : '' }}>
+                                                {{ __('cats.not_available') }}
+                                            </option>
+                                            <option value="adottato" {{ $cat->stato === 'adottato' ? 'selected' : '' }}>
+                                                {{ __('cats.adopted') }}
+                                            </option>
+                                        </select>
+                                    </div>
                                     <button 
                                         wire:key="delete-btn-{{ $cat->id }}"
                                         wire:click="deleteCat({{ $cat->id }})"

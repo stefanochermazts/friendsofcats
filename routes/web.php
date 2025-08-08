@@ -7,6 +7,7 @@ use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\PublicAdoptionsController;
 use App\Http\Controllers\CatBookController;
 use App\Http\Controllers\CatProfileController;
+use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 
 // Locale switching route
@@ -42,6 +43,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/role', [App\Http\Controllers\RoleController::class, 'store'])->name('role.store');
 });
 
+// Volunteer association setup routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/volunteer/association/setup', [App\Http\Controllers\VolunteerAssociationController::class, 'setup'])->name('volunteer.association.setup');
+    Route::post('/volunteer/association/setup', [App\Http\Controllers\VolunteerAssociationController::class, 'store'])->name('volunteer.association.store');
+    Route::get('/volunteer/association/edit', [App\Http\Controllers\VolunteerAssociationController::class, 'edit'])->name('volunteer.association.edit');
+    Route::put('/volunteer/association', [App\Http\Controllers\VolunteerAssociationController::class, 'update'])->name('volunteer.association.update');
+});
+
 // Association details routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/association/details', [App\Http\Controllers\AssociationDetailsController::class, 'show'])->name('association.details');
@@ -49,6 +58,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/association/edit', [App\Http\Controllers\AssociationDetailsController::class, 'edit'])->name('association.edit');
     Route::put('/association/edit', [App\Http\Controllers\AssociationDetailsController::class, 'update'])->name('association.edit.update');
 });
+
+// Professional details routes (veterinari e toelettatori)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/professional/details', [App\Http\Controllers\ProfessionalDetailsController::class, 'show'])->name('professional.details');
+    Route::post('/professional/details', [App\Http\Controllers\ProfessionalDetailsController::class, 'store'])->name('professional.details.store');
+    Route::get('/professional/details/edit', [App\Http\Controllers\ProfessionalDetailsController::class, 'edit'])->name('professional.details.edit');
+    Route::put('/professional/details', [App\Http\Controllers\ProfessionalDetailsController::class, 'update'])->name('professional.details.update');
+});
+
+// API routes for association search
+Route::middleware(['auth'])->prefix('api')->group(function () {
+    Route::get('/associations/search', [App\Http\Controllers\Api\AssociationSearchController::class, 'search'])->name('api.associations.search');
+    Route::get('/associations/{association}', [App\Http\Controllers\Api\AssociationSearchController::class, 'show'])->name('api.associations.show');
+});
+
+// Public API routes
+Route::prefix('api')->group(function () {
+    Route::get('/platform-stats', [App\Http\Controllers\Api\StatsController::class, 'platformStats'])->name('api.platform-stats');
+});
+
+// Professionals directory (public)
+Route::get('/professionals', [App\Http\Controllers\ProfessionalsController::class, 'index'])->name('professionals.index');
+Route::get('/professionals/{professional}', [App\Http\Controllers\ProfessionalsController::class, 'show'])->name('professionals.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -74,5 +106,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // CatBook public routes (for sharing)
 Route::get('/catbook/post/{post}', [CatBookController::class, 'show'])->name('catbook.post');
+
+// Follow system routes (require authentication)
+Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->group(function () {
+    // User follows
+    Route::post('/user/{user}', [FollowController::class, 'toggleUserFollow'])->name('toggle.user');
+    Route::patch('/user/{user}/notifications', [FollowController::class, 'updateUserNotifications'])->name('user.notifications');
+    
+    // Cat follows
+    Route::post('/cat/{cat}', [FollowController::class, 'toggleCatFollow'])->name('toggle.cat');
+    Route::patch('/cat/{cat}/notifications', [FollowController::class, 'updateCatNotifications'])->name('cat.notifications');
+    
+    // My follows and followers
+    Route::get('/my-follows', [FollowController::class, 'myFollows'])->name('my.follows');
+    Route::get('/my-followers', [FollowController::class, 'myFollowers'])->name('my.followers');
+});
 
 require __DIR__.'/auth.php';

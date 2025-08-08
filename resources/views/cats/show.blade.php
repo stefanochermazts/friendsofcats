@@ -105,6 +105,31 @@
             @endif
         </div>
 
+        <!-- Follow Section -->
+        @if($userCanFollow)
+        <div class="flex items-center justify-center gap-6 py-6">
+            <button id="followCatBtn" 
+                    onclick="toggleCatFollow({{ $cat->id }})"
+                    class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm border {{ $isFollowing ? 'bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800' : 'bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/10 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800' }}">
+                <svg class="w-5 h-5" fill="{{ $isFollowing ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+                <span id="followCatText">
+                    {{ $isFollowing ? __('cats.unfollow') : __('cats.follow') }}
+                </span>
+            </button>
+            
+            <div class="text-center">
+                <div class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <span id="followersCount">{{ $followersCount }}</span>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">
+                    {{ $followersCount == 1 ? __('cats.follower') : __('cats.followers') }}
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Contenuto principale -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
@@ -298,23 +323,50 @@
                     </h3>
                     
                     @if($cat->user)
-                    <div class="space-y-3">
+                    <div class="space-y-4">
                         <div>
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('cats.association_name') }}</span>
-                            <p class="text-gray-900 dark:text-gray-100">{{ $cat->user->name }}</p>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('cats.contact_name') }}</span>
+                            <p class="text-gray-900 dark:text-gray-100 font-medium">{{ $cat->user->name }}</p>
                         </div>
                         
-                        @if($cat->user->association_name)
+                        @if($cat->user->ragione_sociale)
                         <div>
                             <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('cats.organization') }}</span>
-                            <p class="text-gray-900 dark:text-gray-100">{{ $cat->user->association_name }}</p>
+                            <p class="text-gray-900 dark:text-gray-100 font-medium">{{ $cat->user->ragione_sociale }}</p>
                         </div>
                         @endif
                         
-                        @if($cat->user->city)
+                        <!-- Indirizzo completo -->
+                        @if($cat->user->indirizzo || $cat->user->citta)
                         <div>
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('cats.location') }}</span>
-                            <p class="text-gray-900 dark:text-gray-100">{{ $cat->user->city }}</p>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('cats.address') }}</span>
+                            <div class="text-gray-900 dark:text-gray-100">
+                                @if($cat->user->indirizzo)
+                                    <p>{{ $cat->user->indirizzo }}</p>
+                                @endif
+                                @if($cat->user->citta || $cat->user->provincia)
+                                    <p>
+                                        @if($cat->user->cap){{ $cat->user->cap }} @endif
+                                        @if($cat->user->citta){{ $cat->user->citta }}@endif
+                                        @if($cat->user->provincia) ({{ $cat->user->provincia }})@endif
+                                    </p>
+                                @endif
+                                @if($cat->user->paese && $cat->user->paese !== 'Italia')
+                                    <p>{{ $cat->user->paese }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
+                        
+                        <!-- Telefono -->
+                        @if($cat->user->telefono)
+                        <div>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('cats.phone') }}</span>
+                            <p class="text-gray-900 dark:text-gray-100">
+                                <a href="tel:{{ $cat->user->telefono }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    {{ $cat->user->telefono }}
+                                </a>
+                            </p>
                         </div>
                         @endif
                         
@@ -326,6 +378,20 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                 </svg>
                                 {{ __('cats.contact_association') }}
+                            </a>
+                        </div>
+                        @endif
+                        
+                        @if($cat->user->citta)
+                        <div class="mt-3">
+                            <a href="https://www.google.com/maps/search/{{ urlencode(($cat->user->indirizzo ? $cat->user->indirizzo . ', ' : '') . $cat->user->citta . ($cat->user->provincia ? ', ' . $cat->user->provincia : '') . ($cat->user->paese ? ', ' . $cat->user->paese : '')) }}" 
+                               target="_blank"
+                               class="block w-full text-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                {{ __('cats.view_on_maps') }}
                             </a>
                         </div>
                         @endif
@@ -634,6 +700,64 @@
         }).catch(function(err) {
             console.error('Could not copy text: ', err);
             alert('{{ __("cats.copy_error") }}');
+        });
+    }
+
+    // Cat follow/unfollow function
+    function toggleCatFollow(catId) {
+        const button = document.getElementById('followCatBtn');
+        const text = document.getElementById('followCatText');
+        const countElement = document.getElementById('followersCount');
+        
+        // Disable button during request
+        button.disabled = true;
+        
+        fetch(`/follow/cat/${catId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                notifications: true
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update button appearance
+                const isNowFollowing = data.is_following;
+                
+                if (isNowFollowing) {
+                    // Following state
+                    button.className = 'inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm border bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800';
+                    text.textContent = '{{ __("cats.unfollow") }}';
+                    button.querySelector('svg').setAttribute('fill', 'currentColor');
+                } else {
+                    // Not following state
+                    button.className = 'inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-sm border bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/10 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800';
+                    text.textContent = '{{ __("cats.follow") }}';
+                    button.querySelector('svg').setAttribute('fill', 'none');
+                }
+                
+                // Update followers count
+                countElement.textContent = data.followers_count;
+                
+                // Show success message (optional)
+                if (data.message) {
+                    // You could show a toast notification here
+                    console.log(data.message);
+                }
+            } else {
+                alert(data.error || 'Errore durante l\'operazione');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Errore di connessione');
+        })
+        .finally(() => {
+            button.disabled = false;
         });
     }
     </script>

@@ -1,8 +1,8 @@
-# Sistema Multilingue - FriendsOfCats
+# Sistema Multilingue - CatFriends.club
 
 ## Panoramica
 
-Il sistema multilingue di FriendsOfCats supporta 5 lingue:
+Il sistema multilingue di CatFriends.club supporta 5 lingue:
 - **Italiano (it)** - Lingua predefinita
 - **Inglese (en)**
 - **Francese (fr)**

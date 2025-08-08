@@ -34,15 +34,18 @@
 
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <!-- Additional styles -->
+        @stack('styles')
     </head>
     <body class="font-['Inter'] bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
         {{-- Header --}}
-        <header class="border-b border-gray-100 dark:border-gray-800">
+        <header class="border-b border-gray-100 dark:border-gray-800 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     {{-- Logo --}}
                     <div class="flex items-center">
-                        <a href="{{ route('dashboard') }}">
+                        <a href="{{ auth()->check() ? route('dashboard') : route('welcome') }}">
                             <x-cat-logo class="w-10 h-10">
                                 <span class="text-xl font-bold text-gray-900 dark:text-white">
                                     {{ __('friends_of_cats') }}
@@ -51,8 +54,8 @@
                         </a>
                     </div>
                     
-                    {{-- Navigation --}}
-                    <div class="flex items-center space-x-4">
+                    {{-- Desktop Navigation --}}
+                    <div class="hidden md:flex items-center space-x-4">
                         {{-- Main Navigation Menu --}}
                         <x-main-navigation />
                         
@@ -128,6 +131,9 @@
                             </div>
                         @endauth
                     </div>
+
+                    {{-- Mobile Menu Toggle --}}
+                    <x-mobile-menu />
                 </div>
             </div>
         </header>
@@ -144,5 +150,8 @@
             
             {{ $slot }}
         </main>
+        
+        <!-- Additional scripts -->
+        @stack('scripts')
     </body>
 </html> 

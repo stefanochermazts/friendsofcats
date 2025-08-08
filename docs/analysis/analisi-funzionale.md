@@ -1,8 +1,8 @@
-# Analisi Funzionale - FriendsOfCats
+# Analisi Funzionale - CatFriends.club
 
 ## 1. Introduzione
 
-Il documento descrive in dettaglio la **Piattaforma FriendsOfCats**, un sistema web e mobile pensato unicamente per la gestione di **gatti**, destinato a:
+Il documento descrive in dettaglio la **Piattaforma CatFriends.club**, un sistema web e mobile pensato unicamente per la gestione di **gatti**, destinato a:
 
 * **Associazioni animaliste** (rifugi, onlus)
 * **Proprietari di gatti**
@@ -151,4 +151,4 @@ Dark Mode Engagement: in dark mode le immagini risaltano ancora meglio, crea uno
 
 ---
 
-*Fine Analisi Funzionale FriendsOfCats MVP + Memoriale Virtuale*
+*Fine Analisi Funzionale CatFriends.club MVP + Memoriale Virtuale*

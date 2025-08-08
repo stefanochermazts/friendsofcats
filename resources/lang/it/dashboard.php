@@ -24,7 +24,7 @@ return [
     'associazione_desc' => 'Rifugio, ONLUS, associazione animalista',
     'associazione_activities' => 'Gestisci gatti in adozione, volontari e attività di sensibilizzazione',
     'volontario_desc' => 'Foster, cat sitter, volontario',
-    'volontario_activities' => 'Aiuti nella cura e socializzazione dei gatti',
+    'volontario_activities' => 'Gestisci i tuoi gatti e aiuti associazioni nella cura e socializzazione',
     'proprietario_desc' => 'Proprietario di gatti',
     'proprietario_activities' => 'Gestisci la salute e i ricordi dei tuoi gatti',
     'veterinario_desc' => 'Medico veterinario',
@@ -43,6 +43,17 @@ return [
     
     // Dashboard Volontario
     'volontario_dashboard' => 'Dashboard Volontario',
+    
+    // Configurazione Associazione Volontario
+    'volunteer_association_setup' => 'Configurazione Associazione',
+    'volunteer_association_setup_subtitle' => 'Scegli se lavorare con un\'associazione o come volontario indipendente',
+    'select_association' => 'Seleziona Associazione',
+    'independent_volunteer' => 'Volontario Indipendente (nessuna associazione)',
+    'volunteer_options_title' => 'Opzioni disponibili:',
+    'volunteer_with_association' => 'Collabora con un\'associazione esistente',
+    'volunteer_independent' => 'Lavora come volontario indipendente',
+    'volunteer_can_change' => 'Puoi modificare questa scelta in qualsiasi momento dalle impostazioni.',
+    'skip_for_now' => 'Salta per ora',
     'active_assignments' => 'Incarichi Attivi',
     'in_progress' => 'In corso',
     'volunteer_hours' => 'Ore di Volontariato',
@@ -173,4 +184,24 @@ return [
     'owned_status' => '👨‍👩‍👧‍👦 Di proprietà',
     'evaluating_status' => '🔍 In valutazione',
     'manage_cats_info' => 'Gestisci i tuoi gatti e le loro informazioni',
+    'edit_professional_details' => 'Modifica Dettagli',
+    
+    // Select2 traduzioni
+    'search_association_placeholder' => 'Cerca associazione per nome o città...',
+    'select2_min_chars' => 'Inserisci almeno 2 caratteri per cercare',
+    'select2_searching' => 'Ricerca in corso...',
+    'select2_no_results' => 'Nessuna associazione trovata',
+    'select2_loading_more' => 'Caricamento risultati...',
+    
+    // Volunteer association edit
+    'edit_volunteer_association_subtitle' => 'Modifica la tua associazione di riferimento',
+    'current_status' => 'Stato Attuale',
+    'currently_linked_to' => 'Attualmente collegato a',
+    'currently_independent' => 'Attualmente sei un volontario indipendente',
+    'select_new_association' => 'Seleziona Nuova Associazione',
+    'change_to_different_association' => 'Cambia a un\'associazione diversa',
+    'become_independent_volunteer' => 'Diventa volontario indipendente',
+    'link_to_association_later' => 'Collegati a un\'associazione in futuro',
+    'update_association' => 'Aggiorna Associazione',
+    'errors_found' => 'Si sono verificati alcuni errori:',
 ]; 

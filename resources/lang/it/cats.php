@@ -232,4 +232,24 @@ return [
     'copy_link' => 'Copia link',
     'copied' => 'Copiato!',
     'copy_error' => 'Errore nella copia del link',
+    
+    // Sistema Follow
+    'follow' => 'Segui',
+    'unfollow' => 'Non seguire più',
+    'follower' => 'seguace',
+    'followers' => 'seguaci',
+    'following' => 'seguiti',
+    
+    // Informazioni associazione
+    'contact_name' => 'Nome contatto',
+    'address' => 'Indirizzo',
+    'phone' => 'Telefono',
+    'view_on_maps' => 'Visualizza su Google Maps',
+    
+    // Stati gatto
+    'owned' => 'Di proprietà',
+    'available' => 'Adottabile',
+    'not_available' => 'Non adottabile',
+    'adopted' => 'Adottato',
+    'status_label' => 'Stato',
 ];

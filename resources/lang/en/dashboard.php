@@ -24,7 +24,7 @@ return [
     'associazione_desc' => 'Shelter, NGO, animal association',
     'associazione_activities' => 'Manage cats for adoption, volunteers and awareness activities',
     'volontario_desc' => 'Foster, cat sitter, volunteer',
-    'volontario_activities' => 'Help with cat care and socialization',
+    'volontario_activities' => 'Manage your cats and help associations with care and socialization',
     'proprietario_desc' => 'Cat owner',
     'proprietario_activities' => 'Manage the health and memories of your cats',
     'veterinario_desc' => 'Veterinary doctor',
@@ -169,4 +169,24 @@ return [
     'available_status' => '🏠 Available',
     'adopted_status' => '❤️ Adopted',
     'manage_cats_info' => 'Manage your cats and their information',
+    'edit_professional_details' => 'Edit Details',
+    
+    // Select2 translations
+    'search_association_placeholder' => 'Search association by name or city...',
+    'select2_min_chars' => 'Enter at least 2 characters to search',
+    'select2_searching' => 'Searching...',
+    'select2_no_results' => 'No associations found',
+    'select2_loading_more' => 'Loading results...',
+    
+    // Volunteer association edit
+    'edit_volunteer_association_subtitle' => 'Edit your reference association',
+    'current_status' => 'Current Status',
+    'currently_linked_to' => 'Currently linked to',
+    'currently_independent' => 'You are currently an independent volunteer',
+    'select_new_association' => 'Select New Association',
+    'change_to_different_association' => 'Change to a different association',
+    'become_independent_volunteer' => 'Become an independent volunteer',
+    'link_to_association_later' => 'Link to an association in the future',
+    'update_association' => 'Update Association',
+    'errors_found' => 'Some errors occurred:',
 ]; 

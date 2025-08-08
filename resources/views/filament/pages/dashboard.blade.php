@@ -5,7 +5,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                        Benvenuto in FriendsOfCats Admin
+                        Benvenuto in CatFriends Club Admin
                     </h2>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">
                         Gestisci la piattaforma dedicata ai gatti e alla loro comunità.

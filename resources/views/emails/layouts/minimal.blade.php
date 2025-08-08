@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'FriendsOfCats' }}</title>
+    <title>{{ $title ?? 'CatFriends Club' }}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -120,7 +120,7 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <img src="{{ asset('images/cat-logo.svg') }}" alt="FriendsOfCats" class="logo">
+            <img src="{{ asset('images/cat-logo.svg') }}" alt="CatFriends Club" class="logo">
         </div>
         
         <div class="content">
@@ -128,7 +128,7 @@
         </div>
         
         <div class="footer">
-            <p>&copy; {{ date('Y') }} FriendsOfCats. Tutti i diritti riservati.</p>
+            <p>&copy; {{ date('Y') }} CatFriends Club. Tutti i diritti riservati.</p>
         </div>
     </div>
 </body>

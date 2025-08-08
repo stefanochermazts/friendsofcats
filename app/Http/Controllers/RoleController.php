@@ -49,6 +49,18 @@ class RoleController extends Controller
                     ->with('success', __('dashboard.role_saved_success'));
             }
 
+            // Se l'utente ha selezionato "volontario", reindirizza alla configurazione associazione
+            if ($request->role === 'volontario') {
+                return redirect()->route('volunteer.association.setup')
+                    ->with('success', __('dashboard.role_saved_success'));
+            }
+
+            // Se l'utente ha selezionato "veterinario" o "toelettatore", reindirizza ai dettagli professionali
+            if (in_array($request->role, ['veterinario', 'toelettatore'])) {
+                return redirect()->route('professional.details')
+                    ->with('success', __('dashboard.role_saved_success'));
+            }
+
             return redirect()->route('dashboard')
                 ->with('success', __('dashboard.role_saved_success'));
         } catch (\Exception $e) {

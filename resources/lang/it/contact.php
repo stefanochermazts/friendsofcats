@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'subject_professional' => 'Richiesta informazioni a :name',
+    'message_professional_prefill' => "Ciao :professional,\n\nho visto il tuo profilo su :platform e vorrei avere maggiori informazioni sui tuoi servizi.\n\nPotresti gentilmente indicarmi disponibilità, costi e modalità di appuntamento?\n\nGrazie,\n\nCordiali saluti",
     'title' => 'Contattaci',
     'subtitle' => 'Siamo qui per aiutarti. Contattaci per qualsiasi domanda o richiesta.',
     'contact_info' => 'Informazioni di Contatto',

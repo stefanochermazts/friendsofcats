@@ -32,7 +32,7 @@
     </head>
     <body class="font-['Inter'] bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
         {{-- Header --}}
-        <header class="border-b border-gray-100 dark:border-gray-800">
+        <header class="border-b border-gray-100 dark:border-gray-800 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     {{-- Logo --}}
@@ -46,8 +46,8 @@
                         </a>
                     </div>
                     
-                    {{-- Navigation --}}
-                    <div class="flex items-center space-x-4">
+                    {{-- Desktop Navigation --}}
+                    <div class="hidden md:flex items-center space-x-4">
                         {{-- Main Navigation Menu --}}
                         <x-main-navigation />
                         
@@ -104,8 +104,23 @@
                                     </form>
                                 </div>
                             </div>
+                        @else
+                            {{-- Guest User Login/Register Links --}}
+                            <div class="flex items-center space-x-3">
+                                <a href="{{ route('login') }}" 
+                                   class="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
+                                    Login
+                                </a>
+                                <a href="{{ route('register') }}" 
+                                   class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                                    Registrati
+                                </a>
+                            </div>
                         @endauth
                     </div>
+
+                    {{-- Mobile Menu Toggle --}}
+                    <x-mobile-menu />
                 </div>
             </div>
         </header>

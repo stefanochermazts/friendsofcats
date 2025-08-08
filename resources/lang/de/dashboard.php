@@ -24,7 +24,7 @@ return [
     'associazione_desc' => 'Tierheim, NGO, Tierschutzverein',
     'associazione_activities' => 'Verwalten Sie Katzen zur Adoption, Freiwillige und Aufklärungsaktivitäten',
     'volontario_desc' => 'Pflegefamilie, Katzenbetreuer, Freiwilliger',
-    'volontario_activities' => 'Helfen Sie bei der Pflege und Sozialisierung von Katzen',
+    'volontario_activities' => 'Verwalten Sie Ihre Katzen und helfen Sie Vereinen bei der Pflege und Sozialisierung',
     'proprietario_desc' => 'Katzenbesitzer',
     'proprietario_activities' => 'Verwalten Sie die Gesundheit und Erinnerungen Ihrer Katzen',
     'veterinario_desc' => 'Tierarzt',
@@ -169,4 +169,24 @@ return [
     'available_status' => '🏠 Verfügbar',
     'adopted_status' => '❤️ Adoptiert',
     'manage_cats_info' => 'Verwalten Sie Ihre Katzen und deren Informationen',
+    'edit_professional_details' => 'Details Bearbeiten',
+    
+    // Select2 Übersetzungen
+    'search_association_placeholder' => 'Verein nach Name oder Stadt suchen...',
+    'select2_min_chars' => 'Geben Sie mindestens 2 Zeichen zum Suchen ein',
+    'select2_searching' => 'Suche läuft...',
+    'select2_no_results' => 'Keine Vereine gefunden',
+    'select2_loading_more' => 'Lade Ergebnisse...',
+    
+    // Freiwilligen-Verein bearbeiten
+    'edit_volunteer_association_subtitle' => 'Bearbeiten Sie Ihren Referenzverein',
+    'current_status' => 'Aktueller Status',
+    'currently_linked_to' => 'Derzeit verknüpft mit',
+    'currently_independent' => 'Sie sind derzeit ein unabhängiger Freiwilliger',
+    'select_new_association' => 'Neuen Verein auswählen',
+    'change_to_different_association' => 'Zu einem anderen Verein wechseln',
+    'become_independent_volunteer' => 'Unabhängiger Freiwilliger werden',
+    'link_to_association_later' => 'Später mit einem Verein verknüpfen',
+    'update_association' => 'Verein aktualisieren',
+    'errors_found' => 'Einige Fehler sind aufgetreten:',
 ]; 

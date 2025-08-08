@@ -1,4 +1,4 @@
-{{-- FriendsOfCats Logo Component --}}
+{{-- CatFriends Club Logo Component --}}
 <div class="flex items-center">
     {{-- Cat silhouette SVG logo --}}
     <svg {{ $attributes->merge(['class' => 'w-8 h-8 text-orange-500 dark:text-orange-400']) }} 

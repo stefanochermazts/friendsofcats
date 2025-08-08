@@ -14,6 +14,8 @@ return [
     'add_to_favorites' => 'Añadir a favoritos',
     'contact_shelter' => 'Contactar Refugio',
     'load_more' => 'Cargar más gatos',
+    'loading_more' => 'Cargando más gatos...',
+    'all_cats_loaded' => 'Todos los gatos han sido cargados',
     'age_months' => ':count mes|:count meses',
     'age_years' => ':count año|:count años',
     'age_display' => ':years y :months',

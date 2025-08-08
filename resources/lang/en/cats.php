@@ -232,4 +232,24 @@ return [
     'copy_link' => 'Copy link',
     'copied' => 'Copied!',
     'copy_error' => 'Error copying link',
+    
+    // Follow System
+    'follow' => 'Follow',
+    'unfollow' => 'Unfollow',
+    'follower' => 'follower',
+    'followers' => 'followers',
+    'following' => 'following',
+    
+    // Association information
+    'contact_name' => 'Contact name',
+    'address' => 'Address',
+    'phone' => 'Phone',
+    'view_on_maps' => 'View on Google Maps',
+    
+    // Cat status
+    'owned' => 'Owned',
+    'available' => 'Available',
+    'not_available' => 'Not available',
+    'adopted' => 'Adopted',
+    'status_label' => 'Status',
 ];

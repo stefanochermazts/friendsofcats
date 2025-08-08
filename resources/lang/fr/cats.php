@@ -222,4 +222,17 @@ return [
     'copy_link' => 'Copier le lien',
     'copied' => 'Copié !',
     'copy_error' => 'Erreur lors de la copie du lien',
+    
+    // Follow System
+    'follow' => 'Suivre',
+    'unfollow' => 'Ne plus suivre',
+    'follower' => 'abonné',
+    'followers' => 'abonnés',
+    'following' => 'suivis',
+    
+    // Association information
+    'contact_name' => 'Nom du contact',
+    'address' => 'Adresse',
+    'phone' => 'Téléphone',
+    'view_on_maps' => 'Voir sur Google Maps',
 ];

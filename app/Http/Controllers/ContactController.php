@@ -100,6 +100,27 @@ class ContactController extends Controller
      */
     private function getRecipientEmail(ContactRequest $request): ?string
     {
+        // Contatto diretto a un professionista (veterinario / toelettatore)
+        if ($request->has('professional_id')) {
+            $professionalId = (int) $request->get('professional_id');
+            $professional = User::find($professionalId);
+
+            if ($professional && in_array($professional->role, ['veterinario', 'toelettatore'], true)) {
+                Log::info('Sending contact to professional', [
+                    'professional_id' => $professional->id,
+                    'email' => $professional->email,
+                    'role' => $professional->role,
+                ]);
+                return $professional->email;
+            }
+
+            Log::warning('Professional not found or invalid role for contact', [
+                'professional_id' => $professionalId,
+                'exists' => (bool) $professional,
+                'role' => $professional?->role,
+            ]);
+        }
+
         // Controlla se è una richiesta di adozione per un gatto specifico
         if ($request->has('gatto') && $request->has('associazione')) {
             $catName = $request->get('gatto');
@@ -151,6 +172,9 @@ class ContactController extends Controller
      */
     private function getRecipientType(ContactRequest $request): string
     {
+        if ($request->has('professional_id')) {
+            return 'professional';
+        }
         if ($request->has('gatto') && $request->has('associazione')) {
             return 'association';
         }

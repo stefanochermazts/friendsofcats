@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\SendFollowNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,6 +30,25 @@ class Cat extends Model
                 $cat->saveQuietly(); // Save without triggering events again
             }
         });
+
+        // Invia notifiche ai followers quando il gatto viene aggiornato
+        static::updated(function (Cat $cat) {
+            $importantFields = [
+                'disponibile_adozione', 'stato_salute', 'foto_principale', 
+                'galleria_foto', 'peso', 'eta', 'sterilizzazione'
+            ];
+            
+            $changes = [];
+            foreach ($importantFields as $field) {
+                if ($cat->isDirty($field)) {
+                    $changes[$field] = $cat->getOriginal($field);
+                }
+            }
+            
+            if (!empty($changes)) {
+                SendFollowNotification::dispatchForCatUpdate($cat, $changes);
+            }
+        });
     }
 
     protected $fillable = [
@@ -47,6 +67,7 @@ class Cat extends Model
         'livello_socialita',
         'note_comportamentali',
         'disponibile_adozione',
+        'stato',
         'likes_count',
         'last_liked_at',
         'data_arrivo',
@@ -224,5 +245,47 @@ class Cat extends Model
     public function posts()
     {
         return $this->hasMany(\App\Models\Post::class);
+    }
+
+    /**
+     * Utenti che seguono questo gatto
+     */
+    public function followers()
+    {
+        return $this->hasMany(CatFollow::class);
+    }
+
+    /**
+     * Relazione many-to-many per utenti che seguono questo gatto
+     */
+    public function followerUsers()
+    {
+        return $this->belongsToMany(User::class, 'cat_follows')
+                    ->withTimestamps()
+                    ->withPivot('notifications_enabled');
+    }
+
+    /**
+     * Verifica se un utente sta seguendo questo gatto
+     */
+    public function isFollowedBy(User $user): bool
+    {
+        return $this->followerUsers()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Ottieni il numero di followers
+     */
+    public function getFollowersCount(): int
+    {
+        return $this->followers()->count();
+    }
+
+    /**
+     * Ottieni i followers con notifiche attive
+     */
+    public function getNotificationFollowers()
+    {
+        return $this->followerUsers()->wherePivot('notifications_enabled', true);
     }
 }

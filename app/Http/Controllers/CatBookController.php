@@ -21,12 +21,20 @@ class CatBookController extends Controller
     {
         $perPage = 10;
         $page = $request->get('page', 1);
+        // Usa la lingua corrente della sessione (quella selezionata dall'header)
+        $currentLocale = app()->getLocale();
+        $showAllLanguages = $request->get('all_languages', false);
         
         // Ottieni i post ordinati cronologicamente
-        $posts = Post::with(['user', 'cat', 'likes', 'comments.user'])
-            ->active()
-            ->recent()
-            ->paginate($perPage);
+        $query = Post::with(['user', 'cat', 'likes', 'comments.user'])
+            ->active();
+        
+        // Applica filtro lingua solo se non è richiesta la visualizzazione di tutte le lingue
+        if (!$showAllLanguages) {
+            $query->inUserArea($currentLocale);
+        }
+        
+        $posts = $query->recent()->paginate($perPage);
             
         // Logica per inserire richieste di adozione casuali
         $posts = $this->injectAdoptionRequests($posts, $page);
@@ -44,33 +52,15 @@ class CatBookController extends Controller
     }
 
     /**
-     * Inserisce richieste di adozione casuali nel feed
+     * Nota: La generazione automatica di post di adozione è stata spostata
+     * al job schedulato GenerateAdoptionPosts che viene eseguito quotidianamente.
+     * Questo metodo ora restituisce semplicemente i post esistenti.
      */
     private function injectAdoptionRequests($posts, $page)
     {
-        // Solo per la prima pagina, inserisci richieste casuali
-        if ($page == 1) {
-            $adoptionCats = Cat::where('disponibile_adozione', true)
-                ->whereDoesntHave('posts', function($query) {
-                    $query->where('type', 'adoption_request')
-                          ->where('created_at', '>', now()->subDays(7)); // Non più di una volta a settimana
-                })
-                ->inRandomOrder()
-                ->limit(2) // Massimo 2 richieste per pagina
-                ->get();
-            
-            foreach ($adoptionCats as $cat) {
-                // Crea automaticamente un post di richiesta adozione
-                Post::createAdoptionRequest($cat);
-            }
-            
-            // Ricarica i post per includere quelli appena creati
-            $posts = Post::with(['user', 'cat', 'likes', 'comments.user'])
-                ->active()
-                ->recent()
-                ->paginate(10);
-        }
-        
+        // I post di adozione vengono ora generati automaticamente 
+        // dal job schedulato GenerateAdoptionPosts (daily at 10:00)
+        // Non è più necessario crearli ad ogni visita della pagina
         return $posts;
     }
 
@@ -89,7 +79,8 @@ class CatBookController extends Controller
             'user_id' => Auth::id(),
             'cat_id' => $request->cat_id,
             'content' => $request->content,
-            'type' => 'user_post'
+            'type' => 'user_post',
+            'locale' => app()->getLocale() // Usa la lingua corrente della sessione
         ]);
 
         // Gestione upload immagine
@@ -231,8 +222,11 @@ class CatBookController extends Controller
      */
     public function hashtag($hashtag)
     {
+        $currentLocale = app()->getLocale();
+        
         $posts = Post::with(['user', 'cat', 'likes', 'comments.user'])
             ->active()
+            ->inUserArea($currentLocale)
             ->whereJsonContains('hashtags', $hashtag)
             ->recent()
             ->paginate(10);

@@ -24,7 +24,7 @@ return [
     'associazione_desc' => 'Refuge, ONG, association animalière',
     'associazione_activities' => 'Gérez les chats à adopter, les bénévoles et les activités de sensibilisation',
     'volontario_desc' => 'Famille d\'accueil, cat sitter, bénévole',
-    'volontario_activities' => 'Aidez aux soins et à la socialisation des chats',
+    'volontario_activities' => 'Gérez vos chats et aidez les associations aux soins et à la socialisation',
     'proprietario_desc' => 'Propriétaire de chats',
     'proprietario_activities' => 'Gérez la santé et les souvenirs de vos chats',
     'veterinario_desc' => 'Docteur vétérinaire',
@@ -169,4 +169,24 @@ return [
     'available_status' => '🏠 Disponible',
     'adopted_status' => '❤️ Adopté',
     'manage_cats_info' => 'Gérez vos chats et leurs informations',
+    'edit_professional_details' => 'Modifier Détails',
+    
+    // Traductions Select2
+    'search_association_placeholder' => 'Rechercher une association par nom ou ville...',
+    'select2_min_chars' => 'Saisissez au moins 2 caractères pour rechercher',
+    'select2_searching' => 'Recherche en cours...',
+    'select2_no_results' => 'Aucune association trouvée',
+    'select2_loading_more' => 'Chargement des résultats...',
+    
+    // Modification association bénévole
+    'edit_volunteer_association_subtitle' => 'Modifiez votre association de référence',
+    'current_status' => 'Statut Actuel',
+    'currently_linked_to' => 'Actuellement lié à',
+    'currently_independent' => 'Vous êtes actuellement un bénévole indépendant',
+    'select_new_association' => 'Sélectionner une Nouvelle Association',
+    'change_to_different_association' => 'Changer pour une association différente',
+    'become_independent_volunteer' => 'Devenir un bénévole indépendant',
+    'link_to_association_later' => 'Se lier à une association plus tard',
+    'update_association' => 'Mettre à Jour l\'Association',
+    'errors_found' => 'Quelques erreurs sont survenues:',
 ]; 

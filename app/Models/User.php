@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
@@ -36,8 +39,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'descrizione',
         'sito_web',
         'association_details_completed',
+        'professional_details_completed',
+        'associazione_id',
         'latitude',
         'longitude',
+        'foto_principale',
+        'galleria_foto',
     ];
 
     /**
@@ -60,6 +67,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'galleria_foto' => 'array',
         ];
     }
 
@@ -148,5 +156,169 @@ class User extends Authenticatable implements MustVerifyEmail
     public function postComments()
     {
         return $this->hasMany(\App\Models\PostComment::class);
+    }
+
+    /**
+     * Utenti che questo utente sta seguendo
+     */
+    public function following()
+    {
+        return $this->hasMany(UserFollow::class, 'follower_id');
+    }
+
+    /**
+     * Utenti che seguono questo utente
+     */
+    public function followers()
+    {
+        return $this->hasMany(UserFollow::class, 'following_id');
+    }
+
+    /**
+     * Gatti che questo utente sta seguendo
+     */
+    public function followedCats()
+    {
+        return $this->hasMany(CatFollow::class);
+    }
+
+    /**
+     * Relazione many-to-many per utenti seguiti
+     */
+    public function followingUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'following_id')
+                    ->withTimestamps()
+                    ->withPivot('notifications_enabled');
+    }
+
+    /**
+     * Relazione many-to-many per followers
+     */
+    public function followerUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_follows', 'following_id', 'follower_id')
+                    ->withTimestamps()
+                    ->withPivot('notifications_enabled');
+    }
+
+    /**
+     * Relazione many-to-many per gatti seguiti
+     */
+    public function followingCats()
+    {
+        return $this->belongsToMany(Cat::class, 'cat_follows')
+                    ->withTimestamps()
+                    ->withPivot('notifications_enabled');
+    }
+
+    /**
+     * Verifica se l'utente sta seguendo un altro utente
+     */
+    public function isFollowing(User $user): bool
+    {
+        return $this->followingUsers()->where('following_id', $user->id)->exists();
+    }
+
+    /**
+     * Verifica se l'utente sta seguendo un gatto
+     */
+    public function isFollowingCat(Cat $cat): bool
+    {
+        return $this->followingCats()->where('cat_id', $cat->id)->exists();
+    }
+
+    /**
+     * Segui un utente
+     */
+    public function followUser(User $user, bool $notifications = true): UserFollow
+    {
+        return UserFollow::firstOrCreate(
+            ['follower_id' => $this->id, 'following_id' => $user->id],
+            ['notifications_enabled' => $notifications]
+        );
+    }
+
+    /**
+     * Smetti di seguire un utente
+     */
+    public function unfollowUser(User $user): bool
+    {
+        return UserFollow::where('follower_id', $this->id)
+                         ->where('following_id', $user->id)
+                         ->delete() > 0;
+    }
+
+    /**
+     * Segui un gatto
+     */
+    public function followCat(Cat $cat, bool $notifications = true): CatFollow
+    {
+        return CatFollow::firstOrCreate(
+            ['user_id' => $this->id, 'cat_id' => $cat->id],
+            ['notifications_enabled' => $notifications]
+        );
+    }
+
+    /**
+     * Smetti di seguire un gatto
+     */
+    public function unfollowCat(Cat $cat): bool
+    {
+        return CatFollow::where('user_id', $this->id)
+                        ->where('cat_id', $cat->id)
+                        ->delete() > 0;
+    }
+
+    /**
+     * Ottieni conteggi dei follow
+     */
+    public function getFollowCounts(): array
+    {
+        return [
+            'following_users' => $this->followingUsers()->count(),
+            'followers' => $this->followerUsers()->count(),
+            'following_cats' => $this->followingCats()->count(),
+        ];
+    }
+
+    /**
+     * Relazione con l'associazione di appartenenza (per volontari)
+     */
+    public function associazione(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'associazione_id');
+    }
+
+    /**
+     * Relazione con i volontari dell'associazione
+     */
+    public function volontari(): HasMany
+    {
+        return $this->hasMany(User::class, 'associazione_id')->where('role', 'volontario');
+    }
+
+    /**
+     * Verifica se l'utente è collegato a un'associazione
+     */
+    public function hasAssociazione(): bool
+    {
+        return $this->associazione_id !== null;
+    }
+
+    /**
+     * Verifica se l'utente è un volontario con associazione
+     */
+    public function isVolontarioConAssociazione(): bool
+    {
+        return $this->role === 'volontario' && $this->hasAssociazione();
+    }
+
+    /**
+     * Verifica se l'utente è un volontario indipendente
+     */
+    public function isVolontarioIndipendente(): bool
+    {
+        return $this->role === 'volontario' && !$this->hasAssociazione();
     }
 }

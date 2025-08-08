@@ -1,18 +1,34 @@
 <x-main-layout>
     <x-slot name="header">
-        <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <!-- Titolo con badge mobile -->
+                    <div class="flex items-center space-x-3 sm:space-x-0">
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                            {{ __('adoptions.page_title') }}
+                        </h1>
+                        <!-- Badge visibile solo su mobile -->
+                        <span class="sm:hidden inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400">
+                            {{ $stats['total'] }} {{ __('adoptions.stats_total') }}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mt-1">
+                        {{ __('adoptions.subtitle') }}
+                    </p>
+                </div>
             </div>
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                    {{ __('adoptions.page_title') }}
-                </h1>
-                <p class="text-gray-600 dark:text-gray-400">
-                    {{ __('adoptions.subtitle') }}
-                </p>
+            
+            <!-- Badge desktop/tablet in alto a destra -->
+            <div class="hidden sm:flex">
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-base font-semibold bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400 shadow-sm">
+                    {{ $stats['total'] }} {{ __('adoptions.stats_total') }}
+                </span>
             </div>
         </div>
     </x-slot>
@@ -20,33 +36,50 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Statistiche Rapide -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">{{ $stats['total'] }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_total') }}</div>
+            <!-- Statistiche per Età -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 text-center shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="text-sm sm:text-base font-bold text-green-600 dark:text-green-400">{{ $stats['age_ranges']['kitten'] }}</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_kittens') }}</div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $stats['age_ranges']['kitten'] }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_kittens') }}</div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 text-center shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="text-sm sm:text-base font-bold text-yellow-600 dark:text-yellow-400">{{ $stats['age_ranges']['young'] }}</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_young') }}</div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ $stats['age_ranges']['young'] }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_young') }}</div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 text-center shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="text-sm sm:text-base font-bold text-blue-600 dark:text-blue-400">{{ $stats['age_ranges']['adult'] }}</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_adults') }}</div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $stats['age_ranges']['adult'] }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_adults') }}</div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 text-center shadow-sm border border-gray-100 dark:border-gray-700">
-                    <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ $stats['age_ranges']['senior'] }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_seniors') }}</div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 text-center shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="text-sm sm:text-base font-bold text-purple-600 dark:text-purple-400">{{ $stats['age_ranges']['senior'] }}</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">{{ __('adoptions.stats_seniors') }}</div>
                 </div>
             </div>
 
-            <!-- Filtri -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-8">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{{ __('adoptions.filters') }}</h3>
+            <!-- Filtri Collassabili -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 mb-4">
+                <!-- Header Filtri -->
+                <div class="p-3 sm:p-4 border-b border-gray-100 dark:border-gray-700">
+                    <button id="filters-toggle" class="w-full flex items-center justify-between text-left">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                            </svg>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">{{ __('adoptions.filters') }}</h3>
+                            @if(request()->hasAny(['cerca', 'razza', 'eta_range', 'sterilizzazione', 'livello_socialita', 'citta', 'raggio']))
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400">
+                                    Attivi
+                                </span>
+                            @endif
+                        </div>
+                        <svg id="filters-chevron" class="w-5 h-5 text-gray-500 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Contenuto Filtri -->
+                <div id="filters-content" class="hidden p-3 sm:p-4">
                 
                 <form id="filter-form" method="GET" class="space-y-6">
                     <!-- Sezione Ricerca Geografica -->
@@ -181,6 +214,7 @@
                         </a>
                     </div>
                 </form>
+                </div>
             </div>
 
             <!-- Griglia Gatti -->
@@ -294,20 +328,19 @@
                     @endforeach
                 </div>
 
-                <!-- Bottone Load More -->
+                <!-- Infinite Scroll Loading Indicator -->
                 @if($cats->hasMorePages())
-                    <div class="flex justify-center mb-8">
-                        <button id="load-more-btn" 
-                                class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200 flex items-center space-x-2"
-                                data-current-page="{{ $cats->currentPage() }}"
-                                data-has-more="true">
-                            <span id="load-more-text">{{ __('adoptions.load_more') }}</span>
-                            <svg id="load-more-spinner" class="hidden animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                    <div id="infinite-scroll-loading" class="hidden flex justify-center items-center py-8">
+                        <div class="flex items-center space-x-3 text-gray-600 dark:text-gray-400">
+                            <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                        </button>
+                            <span class="text-sm">{{ __('adoptions.loading_more') }}</span>
+                        </div>
                     </div>
+                    <!-- Invisible trigger for infinite scroll -->
+                    <div id="infinite-scroll-trigger" data-current-page="{{ $cats->currentPage() }}" data-has-more="true"></div>
                 @endif
             @else
                 <!-- Stato vuoto -->
@@ -330,6 +363,32 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Toggle Filtri
+        const filtersToggle = document.getElementById('filters-toggle');
+        const filtersContent = document.getElementById('filters-content');
+        const filtersChevron = document.getElementById('filters-chevron');
+        
+        if (filtersToggle && filtersContent && filtersChevron) {
+            // Apri i filtri automaticamente se ci sono filtri attivi
+            const hasActiveFilters = {{ request()->hasAny(['cerca', 'razza', 'eta_range', 'sterilizzazione', 'livello_socialita', 'citta', 'raggio']) ? 'true' : 'false' }};
+            
+            if (hasActiveFilters) {
+                filtersContent.classList.remove('hidden');
+                filtersChevron.style.transform = 'rotate(180deg)';
+            }
+            
+            filtersToggle.addEventListener('click', function() {
+                const isHidden = filtersContent.classList.contains('hidden');
+                
+                if (isHidden) {
+                    filtersContent.classList.remove('hidden');
+                    filtersChevron.style.transform = 'rotate(180deg)';
+                } else {
+                    filtersContent.classList.add('hidden');
+                    filtersChevron.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
         // Range slider aggiornamento valore
         const radiusSlider = document.getElementById('raggio');
         const radiusValue = document.getElementById('radius-value');
@@ -593,22 +652,35 @@
             }
         }
 
-        // Load More functionality
-        const loadMoreBtn = document.getElementById('load-more-btn');
-        const loadMoreText = document.getElementById('load-more-text');
-        const loadMoreSpinner = document.getElementById('load-more-spinner');
+        // Infinite Scroll functionality
+        const infiniteScrollTrigger = document.getElementById('infinite-scroll-trigger');
+        const infiniteScrollLoading = document.getElementById('infinite-scroll-loading');
         const catsGrid = document.getElementById('cats-grid');
+        let isLoading = false;
         
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', function() {
-                const currentPage = parseInt(this.dataset.currentPage);
+        if (infiniteScrollTrigger) {
+            // Create Intersection Observer for infinite scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !isLoading) {
+                        loadMoreCats();
+                    }
+                });
+            }, {
+                rootMargin: '100px' // Trigger 100px before the element comes into view
+            });
+            
+            observer.observe(infiniteScrollTrigger);
+            
+            function loadMoreCats() {
+                if (isLoading) return;
+                
+                isLoading = true;
+                const currentPage = parseInt(infiniteScrollTrigger.dataset.currentPage);
                 const nextPage = currentPage + 1;
                 
-                // Mostra spinner e disabilita bottone
-                loadMoreText.textContent = 'Caricamento...';
-                loadMoreSpinner.classList.remove('hidden');
-                loadMoreBtn.disabled = true;
-                loadMoreBtn.classList.add('opacity-75', 'cursor-not-allowed');
+                // Show loading indicator
+                infiniteScrollLoading.classList.remove('hidden');
                 
                 // Prepara i parametri della richiesta corrente per mantenerli nel load more
                 const form = document.getElementById('filter-form');
@@ -639,18 +711,14 @@
                         catsGrid.appendChild(catCard);
                     });
                     
-                    // Aggiorna il bottone
-                    this.dataset.currentPage = data.pagination.current_page;
+                    // Aggiorna il trigger
+                    infiniteScrollTrigger.dataset.currentPage = data.pagination.current_page;
                     
-                    if (data.pagination.has_more_pages) {
-                        // Ci sono ancora pagine, mostra di nuovo il bottone
-                        loadMoreText.textContent = '{{ __('adoptions.load_more') }}';
-                        loadMoreSpinner.classList.add('hidden');
-                        loadMoreBtn.disabled = false;
-                        loadMoreBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-                    } else {
-                        // Non ci sono più pagine, nascondi il bottone
-                        loadMoreBtn.style.display = 'none';
+                    if (!data.pagination.has_more_pages) {
+                        // Non ci sono più pagine, rimuovi il trigger e nascondi loading
+                        observer.unobserve(infiniteScrollTrigger);
+                        infiniteScrollTrigger.remove();
+                        infiniteScrollLoading.innerHTML = '<div class="text-center text-gray-500 dark:text-gray-400 text-sm py-4">{{ __("adoptions.all_cats_loaded") }}</div>';
                     }
                     
                     // Reinitializza i like buttons per i nuovi gatti
@@ -658,12 +726,13 @@
                 })
                 .catch(error => {
                     console.error('Errore nel caricamento:', error);
-                    loadMoreText.textContent = 'Errore nel caricamento';
-                    loadMoreSpinner.classList.add('hidden');
-                    loadMoreBtn.disabled = false;
-                    loadMoreBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    infiniteScrollLoading.innerHTML = '<div class="text-center text-red-500 text-sm py-4">Errore nel caricamento</div>';
+                })
+                .finally(() => {
+                    isLoading = false;
+                    infiniteScrollLoading.classList.add('hidden');
                 });
-            });
+            }
         }
 
         // Funzione per creare una card gatto da dati JSON

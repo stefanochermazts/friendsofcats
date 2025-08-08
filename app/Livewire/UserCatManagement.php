@@ -33,6 +33,7 @@ class UserCatManagement extends Component
     public $livello_socialita = 'medio';
     public $note_comportamentali = '';
     public $disponibile_adozione = true;
+    public $stato = 'di_proprieta';
     public $data_arrivo = '';
     public $data_adozione = '';
     public $foto_principale;
@@ -55,6 +56,7 @@ class UserCatManagement extends Component
         'livello_socialita' => 'required|in:basso,medio,alto',
         'note_comportamentali' => 'nullable|string',
         'disponibile_adozione' => 'boolean',
+        'stato' => 'required|in:di_proprieta,adottabile,non_adottabile,adottato',
         'data_arrivo' => 'nullable|date',
         'data_adozione' => 'nullable|date',
         'foto_principale' => 'nullable|image|max:2048',
@@ -66,9 +68,14 @@ class UserCatManagement extends Component
         $this->data_arrivo = today()->format('Y-m-d');
         $this->maxFileSizeMB = $this->getMaxUploadSizeMB(); // per la view
         $this->maxFileSizeKB = $this->maxFileSizeMB * 1024; // per la validazione
-        // Per i proprietari, di default i gatti non sono disponibili per adozione
+        
+        // Default stato e disponibilità basati sul ruolo
         if (auth()->user()->role === 'proprietario') {
             $this->disponibile_adozione = false;
+            $this->stato = 'di_proprieta';
+        } else {
+            $this->disponibile_adozione = true;
+            $this->stato = 'adottabile';
         }
     }
 
@@ -108,6 +115,7 @@ class UserCatManagement extends Component
             'livello_socialita' => 'required|in:basso,medio,alto',
             'note_comportamentali' => 'nullable|string',
             'disponibile_adozione' => 'boolean',
+            'stato' => 'required|in:di_proprieta,adottabile,non_adottabile,adottato',
             'data_arrivo' => 'nullable|date',
             'data_adozione' => 'nullable|date',
             'foto_principale' => 'nullable|image|max:' . $this->maxFileSizeKB,
@@ -187,6 +195,7 @@ class UserCatManagement extends Component
             'livello_socialita' => $this->livello_socialita,
             'note_comportamentali' => $this->note_comportamentali ?: null,
             'disponibile_adozione' => $this->disponibile_adozione,
+            'stato' => $this->stato,
             'data_arrivo' => $this->data_arrivo ?: null,
             'data_adozione' => $this->data_adozione ?: null, // Fix: stringa vuota → null
             'user_id' => auth()->id(),
@@ -238,16 +247,39 @@ class UserCatManagement extends Component
         session()->flash('success', "Gatto '{$nome}' eliminato con successo!");
     }
 
-    public function toggleAdoption($catId)
+    public function updateStato($catId, $nuovoStato)
     {
         $cat = Cat::where('user_id', auth()->id())->findOrFail($catId);
-        $cat->update([
-            'disponibile_adozione' => !$cat->disponibile_adozione,
-            'data_adozione' => !$cat->disponibile_adozione ? now() : null,
-        ]);
+        
+        $updateData = ['stato' => $nuovoStato];
+        
+        // Aggiorna i campi legacy per compatibilità
+        switch ($nuovoStato) {
+            case 'adottabile':
+                $updateData['disponibile_adozione'] = true;
+                $updateData['data_adozione'] = null;
+                break;
+            case 'adottato':
+                $updateData['disponibile_adozione'] = false;
+                $updateData['data_adozione'] = now();
+                break;
+            case 'di_proprieta':
+            case 'non_adottabile':
+                $updateData['disponibile_adozione'] = false;
+                $updateData['data_adozione'] = null;
+                break;
+        }
+        
+        $cat->update($updateData);
 
-        $status = $cat->disponibile_adozione ? 'disponibile' : 'adottato';
-        session()->flash('success', "Stato di '{$cat->nome}' cambiato in: {$status}!");
+        $statoLabels = [
+            'di_proprieta' => __('cats.owned'),
+            'adottabile' => __('cats.available'),
+            'non_adottabile' => __('cats.not_available'),
+            'adottato' => __('cats.adopted')
+        ];
+
+        session()->flash('success', "Stato di '{$cat->nome}' cambiato in: {$statoLabels[$nuovoStato]}!");
     }
 
     private function resetForm()
@@ -271,7 +303,8 @@ class UserCatManagement extends Component
         $this->foto_principale = null;
         $this->galleria_foto = [];
         
-        // Default adozione basato sul ruolo
+        // Default stato basato sul ruolo
+        $this->stato = auth()->user()->role === 'proprietario' ? 'di_proprieta' : 'adottabile';
         $this->disponibile_adozione = auth()->user()->role !== 'proprietario';
     }
 
@@ -293,6 +326,7 @@ class UserCatManagement extends Component
         $this->livello_socialita = $cat->livello_socialita;
         $this->note_comportamentali = $cat->note_comportamentali;
         $this->disponibile_adozione = $cat->disponibile_adozione;
+        $this->stato = $cat->stato ?? 'di_proprieta';
         $this->data_arrivo = $cat->data_arrivo?->format('Y-m-d');
         $this->data_adozione = $cat->data_adozione?->format('Y-m-d');
         // Non carichiamo le foto esistenti nel form per evitare conflitti
@@ -352,35 +386,26 @@ class UserCatManagement extends Component
      */
     public function getStatoGatto($cat)
     {
-        // 1. Priorità massima: Se ha data_adozione -> Adottato
-        if ($cat->data_adozione) {
-            return [
-                'testo' => __('cats.adopted'),
-                'classe' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
-            ];
-        }
-
-        // 2. Se disponibile per adozione -> Disponibile
-        if ($cat->disponibile_adozione) {
-            return [
-                'testo' => __('cats.available'),
-                'classe' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-            ];
-        }
-
-        // 3. Se il proprietario è un 'proprietario' e NON disponibile -> Di proprietà
-        if ($cat->user && $cat->user->role === 'proprietario') {
-            return [
+        $statoMap = [
+            'di_proprieta' => [
                 'testo' => __('cats.owned'),
                 'classe' => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-            ];
-        }
-
-        // 4. Altrimenti -> In valutazione (per associazioni/rifugi)
-        return [
-            'testo' => __('cats.evaluating'),
-            'classe' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+            ],
+            'adottabile' => [
+                'testo' => __('cats.available'),
+                'classe' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+            ],
+            'non_adottabile' => [
+                'testo' => __('cats.not_available'),
+                'classe' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+            ],
+            'adottato' => [
+                'testo' => __('cats.adopted'),
+                'classe' => 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
+            ]
         ];
+
+        return $statoMap[$cat->stato] ?? $statoMap['di_proprieta'];
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cat;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class CatProfileController extends Controller
@@ -64,6 +65,37 @@ class CatProfileController extends Controller
             'arrival_formatted' => $arrivalFormatted,
         ];
 
-        return view('cats.show', compact('cat', 'similarCats', 'recentPosts', 'stats'));
+        // Informazioni sui follow (solo per utenti autenticati)
+        $isFollowing = false;
+        $followersCount = $cat->getFollowersCount();
+        $userCanFollow = false;
+        
+        if (Auth::check()) {
+            $user = Auth::user();
+            $isFollowing = $user->isFollowingCat($cat);
+            $userCanFollow = true;
+        }
+
+        // Calcola il numero totale di foto per la galleria
+        $totalPhotos = 0;
+        if ($cat->galleria_foto && is_array($cat->galleria_foto)) {
+            $totalPhotos = count($cat->galleria_foto);
+            if ($cat->foto_principale) {
+                $totalPhotos++; // Include la foto principale
+            }
+        } elseif ($cat->foto_principale) {
+            $totalPhotos = 1;
+        }
+
+        return view('cats.show', compact(
+            'cat', 
+            'similarCats', 
+            'recentPosts', 
+            'stats', 
+            'totalPhotos',
+            'isFollowing',
+            'followersCount',
+            'userCanFollow'
+        ));
     }
 }

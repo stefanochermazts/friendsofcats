@@ -14,6 +14,8 @@ return [
     'add_to_favorites' => 'Zu Favoriten hinzufügen',
     'contact_shelter' => 'Tierheim kontaktieren',
     'load_more' => 'Mehr Katzen laden',
+    'loading_more' => 'Weitere Katzen werden geladen...',
+    'all_cats_loaded' => 'Alle Katzen wurden geladen',
     'age_months' => ':count Monat|:count Monate',
     'age_years' => ':count Jahr|:count Jahre',
     'age_display' => ':years und :months',

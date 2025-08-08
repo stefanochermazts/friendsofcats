@@ -12,10 +12,10 @@
         {{ __('adoptions.title') }}
     </a>
     
-    {{-- Contact --}}
-    <a href="{{ route('contact') }}" 
-       class="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
-        {{ __('contact.title') }}
+    {{-- Professionals --}}
+    <a href="{{ route('professionals.index') }}" 
+       class="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200 font-medium">
+        {{ __('professionals.directory_title') }}
     </a>
     
     {{-- CatBook (only for authenticated users) --}}
@@ -26,16 +26,16 @@
         </a>
     @endauth
     
+    {{-- Contact --}}
+    <a href="{{ route('contact') }}" 
+       class="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
+        {{ __('contact.title') }}
+    </a>
+    
     {{-- Future menu items can be added here --}}
     {{-- 
     <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
         Menu Item
     </a>
     --}}
-</nav> 
-    {{-- 
-    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
-        Menu Item
-    </a>
-    --}}
-</nav> 
+</nav>

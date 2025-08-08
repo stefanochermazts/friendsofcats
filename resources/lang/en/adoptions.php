@@ -98,6 +98,8 @@ return [
     'view_all_cats' => 'View all cats',
     'back_to_adoptions' => 'Back to Adoptions',
     'load_more' => 'Load more cats',
+    'loading_more' => 'Loading more cats...',
+    'all_cats_loaded' => 'All cats have been loaded',
     'contact_form' => 'Use contact form',
     
     // Email Templates

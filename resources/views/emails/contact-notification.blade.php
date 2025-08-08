@@ -72,7 +72,7 @@
     
     <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e5e5;">
         <p style="margin: 0; font-size: 12px; color: #666;">
-            {{ $translations['contact_notification']['footer_text'] ?? 'Questo messaggio è stato inviato automaticamente dal sistema FriendsOfCats.' }}
+            {{ $translations['contact_notification']['footer_text'] ?? 'Questo messaggio è stato inviato automaticamente dal sistema CatFriends Club.' }}
         </p>
         <p style="margin: 5px 0 0 0; font-size: 12px; color: #666;">
             {{ str_replace(':datetime', now()->format('d/m/Y H:i:s'), $translations['contact_notification']['date_time'] ?? 'Ricevuto il :datetime') }}
