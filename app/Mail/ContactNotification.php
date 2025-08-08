@@ -55,7 +55,7 @@ class ContactNotification extends Mailable
                 'contact' => $this->contact,
                 'appName' => config('app.name'),
                 'logoUrlLight' => $appUrl . '/images/cat-logo.svg',
-                'logoUrlDark' => $appUrl . '/images/cat-logo.svg',
+                'logoUrlDark' => $appUrl . '/images/cat-logo-dark.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
                 'title' => $this->isAdoptionRequest() ? 'Richiesta di adozione' : 'Nuovo messaggio di contatto',

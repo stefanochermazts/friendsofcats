@@ -47,7 +47,7 @@ class ContactConfirmation extends Mailable
                 'contact' => $this->contact,
                 'appName' => config('app.name'),
                 'logoUrlLight' => $appUrl . '/images/cat-logo.svg',
-                'logoUrlDark' => $appUrl . '/images/cat-logo.svg',
+                'logoUrlDark' => $appUrl . '/images/cat-logo-dark.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
                 'title' => 'Conferma ricezione messaggio',

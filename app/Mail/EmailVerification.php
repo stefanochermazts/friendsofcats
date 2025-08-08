@@ -48,7 +48,7 @@ class EmailVerification extends Mailable
                 'userName' => $this->userName,
                 'appName' => config('app.name'),
                 'logoUrlLight' => $appUrl . '/images/cat-logo.svg',
-                'logoUrlDark' => $appUrl . '/images/cat-logo.svg',
+                'logoUrlDark' => $appUrl . '/images/cat-logo-dark.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
                 'title' => 'Verifica il tuo indirizzo email',
