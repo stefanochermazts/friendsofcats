@@ -1,61 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🐱 CatFriends Club
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+CatFriends Club è una piattaforma TALL (Laravel + Livewire + Alpine.js + Tailwind CSS) per la gestione di gatti, adozioni, CatBook (social), volontari e profili professionali (veterinari e toelettatori). Include pannello admin con Filament e un sistema multilingua completo (IT, EN, DE, FR, ES, SL).
+
+<p align="left">
+  <img src="public/images/cat-logo.svg" alt="CatFriends Club" height="64" />
 </p>
 
-## About Laravel
+- **Framework**: Laravel
+- **Admin**: Filament
+- **Frontend**: Blade, Livewire, Alpine.js, Tailwind CSS
+- **DB**: PostgreSQL
+- **Altre dipendenze**: Laravel Mail, Storage pubblico, Scheduler
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Indice
+- [Funzionalità principali](#funzionalità-principali)
+- [Requisiti](#requisiti)
+- [Avvio rapido](#avvio-rapido)
+- [Configurazione ambiente](#configurazione-ambiente)
+- [Database e seeding](#database-e-seeding)
+- [Comandi utili](#comandi-utili)
+- [Build front-end](#build-front-end)
+- [Testing](#testing)
+- [Scheduler in produzione](#scheduler-in-produzione)
+- [Traduzioni](#traduzioni)
+- [Struttura principali rotte](#struttura-principali-rotte)
+- [Sicurezza](#sicurezza)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Funzionalità principali
+- ✅ Gestione gatti con foto principale e galleria (drag & drop, preview, rimozione, validazione dimensione lato client/server)
+- ✅ Dettaglio gatto con layout responsive, microchip, galleria foto, OG tags e social sharing
+- ✅ Adozioni pubbliche con filtri compatti e ricerca per vicinanza (città + raggio)
+- ✅ CatBook con filtri lingua integrati al selettore globale, link al profilo del gatto e traduzioni complete
+- ✅ Volontari con stesse funzioni dei proprietari e collegamento opzionale ad associazione
+- ✅ Sezione Professionisti (veterinari/toelettatori) con foto principale + galleria, profilo pubblico e directory
+- ✅ Directory Professionisti con ricerca per vicinanza (come Adozioni) e autocomplete città
+- ✅ Moduli di contatto: associazioni e professionisti, con email di conferma/notification
+- ✅ Admin panel con Filament
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Per maggiori dettagli: `docs/features.md` e `docs/analysis/analisi-funzionale.md`.
 
-## Learning Laravel
+## Requisiti
+- PHP 8.2+
+- Composer 2+
+- Node.js 18+ / PNPM o NPM
+- PostgreSQL 13+
+- Estensioni PHP comuni (pdo_pgsql, fileinfo, mbstring, openssl, etc.)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Avvio rapido
+```bash
+# 1) Installazione dipendenze backend/frontend
+composer install
+npm install
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# 2) Copia configurazione
+cp .env.example .env
+# oppure su Windows
+copy .env.example .env
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 3) Genera APP_KEY
+php artisan key:generate
 
-## Laravel Sponsors
+# 4) Configura DB in .env (vedi sezione successiva) e poi:
+php artisan migrate --seed
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# 5) Link storage pubblico
+php artisan storage:link
 
-### Premium Partners
+# 6) Avvio
+php artisan serve --port=8001
+npm run dev
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Apri: `http://localhost:8001`.
 
-## Contributing
+## Configurazione ambiente
+Nel file `.env` imposta almeno:
+```
+APP_NAME="CatFriends Club"
+APP_URL=http://localhost:8001
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=catfriends
+DB_USERNAME=postgres
+DB_PASSWORD=secret
 
-## Code of Conduct
+FILESYSTEM_DISK=public
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Email (per moduli contatto & verifiche)
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_FROM_ADDRESS="no-reply@localhost"
+MAIL_FROM_NAME="CatFriends Club"
 
-## Security Vulnerabilities
+# Email fallback destinatario (notifiche contatti)
+ADMIN_EMAIL=stefano.chermaz@gmail.com
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Database e seeding
+- Le migrazioni sono in `database/migrations`.
+- Il seeder principale (`php artisan migrate --seed`) crea dati minimi. Sono presenti anche comandi di utilità in `app/Console/Commands` (es. creazione gatti di esempio).
 
-## License
+## Comandi utili
+```bash
+# Pulizia cache
+php artisan config:clear && php artisan view:clear && php artisan cache:clear
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Fix storage
+php artisan storage:link
+
+# Filament (admin)
+php artisan serve # poi visita /admin (richiede utente con ruolo admin)
+```
+
+## Build front-end
+Durante lo sviluppo:
+```bash
+npm run dev
+```
+In produzione:
+```bash
+npm run build
+```
+
+## Testing
+```bash
+php artisan test
+```
+
+## Scheduler in produzione
+Alcune funzionalità (es. job schedulati per generare post automatici) richiedono il Laravel Scheduler. Vedi guida: `docs/deployment/scheduler-setup.md`.
+
+## Traduzioni
+- File: `resources/lang/{it,en,de,fr,es,sl}`
+- Le chiavi comuni sono anche in i18n JSON (`resources/lang/*.json`).
+
+## Struttura principali rotte
+- Pubblico
+  - `/` Homepage
+  - `/adoptions` Vetrina adozioni + ricerca per vicinanza
+  - `/professionals` Directory professionisti + ricerca per vicinanza
+  - `/professionals/{id}` Profilo professionista con foto e contatti
+  - `/catbook` Feed (richiede login)
+  - `/contact` Modulo contatti (prefill per gatto/associazione/professionista)
+- Admin (Filament)
+  - `/admin`
+
+## Sicurezza
+- Dati form validati via Request/Livewire
+- Upload immagini su disco pubblico con limiti dimensione (adeguati a `upload_max_filesize`)
+- Protezione CSRF per i form
+
+---
+Se qualcosa non funziona o vuoi suggerire una miglioria, apri una issue o invia una PR. Buon lavoro con CatFriends Club! 🐾

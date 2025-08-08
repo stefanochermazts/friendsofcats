@@ -2,12 +2,13 @@
 
 ## Panoramica
 
-Il sistema multilingue di CatFriends.club supporta 5 lingue:
+Il sistema multilingue di CatFriends Club supporta 6 lingue:
 - **Italiano (it)** - Lingua predefinita
 - **Inglese (en)**
 - **Francese (fr)**
 - **Tedesco (de)**
 - **Spagnolo (es)**
+- **Sloveno (sl)**
 
 ## Funzionalità Implementate
 
@@ -48,6 +49,7 @@ Il sistema multilingue di CatFriends.club supporta 5 lingue:
 - `resources/lang/fr/emails.php`
 - `resources/lang/de/emails.php`
 - `resources/lang/es/emails.php`
+- `resources/lang/sl/emails.php` (se previsto)
 
 **Layout Email:**
 - **Layout minimal**: Design pulito con bordo nero e sfondo bianco
@@ -83,7 +85,7 @@ Il sistema multilingue di CatFriends.club supporta 5 lingue:
 - Note informative
 - Messaggi di errore
 
-### 5. Pagina Contatti Multilingue
+### 5. Pagina Contatti Multilingue e Directory Professionisti
 
 **File di traduzione creati:**
 - `resources/lang/it/contact.php`
@@ -91,6 +93,11 @@ Il sistema multilingue di CatFriends.club supporta 5 lingue:
 - `resources/lang/fr/contact.php`
 - `resources/lang/de/contact.php`
 - `resources/lang/es/contact.php`
+- `resources/lang/sl/contact.php`
+
+**Directory Professionisti:**
+- Traduzioni in `resources/lang/{lang}/professionals.php`
+- Pulsanti e label (es. `apply_filters`) allineati
 
 **Contenuti tradotti:**
 - Titoli e sottotitoli
@@ -218,8 +225,7 @@ return back()->withErrors(['role' => __('dashboard.role_save_error')]);
 - I file devono seguire la convenzione `{nome}.php`
 
 ### Middleware di Lingua
-- `SetLocale`: Gestisce la lingua basata su parametri URL e sessione
-- `AuthLocale`: Forza l'italiano per le route di autenticazione
+- `SetLocale`/`AuthLocale` o equivalente (vedi middleware effettivi in `app/Http/Middleware`)
 
 ### Gestione Sessione
 - La lingua viene salvata in sessione (`Session::put('locale', $locale)`)

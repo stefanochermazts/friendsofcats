@@ -1,154 +1,124 @@
-# Analisi Funzionale - CatFriends.club
+# Analisi Funzionale - CatFriends Club
 
 ## 1. Introduzione
 
-Il documento descrive in dettaglio la **Piattaforma CatFriends.club**, un sistema web e mobile pensato unicamente per la gestione di **gatti**, destinato a:
+Questo documento descrive la piattaforma web **CatFriends Club**, focalizzata sulla gestione di **gatti**, adozioni, social (CatBook) e profili professionali. Utenti destinatari:
 
-* **Associazioni animaliste** (rifugi, onlus)
-* **Proprietari di gatti**
-* **Veterinari**
-* **Volontari** (foster carers, cat sitter)
-* **Donatori**
-* **Toelettatori** (groomers)
-* **Visitatore Pubblico** (amanti dei gatti)
+- **Associazioni** (rifugi, onlus)
+- **Proprietari**
+- **Volontari** (con o senza associazione)
+- **Veterinari**
+- **Toelettatori**
+- **Visitatori Pubblici**
 
-Scopo: definire funzionalità, flussi utente e requisiti per la versione MVP e per eventuali funzioni avanzate (memoriale virtuale, feed comunitario) .
+Obiettivo: definire funzionalità reali dell’MVP presenti in codebase e la roadmap immediata.
 
 ## 2. Scopo e Obiettivi
 
-1. Centralizzare la gestione dei gatti (anagrafiche, adozioni, volontari) per rifugi e associazioni .
-2. Fornire ai proprietari e veterinari un’area dedicata al proprio gatto (salute, feed, ricordi, memoriale).
-3. Coinvolgere la community (volontari, donatori, cat sitter) nella cura e promozione delle adozioni.
-4. Popolare automaticamente la sezione pubblica del sito con dati inseriti in area riservata.
-5. Garantire una piattaforma focalizzata **esclusivamente** sui gatti .
+1. Centralizzare gestione gatti (anagrafiche, stati, media) per associazioni, proprietari e volontari.
+2. Fornire profili pubblici per gatti e professionisti con contatti e condivisione social.
+3. Offrire una directory professionisti con ricerca per vicinanza e contatto diretto.
+4. Integrare un feed sociale (CatBook) con filtri lingua e condivisione.
+5. Garantire un sistema multilingua completo (IT, EN, DE, FR, ES, SL) e branding coerente “CatFriends Club”.
 
 ## 3. Ambito del Sistema
 
-* **Utenti registrati**: associazioni, volontari, proprietari, veterinari, donatori, toelettatori.
-* **Area pubblica**: adozioni, memoriale, feed, storie di successo.
-* **Tecnologie MVP**: Laravel TALL (Laravel, Livewire, Alpine.js, Tailwind CSS), PostgreSQL, servizi di notifica. Per la costruzione degli admin panel vorrei che tu usassi filament e come template di frontend mi piacerebbe che prendessi spunto da questo sito.
+- **Utenti registrati**: associazioni, volontari, proprietari, veterinari, toelettatori, admin.
+- **Area pubblica**: adozioni (`/adoptions`), profili gatti (`/cats/{id}`), directory professionisti (`/professionals`), CatBook (parziale), contatti.
+- **Tecnologie**: TALL Stack (Laravel, Livewire, Alpine.js, Tailwind CSS), PostgreSQL, Filament (admin).
+- **i18n**: 6 lingue supportate (it, en, de, fr, es, sl).
 
 ## 4. Attori
 
 | Attore                           | Descrizione                                                                  |
 | -------------------------------- | ---------------------------------------------------------------------------- |
-| Associazione / Admin             | Gestisce anagrafiche, volontari, adozioni, memoriale.                        |
-| Volontario (Foster / Cat Sitter) | Riceve incarichi, aggiorna disponibilità, supporta socializzazione.          |
-| Proprietario Gatto               | Gestisce profilo gatto, salute, ricordi, memoriale.                          |
-| Veterinario                      | Aggiorna diagnosi, piani di cura, risultati di esami, prescrive trattamenti. |
-| Donatore                         | Effettua donazioni e supporta progetti specifici.                            |
-| Toelettatore (Groomer)           | Gestisce servizi di toelettatura e benessere estetico dei gatti.             |
-| Visitatore Pubblico              | Consulta vetrina adozioni, storie di successo, feed comunitario.             |
-| Sistema di Notifiche             | Gestisce invio push/email per promemoria, incarichi e aggiornamenti.         |
+| Associazione / Admin             | Gestisce gatti, volontari, adozioni, profilo associazione.                  |
+| Volontario (con/ senza assoc.)   | Gestisce gatti e può collegarsi a un’associazione.                          |
+| Proprietario Gatto               | Gestisce i propri gatti e i relativi media.                                  |
+| Veterinario                      | Profilo pubblico professionale e gestione dettagli studio.                   |
+| Toelettatore (Groomer)           | Profilo pubblico professionale e servizi offerti.                            |
+| Visitatore Pubblico              | Naviga adozioni, consulta profili gatti e professionisti, contatta.          |
 
-## 5. Funzionalità e Use Cases
+## 5. Funzionalità e Use Cases (MVP)
 
-### 5.1 Autenticazione & Profili
+### 5.1 Autenticazione, Email e Profili
+- Registrazione/login con verifica email. Invio email di verifica personalizzata via `User::sendEmailVerificationNotification()` (no duplicazioni). 
+- Notifica admin su nuova registrazione inviata immediatamente (senza coda). Email e layout brandizzati “CatFriends Club”.
+- Salvataggio lingua utente (`locale`) e invio email nella lingua corretta.
 
-* Registrazione/Login (email+pwd, ruoli: associazione, volontario, proprietario, veterinario, donatore, toelettatore).
-* Gestione Profilo (nome, contatti, logo/foto, certificazioni veterinario).
+### 5.2 Gatti: gestione e profilo pubblico
+- CRUD gatti con stati: “Di proprietà”, “Adottabile”, “Non adottabile”, “Adottato”.
+- Foto principale + galleria, drag & drop, preview, rimozione, validazione dimensione file.
+- Pagina dettaglio `/cats/{id}` ottimizzata: layout non full-width, hero 400px, immagine principale inclusa in galleria, microchip mostrato correttamente, “giorni dalla permanenza” in formato leggibile (X giorni e Y ore).
+- OG tags e pulsanti di condivisione social; nome gatto nei post CatBook cliccabile e linkato al profilo.
+- “Featured Cats” in home reindirizza correttamente a `/cats/{id}`.
 
-### 5.2 Gestione Animali (Associazioni)
+### 5.3 Adozioni pubbliche (`/adoptions`)
+- Filtri compatti in contenitore collassabile; statistiche ridotte e coerenti (totale in header, età in una riga a 4 colonne). 
+- Conteggio totale gatti in alto a destra (desktop/tablet).
+- Infinite scroll al posto di “Load more”.
 
-* CRUD schede (nome, razza, età, stato sanitario, microchip, comportamento).
-* Filtri avanzati (razza, età, sterilizzazione, livello di socialità).
-* Lista d’attesa per adozioni e organizzazione di open-day.
+### 5.4 CatBook
+- Creazione post con lingua automatica in base alla lingua selezionata in header.
+- Filtro lingua integrato con selettore globale; post mostrati secondo lingua corrente.
+- Pulsanti “Mi piace”, “Commenta”, “Condividi” tradotti in tutte le lingue supportate; fix traduzioni DE.
+- Nome gatto cliccabile → dettaglio gatto. OG tags su condivisione.
+- Meccanismo di generazione automatica post sostituito con job pianificato (vedi `docs/deployment/scheduler-setup.md`).
+- Sistema “Segui” (follow) per gatti e utenti implementato a livello di modello/DB; notifiche roadmap.
 
-### 5.3 Piattaforma di presentazione per i  Gatti
+### 5.5 Directory Professionisti (`/professionals`)
+- Profili pubblici per veterinari/toelettatori: foto principale, galleria, descrizione, contatti, link Google Maps.
+- Upload foto come per i gatti (drag & drop, preview, DataTransfer fix per foto principale). 
+- Ricerca per vicinanza (città + raggio) con geocodifica Nominatim e Haversine in PostgreSQL; fix su alias `distance` (uso `whereRaw`).
+- Slider raggio con label dinamica; pulsante tradotto `professionals.apply_filters` in 6 lingue.
+- Card con immagine più alta (doppia altezza) e dettagli sintetici; contatto diretto: email e form “Scrivi un messaggio” con precompilazione.
 
-5.3.1. Vetrina “Card” a Griglia
-Card minimal: sfondo bianco, bordo sottilissimo nero, foto in alto che occupa ~70% della card, sotto nome, età, razza e “badge” (adottabile, sterilizzato, vaccinato).
+### 5.6 Navigazione e Responsive
+- Menù desktop + hamburger menu mobile coerenti tra home e sezioni autenticate.
+- Ordine voci: Home → Adozioni → Professionisti → CatBook (se loggato) → Contattaci.
+- Ottimizzazione layout mobile CatBook (margini ridotti, textarea/select/bottone foto full-width). 
 
-Hover / Focus: al passaggio del mouse o al tocco, la card “si solleva” con un’ombra lieve e compare una call-to-action (“Scopri di più”, “Metti like”).
-
-Layout responsive: 4 colonne su desktop, 2 su tablet, 1 su mobile.
-
-5.3.2. Scheda Dettaglio “Pet Profile”
-Hero image: full-width con overlay semitrasparente per nome razza/età.
-
-Info: caratteristiche, microchip, storia.
-
-Salute: vaccini, eventuali cure.
-
-Gallery: griglia di foto e video inviate da volontari e proprietari.
-
-Storie & Commenti: mini‐feed dove gli utenti possono lasciare un pensiero o un ringraziamento.
-
-5.3.3. Feed Sociale “CatBook”
-Per fare questo punto ti prego di gestire gli og:tags corretti per le condivisioni sugli altri social.
-
-Timeline cronologica: post brevi (foto + descrizione di 200 caratteri max) caricati da volontari, proprietari e staff delle associazioni.
-
-Interazioni: like / ❤️, commenti, share (link diretto, WhatsApp, social esterni).
-
-Hashtag & Tag: #Adozione, #GattoAnziano, #FIV+, #GattoDelMese per filtrare e scoprire contenuti.
-
-Segui: possibilità di seguire un gatto specifico o un volontario/proprietario, per ricevere notifiche sui loro aggiornamenti.
-
-5.3.4. Gamification & Community
-Badge e punti: chi lascia commenti di supporto, condivide post o carica foto guadagna “punti” e badge (es. “SuperVolunteer”, “CatLover”).
-
-Leaderboard: classifica mensile dei contributori più attivi.
-
-Eventi: creazione di mini-eventi (Open-day, raccolte fondi) con timeline dedicata e RSVP integrato.
-
-5.3.5. Filtri & Scoperte
-Mappa interattiva: geolocalizzazione dei rifugi con gatti disponibili vicini all’utente.
-
-Smart filters: età, sterilizzazione, compatibilità con altri animali, caratteristiche caratteriali (giocherellone, timido, coccolone).
-
-Random “Cat Surprise”: un pulsante per farti scoprire un gatto a caso della community.
-
-6. Notifiche & Personalizzazione
-Watchlist: salva i tuoi gatti preferiti in una lista e ricevi alert quando cambiano status (es. “adottato”, “nuova foto”).
-
-Reminder: per seguire i progressi di un gatto o per essere informato di nuovi post in certi hashtag.
-
-Dark Mode Engagement: in dark mode le immagini risaltano ancora meglio, crea uno slider che mostri “prima/dopo” (per cure, trasformazioni).
-
-### 5.4 Registro Salute & Promemoria (Proprietari & Veterinari)
-
-* CRUD voci vaccini e trattamenti (FIV, FeLV, calicivirus, ecc.).
-* Pianificazione visite veterinarie con reminder configurabili.
-* Upload referti, esami del sangue e documenti veterinari.
-* Dashboard veterinario per monitoraggio salute multiplo gatto.
-
-### 5.5 Rubrica Volontari & Workflow
-
-* Elenco volontari con disponibilità e competenze (foster, cat sitter).
-* Assegnazione incarichi via notifica push/email.
-* Monitoraggio formazione e certificazioni volontari.
-
-### 5.6 Servizi Aggiuntivi Professionali
-
-* Prenotazione toelettatura con toelettatori certificati.
-* Donazioni mirate (vaccini, sterilizzazione) per singoli progetti.
-
-### 5.7 Sezioni Pubbliche
-
-* **Adozioni**: elenco gatti disponibili, aggiornato in real time dai dati CRM.
-* **Ricordi**: memoriale virtuale dei gatti adottati o scomparsi.
-* **Feed Aggregato**: mix di ultime adozioni, storie, memoriale, con widget “Gatto della settimana”.
-* **Segnalazioni Lost & Found**: alert georiferiti per gatti smarriti e ritrovati.
+### 5.7 Homepage
+- Sezione hero, CTA per registrazione, adozioni, CatBook.
+- Statistiche reali e coerenti lato DB con endpoint dedicato e contatori animati.
+- Traduzioni complete, incluso fix per “Veterinari e Toelettatori”.
 
 ## 6. Requisiti Non-Funzionali
+- **Sicurezza**: CSRF, validazione input, prepared statements Eloquent/Query Builder, middleware ruoli.
+- **Performance**: infinite scroll, lazy loading immagini, query ottimizzate con eager loading e indici.
+- **i18n**: 6 lingue complete; lingua utente persistita; email multilingue.
+- **Disponibilità**: scheduling via cron per job pianificati; invii email immediati (nessun worker richiesto per le notifiche base).
+- **Accessibilità**: attenzione a contrasto, ruoli ARIA nelle viste principali.
+- **Logging**: uso di log per troubleshooting (es. richieste contatto professionisti).
 
-* **Focalizzazione**: il sistema supporta **solo** gatti.
-* **Sicurezza & GDPR**: crittografia dati sensibili, gestione consensi per dati sanitari.
-* **Performance**: API ≤ 200 ms CRUD.
-* **Scalabilità**: architettura modulare microservizi.
-* **Disponibilità**: SLA ≥ 99.5%.
-* **Accessibilità**: conformità **WCAG 2.1 AA** per frontend e API.
-* **i18n**: Italiano, Inglese, Spagnolo, Francese, Tedesco.
-* **Theming**: supporto per temi chiaro e scuro, con switch manuale e rilevazione automatica delle preferenze di sistema.
+## 7. Architettura Tecnica
+- **Backend**: Laravel 11, Filament per pannello admin.
+- **Frontend**: Blade, Livewire, Alpine.js, Tailwind CSS.
+- **Database**: PostgreSQL; tabelle chiave: `users`, `cats`, `posts`, `post_comments`, `post_likes`, `cat_follows`, `user_follows`, `contacts`.
+- **Storage**: upload pubblico per media (foto principale + gallerie), gestione rimozione file.
+- **Geocoding**: `App\Services\GeocodingService` (Nominatim), caching opportuno; Haversine in query per filtro distanza.
+- **Routing**: pagine pubbliche (`/adoptions`, `/professionals`, `/cats/{id}`), CatBook, dashboard; middleware lingua (`SetLocale`/`AuthLocale`).
+- **Email**: `App\Mail\EmailVerification`, `RegistrationNotification`; layout `emails/layouts/minimal.blade.php` brand “CatFriends Club”.
+- **Scheduler**: job schedulato per generazione post; vedi `docs/deployment/scheduler-setup.md`.
 
-## 7. Stile Visivo e Design
+## 8. Multilingua e Localizzazione
+- Traduzioni in `resources/lang/{locale}` (IT, EN, DE, FR, ES, SL), file: `emails.php`, `verification.php`, `contact.php`, `professionals.php`, ecc.
+- Integrazione selettore lingua header con CatBook (filtri/creazione post). 
+- Riferimento: `docs/multilingual-system.md`.
 
-* **Approccio Minimalista**: layout pulito con uso preminente di bianco e nero per background e tipografia, garantendo massima leggibilità e riducendo al minimo gli elementi distraenti.
-* **Eleganza e Sobrietà**: utilizzo di spaziature generose, font sans-serif moderni e accenti visivi discreti per un'estetica raffinata.
-* **Valorizzazione delle Immagini**: griglie e card pensate per mettere in risalto le foto inviate dagli utenti, con possibilità di visualizzazioni full-screen e gallerie interattive.
-* **Coerenza Visuale**: componenti UI armonizzate, con stili uniformi per bottoni, form e card, per un'esperienza utente fluida e intuitiva.
+## 9. SEO, Open Graph e Condivisione
+- OG tags su `/cats/{id}` e condivisione CatBook.
+- Pulsanti social (Facebook, Twitter/X, WhatsApp) e JSON-LD (ove pertinente) roadmap.
+
+## 10. Roadmap (Post-MVP)
+- Memoriale virtuale e storie di successo.
+- Gamification (badge, punti) e leaderboard community.
+- Eventi (open-day, raccolte fondi) con RSVP.
+- Mappa interattiva (gatti e professionisti).
+- Chat diretta e messaggistica privata.
+- Notifiche push tempo reale.
+- Mobile app.
 
 ---
 
-*Fine Analisi Funzionale CatFriends.club MVP + Memoriale Virtuale*
+*Fine Analisi Funzionale CatFriends Club (MVP)*

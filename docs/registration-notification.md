@@ -9,7 +9,7 @@ Questa funzionalità invia automaticamente una email di notifica ogni volta che 
 Aggiungi la seguente variabile nel file `.env`:
 
 ```env
-ADMIN_EMAIL=admin@tuodominio.com
+ADMIN_EMAIL=stefano.chermaz@gmail.com
 ```
 
 ### 2. Configurazione Mail
@@ -46,7 +46,7 @@ Il listener `SendRegistrationNotification` viene eseguito automaticamente quando
 
 ### Coda
 
-Il listener implementa `ShouldQueue`, quindi le email vengono inviate in background per non rallentare l'esperienza utente.
+Il listener invia immediatamente (nessuna coda) per evitare ritardi e duplicazioni.
 
 ## Test
 
@@ -99,7 +99,7 @@ Per disabilitare temporaneamente la notifica, rimuovi il listener dall'EventServ
 
 ### Email non inviata
 
-1. Verifica che `ADMIN_EMAIL` sia configurato nel `.env`
+1. Verifica che `ADMIN_EMAIL` sia configurato nel `.env` o in `config/mail.php` come `admin_email`
 2. Controlla la configurazione delle mail
 3. Verifica i log per errori
 4. Usa il comando di test per verificare

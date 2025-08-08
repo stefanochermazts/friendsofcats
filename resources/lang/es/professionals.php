@@ -27,4 +27,5 @@ return [
     'back_to_directory' => 'Volver al Directorio',
     'contact_request' => 'Solicitud de contacto',
     'write_message' => 'Escribir un mensaje',
+    'apply_filters' => 'Aplicar filtros',
 ];

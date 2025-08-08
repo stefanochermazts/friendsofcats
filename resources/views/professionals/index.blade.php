@@ -21,6 +21,63 @@
     <div class="py-12 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
+            <!-- Filtri Vicinanza -->
+            <div class="mb-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm">
+                <div class="p-6">
+                    <form method="GET" class="space-y-6">
+                        <div>
+                            <h4 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-3 flex items-center">
+                                <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                {{ __('adoptions.location_search') }}
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ __('adoptions.location_search_help') }}</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                <!-- Città con autocomplete -->
+                                <div class="md:col-span-2">
+                                    <label for="citta" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Città</label>
+                                    <div class="relative">
+                                        <input type="text" id="citta" name="citta" value="{{ request('citta') }}" placeholder="{{ __('adoptions.city_placeholder') }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-orange-500 focus:ring-orange-500" autocomplete="off">
+                                        <div id="city-suggestions" class="hidden absolute z-20 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Raggio -->
+                                <div>
+                                    <label for="raggio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('adoptions.radius') }}</label>
+                                    <div class="space-y-2">
+                                        <input type="range" id="raggio" name="raggio" min="5" max="200" step="5" value="{{ request('raggio', 50) }}" class="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer range-slider" oninput="document.getElementById('radius-value').textContent = this.value + ' km'" onchange="document.getElementById('radius-value').textContent = this.value + ' km'">
+                                        <div class="text-center">
+                                            <span id="radius-value" class="text-sm font-medium text-orange-600 dark:text-orange-400">{{ request('raggio', 50) }} km</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if(($searchLocation ?? null))
+                            <div class="mt-4 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg">
+                                <div class="flex items-center text-sm text-orange-800 dark:text-orange-200">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    {{ __('adoptions.distance_from', ['city' => $searchLocation['city']]) }} - {{ $searchLocation['radius'] }} km
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                {{ __('professionals.apply_filters') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             @if($professionals->count() > 0)
                 <!-- Statistiche -->
                 <div class="mb-8 text-center">
@@ -36,7 +93,7 @@
                     @foreach($professionals as $professional)
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700">
                             <!-- Foto o Placeholder -->
-                            <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden">
+                            <div class="h-96 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden">
                                 @if($professional->foto_principale)
                                     <img src="{{ Storage::url($professional->foto_principale) }}" 
                                          alt="{{ $professional->ragione_sociale }}"
@@ -154,3 +211,47 @@
         </div>
     </div>
 </x-main-layout>
+
+@push('scripts')
+<script>
+    // sincronizza valore raggio
+    const radiusInput = document.getElementById('raggio');
+    const radiusValue = document.getElementById('radius-value');
+    if (radiusInput && radiusValue) {
+        radiusInput.addEventListener('input', function() {
+            radiusValue.textContent = this.value + ' km';
+        });
+    }
+
+    // Autocomplete città (riuso endpoint adozioni)
+    const cityInput = document.getElementById('citta');
+    const suggestions = document.getElementById('city-suggestions');
+    let debounceTimer;
+    if (cityInput && suggestions) {
+        cityInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(debounceTimer);
+            if (query.length < 2) { suggestions.classList.add('hidden'); return; }
+            debounceTimer = setTimeout(() => {
+                fetch(`{{ route('api.cities.suggest') }}?q=${encodeURIComponent(query)}`)
+                    .then(r => r.json())
+                    .then(cities => {
+                        if (cities.length > 0) {
+                            suggestions.innerHTML = cities.map(city => `<div class=\"px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer city-suggestion\" data-city=\"${city}\">${city}</div>`).join('');
+                            suggestions.classList.remove('hidden');
+                        } else { suggestions.classList.add('hidden'); }
+                    })
+                    .catch(() => suggestions.classList.add('hidden'));
+            }, 300);
+        });
+
+        suggestions.addEventListener('click', function(e) {
+            const item = e.target.closest('.city-suggestion');
+            if (item) {
+                cityInput.value = item.getAttribute('data-city');
+                suggestions.classList.add('hidden');
+            }
+        });
+    }
+</script>
+@endpush

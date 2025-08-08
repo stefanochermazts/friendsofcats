@@ -27,4 +27,5 @@ return [
     'back_to_directory' => 'Nazaj na Imenik',
     'contact_request' => 'Zahteva za stik',
     'write_message' => 'Napišite sporočilo',
+    'apply_filters' => 'Uporabi filtre',
 ];

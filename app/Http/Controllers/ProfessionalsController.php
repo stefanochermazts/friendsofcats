@@ -3,22 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\GeocodingService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProfessionalsController extends Controller
 {
+    public function __construct(private GeocodingService $geocodingService)
+    {
+    }
     /**
      * Display the professionals directory page.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $professionals = User::whereIn('role', ['veterinario', 'toelettatore'])
+        $query = User::query()
+            ->whereIn('role', ['veterinario', 'toelettatore'])
             ->where('professional_details_completed', true)
-            ->whereNotNull('ragione_sociale')
-            ->orderBy('ragione_sociale')
-            ->paginate(12);
+            ->whereNotNull('ragione_sociale');
 
-        return view('professionals.index', compact('professionals'));
+        $searchLocation = null;
+
+        if ($request->filled('citta') && $request->filled('raggio')) {
+            $cityName = $request->string('citta')->toString();
+            $radius = (int) $request->get('raggio', 50);
+
+            $coordinates = $this->geocodingService->getCoordinates($cityName);
+
+            if ($coordinates) {
+                $searchLocation = [
+                    'city' => $cityName,
+                    'lat' => $coordinates['latitude'],
+                    'lng' => $coordinates['longitude'],
+                    'radius' => $radius,
+                ];
+
+                $query = User::query()
+                    ->whereIn('role', ['veterinario', 'toelettatore'])
+                    ->where('professional_details_completed', true)
+                    ->whereNotNull('ragione_sociale')
+                    ->whereNotNull('latitude')
+                    ->whereNotNull('longitude')
+                    ->select('users.*')
+                    ->selectRaw(
+                        "(6371 * acos(cos(radians(?)) * cos(radians(users.latitude)) * cos(radians(users.longitude) - radians(?)) + sin(radians(?)) * sin(radians(users.latitude)))) AS distance",
+                        [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude']]
+                    )
+                    ->whereRaw(
+                        "(6371 * acos(cos(radians(?)) * cos(radians(users.latitude)) * cos(radians(users.longitude) - radians(?)) + sin(radians(?)) * sin(radians(users.latitude)))) <= ?",
+                        [$coordinates['latitude'], $coordinates['longitude'], $coordinates['latitude'], $radius]
+                    )
+                    ->orderBy('distance', 'asc');
+            } else {
+                // Se la geocodifica fallisce, fallback ad ordine alfabetico
+                $query->orderBy('ragione_sociale');
+            }
+        } else {
+            $query->orderBy('ragione_sociale');
+        }
+
+        $professionals = $query->paginate(12)->appends($request->query());
+
+        return view('professionals.index', compact('professionals', 'searchLocation'));
     }
 
     /**

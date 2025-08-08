@@ -15,9 +15,9 @@ Questo sistema implementa la verifica email completa per gli utenti che si regis
 - Reindirizzamento automatico alla pagina di verifica
 
 ### 3. Mail Personalizzata
-- Template HTML moderno e responsive
-- Design coerente con l'applicazione
-- Messaggi in italiano
+- Template HTML moderno e responsive (`resources/views/emails/layouts/minimal.blade.php`)
+- Branding: CatFriends Club
+- Messaggi multilingua (IT, EN, DE, FR, ES, SL)
 - Link di fallback per browser che non supportano i pulsanti
 
 ## Configurazione
@@ -31,7 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
 ### 2. Mail di Verifica
 - **Classe**: `App\Mail\EmailVerification`
 - **Template**: `resources/views/emails/email-verification.blade.php`
-- **Listener**: `App\Listeners\SendCustomEmailVerification`
+- **Invio**: override in `App\Models\User::sendEmailVerificationNotification()`
 
 ### 3. Middleware
 - **Classe**: `App\Http\Middleware\EnsureEmailIsVerified`
@@ -70,12 +70,10 @@ $user->sendEmailVerificationNotification();
 
 ## Test
 
-### Comando di Test
-
-Per testare l'invio della mail di verifica:
-
+### Preview/Testing
+- Comando preview email multilingue:
 ```bash
-php artisan test:email-verification user@example.com
+php artisan preview:multilingual-emails it
 ```
 
 ### Verifica Manuale

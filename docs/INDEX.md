@@ -1,4 +1,4 @@
-# Indice Rapido Documentazione - DogsAndCats
+# Indice Rapido Documentazione - CatFriends Club
 
 ## 📋 Documenti Principali
 
@@ -14,21 +14,25 @@
 
 ### Dettagli Tecnici Importanti
 - **Porta Server**: 8001 (non 8000)
-- **Database**: PostgreSQL in Laragon
-- **IDE**: Cursor
-- **Repository**: https://github.com/stefanochermazts/dogsandcats.git
+- **Database**: PostgreSQL
+- **Admin**: Filament
+- **Stack**: Laravel, Livewire, Alpine.js, Tailwind CSS
 
-### Struttura Directory
+### Struttura Directory (principale)
 ```
-dogsandcats/
-├── docs/                 # Documentazione
-│   ├── analysis/        # Analisi funzionale
-│   ├── framework/       # Framework di sviluppo
-│   └── user-stories/    # User stories
-├── src/                 # Codice sorgente
-├── tests/              # Test
-├── config/             # Configurazioni
-└── public/             # Asset pubblici
+CatFriendsClub/
+├── app/
+├── bootstrap/
+├── config/
+├── database/
+├── docs/
+│   ├── analysis/
+│   ├── deployment/
+│   └── ...
+├── public/
+├── resources/
+├── routes/
+└── tests/
 ```
 
 ## 📝 Template Disponibili
@@ -72,5 +76,5 @@ dogsandcats/
 
 ---
 
-**Ultimo aggiornamento**: [Data]  
-**Versione**: 1.0 
+**Ultimo aggiornamento**: {{ date('Y-m-d') }}  
+**Versione**: 1.0

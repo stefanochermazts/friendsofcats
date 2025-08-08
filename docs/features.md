@@ -1,8 +1,8 @@
-# 🐱 CatFriends.club - Funzionalità e Ruoli
+# 🐱 CatFriends Club - Funzionalità e Ruoli
 
 ## 📋 Panoramica del Sistema
 
-CatFriends.club è una piattaforma completa per la gestione di gatti, adozioni e servizi professionali veterinari. Il sistema supporta **6 lingue** (IT, EN, DE, FR, ES, SL) e implementa un sistema di **ruoli granulare** per diversi tipi di utenti.
+CatFriends Club è una piattaforma completa per la gestione di gatti, adozioni, CatBook e servizi professionali. Il sistema supporta **6 lingue** (IT, EN, DE, FR, ES, SL) e implementa un sistema di **ruoli granulare** per diversi tipi di utenti.
 
 ---
 
@@ -261,6 +261,18 @@ Identico al flusso veterinario ma con focus su servizi di toelettatura.
   - 👥 Livello socialità
   - 📍 Città e raggio geografico
 
+### 👨‍⚕️ **Directory Professionisti** (`/professionals`)
+
+#### 🔍 **Ricerca per Vicinanza**
+- **Città + raggio** con geocodifica Nominatim
+- **Autocomplete Città** via endpoint `/api/cities/suggest`
+- **Ordinamento per Distanza** (Haversine su PostgreSQL)
+
+#### 📋 **Card e Profili**
+- **Card** con foto principale, ruolo (veterinario/toelettatore), indirizzo
+- **Profilo pubblico** con descrizione, contatti, mappa (link Maps) e galleria foto
+- **Contatto**: pulsante “Scrivi un Messaggio” → form contatti precompilato
+
 #### 📊 **Statistiche Dinamiche**
 - **Totale Gatti**: Badge in header (desktop/tablet in alto a destra)
 - **Statistiche Età**: Grid compatta 4 colonne
@@ -418,4 +430,4 @@ Identico al flusso veterinario ma con focus su servizi di toelettatura.
 ---
 
 *Documento aggiornato: Dicembre 2024*  
-*Sistema: CatFriends.club v1.0*
+*Sistema: CatFriends Club v1.0*
