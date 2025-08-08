@@ -39,11 +39,15 @@ class RegistrationNotification extends Mailable
      */
     public function content(): Content
     {
+        $appUrl = rtrim(config('app.url'), '/');
+
         return new Content(
             view: 'emails.registration-notification',
             with: [
                 'user' => $this->user,
                 'appName' => config('app.name'),
+                'logoUrlLight' => $appUrl . '/images/cat-logo.svg',
+                'logoUrlDark' => $appUrl . '/images/cat-logo.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
                 'title' => 'Nuovo utente registrato',

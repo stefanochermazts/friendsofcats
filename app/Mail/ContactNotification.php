@@ -47,11 +47,15 @@ class ContactNotification extends Mailable
      */
     public function content(): Content
     {
+        $appUrl = rtrim(config('app.url'), '/');
+
         return new Content(
             view: 'emails.contact-notification',
             with: [
                 'contact' => $this->contact,
                 'appName' => config('app.name'),
+                'logoUrlLight' => $appUrl . '/images/cat-logo.svg',
+                'logoUrlDark' => $appUrl . '/images/cat-logo.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
                 'title' => $this->isAdoptionRequest() ? 'Richiesta di adozione' : 'Nuovo messaggio di contatto',

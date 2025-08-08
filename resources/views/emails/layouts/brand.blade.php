@@ -13,6 +13,7 @@
         .container { max-width: 640px; margin: 0 auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
         .header { padding: 20px 24px; border-bottom: 1px solid #eef0f4; background: #ffffff; }
         .logo { height: 28px; display: block; }
+        .logo-dark { display: none; }
         .content { padding: 28px 24px; }
         .title { margin: 0 0 16px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
         .lead { font-size: 16px; margin: 0 0 10px; }
@@ -33,13 +34,16 @@
             .info { background: #0b1220; border-color: #1f2937; }
             .btn { background: #16a34a; border-color: #15803d; }
             .btn:hover { background: #15803d; }
+            .logo-light { display: none !important; }
+            .logo-dark { display: block !important; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ $logoUrl ?? (config('app.url') . '/images/cat-logo.svg') }}" alt="{{ $appName ?? 'CatFriends Club' }}" class="logo">
+            <img src="{{ $logoUrlLight ?? ($appName ? (config('app.url') . '/images/cat-logo.svg') : (config('app.url') . '/images/cat-logo.svg')) }}" alt="{{ $appName ?? 'CatFriends Club' }}" class="logo logo-light">
+            <img src="{{ $logoUrlDark ?? ($logoUrlLight ?? (config('app.url') . '/images/cat-logo.svg')) }}" alt="{{ $appName ?? 'CatFriends Club' }}" class="logo logo-dark" style="{{ isset($logoUrlDark) && isset($logoUrlLight) && $logoUrlDark !== $logoUrlLight ? '' : 'filter: invert(1) brightness(2);' }}">
         </div>
         <div class="content">
             @yield('content')
