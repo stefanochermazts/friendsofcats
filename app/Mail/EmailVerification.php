@@ -39,12 +39,15 @@ class EmailVerification extends Mailable
      */
     public function content(): Content
     {
+        $appUrl = rtrim(config('app.url'), '/');
+
         return new Content(
             view: 'emails.email-verification',
             with: [
                 'verificationUrl' => $this->verificationUrl,
                 'userName' => $this->userName,
                 'appName' => config('app.name'),
+                'logoUrl' => $appUrl . '/images/cat-logo.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
                 'title' => 'Verifica il tuo indirizzo email',
