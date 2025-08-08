@@ -1,12 +1,16 @@
-{{-- Public Language Selector Component for Homepage Header --}}
-<div x-data="{ open: false }" class="relative">
-    <button @click="open = !open" 
-            @keydown.escape="open = false"
-            @click.away="open = false"
-            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none transition-colors duration-200"
-            aria-expanded="false"
+{{-- Public Language Selector (ARIA Menu Button pattern) --}}
+<div x-data="{ open: false }" x-id="['lang-btn','lang-menu']" class="relative">
+    <button type="button"
+            :id="$id('lang-btn')"
+            :aria-controls="$id('lang-menu')"
+            :aria-expanded="open.toString()"
             aria-haspopup="true"
-            aria-label="{{ __('Language') }}">
+            aria-label="{{ __('Language') }}"
+            @click="open = !open; if(open) $nextTick(() => $refs.firstItem?.focus())"
+            @keydown.arrow-down.prevent="open = true; $nextTick(() => $refs.firstItem?.focus())"
+            @keydown.arrow-up.prevent="open = true; $nextTick(() => $refs.lastItem?.focus())"
+            @keydown.escape.prevent.stop="open = false; $nextTick(() => $el.focus())"
+            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 a11y-focus transition-colors duration-200">
         
         {{-- Globe icon --}}
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -34,15 +38,22 @@
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="transform opacity-100 scale-100"
          x-transition:leave-end="transform opacity-0 scale-95"
-         class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50"
-         role="menu"
-         aria-orientation="vertical"
-         aria-labelledby="language-menu">
+          :id="$id('lang-menu')"
+          role="menu"
+          aria-orientation="vertical"
+          :aria-labelledby="$id('lang-btn')"
+          @keydown.arrow-down.prevent="const next = document.activeElement?.nextElementSibling; if(next) next.focus()"
+          @keydown.arrow-up.prevent="const prev = document.activeElement?.previousElementSibling; if(prev) prev.focus()"
+          @keydown.home.prevent.stop="$refs.firstItem?.focus()"
+          @keydown.end.prevent.stop="$refs.lastItem?.focus()"
+          @keydown.escape.prevent.stop="open = false; $nextTick(() => $root.querySelector('[id=\'' + $id('lang-btn') + '\']')?.focus())"
+          class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
         
         {{-- Italian --}}
         <a href="{{ route('locale.change', 'it') }}" 
-           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'it' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
-           role="menuitem">
+           role="menuitem"
+           x-ref="firstItem"
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 a11y-focus {{ app()->getLocale() === 'it' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}">
             <span class="mr-3 text-lg">🇮🇹</span>
             <span class="font-medium">{{ __('messages.italiano') }}</span>
             @if(app()->getLocale() === 'it')
@@ -54,8 +65,8 @@
         
         {{-- English --}}
         <a href="{{ route('locale.change', 'en') }}" 
-           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'en' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
-           role="menuitem">
+           role="menuitem"
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 a11y-focus {{ app()->getLocale() === 'en' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}">
             <span class="mr-3 text-lg">🇬🇧</span>
             <span class="font-medium">{{ __('messages.inglese') }}</span>
             @if(app()->getLocale() === 'en')
@@ -67,8 +78,8 @@
         
         {{-- French --}}
         <a href="{{ route('locale.change', 'fr') }}" 
-           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'fr' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
-           role="menuitem">
+           role="menuitem"
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 a11y-focus {{ app()->getLocale() === 'fr' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}">
             <span class="mr-3 text-lg">🇫🇷</span>
             <span class="font-medium">{{ __('messages.francese') }}</span>
             @if(app()->getLocale() === 'fr')
@@ -80,8 +91,8 @@
         
         {{-- German --}}
         <a href="{{ route('locale.change', 'de') }}" 
-           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'de' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
-           role="menuitem">
+           role="menuitem"
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 a11y-focus {{ app()->getLocale() === 'de' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}">
             <span class="mr-3 text-lg">🇩🇪</span>
             <span class="font-medium">{{ __('messages.tedesco') }}</span>
             @if(app()->getLocale() === 'de')
@@ -93,8 +104,8 @@
         
         {{-- Spanish --}}
         <a href="{{ route('locale.change', 'es') }}" 
-           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'es' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
-           role="menuitem">
+           role="menuitem"
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 a11y-focus {{ app()->getLocale() === 'es' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}">
             <span class="mr-3 text-lg">🇪🇸</span>
             <span class="font-medium">{{ __('messages.spagnolo') }}</span>
             @if(app()->getLocale() === 'es')
@@ -106,8 +117,9 @@
         
         {{-- Slovenian --}}
         <a href="{{ route('locale.change', 'sl') }}" 
-           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 {{ app()->getLocale() === 'sl' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}"
-           role="menuitem">
+           role="menuitem"
+           x-ref="lastItem"
+           class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 a11y-focus {{ app()->getLocale() === 'sl' ? 'bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' : '' }}">
             <span class="mr-3 text-lg">🇸🇮</span>
             <span class="font-medium">{{ __('messages.sloveno') }}</span>
             @if(app()->getLocale() === 'sl')
