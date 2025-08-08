@@ -37,8 +37,13 @@
         @endif
     </head>
     <body class="font-['Inter'] bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
+        {{-- Skip to main content (WCAG) --}}
+        <a href="#main-content"
+           class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-orange-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400 focus:ring-offset-white dark:focus:ring-offset-gray-900">
+            {{ __('Skip to main content') }}
+        </a>
         {{-- Header --}}
-        <header class="border-b border-gray-100 dark:border-gray-800 relative">
+        <header class="border-b border-gray-100 dark:border-gray-800 relative" role="banner">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     {{-- Logo --}}
@@ -100,6 +105,8 @@
         </header>
         
         {{-- Main Content --}}
-        <x-homepage-content />
+        <main id="main-content" role="main" tabindex="-1">
+            <x-homepage-content />
+        </main>
     </body>
 </html>
