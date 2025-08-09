@@ -15,13 +15,17 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Permetti sempre l'accesso alla pagina di login
-        if ($request->is('admin/login')) {
+        // Permetti sempre l'accesso alle pagine di auth Filament
+        if ($request->is('admin/login') || $request->is('admin/logout') || $request->is('admin/password*')) {
             return $next($request);
         }
 
-        // Verifica che l'utente sia autenticato e abbia il ruolo admin
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
+        // Verifica autenticazione, reindirizza al login
+        if (!auth()->check()) {
+            return redirect()->to('/admin/login');
+        }
+        // Verifica che l'utente abbia il ruolo admin
+        if (!auth()->user()->isAdmin()) {
             abort(403, 'Accesso negato. Solo gli amministratori possono accedere a questa sezione.');
         }
 
