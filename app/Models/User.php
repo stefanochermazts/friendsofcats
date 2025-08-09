@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isAdmin(): bool
     {
-        return strtolower((string) $this->role) === 'admin';
+        return strtolower(trim((string) $this->role)) === 'admin';
     }
 
     /**

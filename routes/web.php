@@ -11,6 +11,7 @@ use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\NewsController;
+use Illuminate\Support\Facades\Auth;
 
 // Locale switching route
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
@@ -182,5 +183,31 @@ Route::get('/robots.txt', function () {
     return response(implode("\n", $lines), 200)
         ->header('Content-Type', 'text/plain; charset=UTF-8');
 });
+
+// Admin diagnostics (enable with ADMIN_DIAG_KEY in .env and query param key)
+Route::get('/admin/diag', function () {
+    $key = request('key');
+    abort_unless($key && $key === env('ADMIN_DIAG_KEY'), 403);
+    $user = Auth::user();
+    return response()->json([
+        'authenticated' => Auth::check(),
+        'user_id' => $user?->id,
+        'email' => $user?->email,
+        'role' => $user?->role,
+        'is_admin' => $user?->isAdmin(),
+        'superadmins_env' => env('FILAMENT_SUPERADMIN_EMAILS'),
+        'session' => [
+            'domain' => config('session.domain'),
+            'secure' => config('session.secure'),
+            'same_site' => config('session.same_site'),
+            'driver' => config('session.driver'),
+        ],
+        'auth' => [
+            'default_guard' => config('auth.defaults.guard'),
+            'guards' => config('auth.guards'),
+        ],
+        'app_url' => config('app.url'),
+    ]);
+})->name('admin.diag');
 
 require __DIR__.'/auth.php';
