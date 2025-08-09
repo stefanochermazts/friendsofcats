@@ -30,6 +30,21 @@ return [
         'date_time' => 'Datum und Uhrzeit: :datetime',
     ],
 
+    // Kontaktbestätigung
+    'contact_confirmation' => [
+        'subject' => 'Bestätigung des Nachrichteneingangs - :app_name',
+        'title' => '✅ Nachricht erhalten!',
+        'greeting' => 'Hallo :name,',
+        'message' => 'Vielen Dank für Ihre Nachricht! Wir haben sie erhalten und melden uns so schnell wie möglich.',
+        'details_title' => 'Nachrichtendetails:',
+        'subject_label' => 'Betreff',
+        'message_label' => 'Nachricht',
+        'date' => 'Sendedatum',
+        'response_time' => 'Wir antworten innerhalb von 24-48 Arbeitsstunden.',
+        'footer_text' => 'Diese E-Mail wurde automatisch vom Kontakt-System gesendet.',
+        'date_time' => 'Datum und Uhrzeit: :datetime',
+    ],
+
     // Kontaktbenachrichtigung
     'contact_notification' => [
         'subject' => 'Neue Kontaktanfrage - :app_name',

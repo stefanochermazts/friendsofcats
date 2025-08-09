@@ -27,6 +27,21 @@ return [
         'footer_text' => 'To je samodejno obvestilo sistema.',
     ],
     
+    // Potrditev prejema kontaktnega sporočila
+    'contact_confirmation' => [
+        'subject' => 'Potrdilo o prejemu sporočila - :app_name',
+        'title' => '✅ Sporočilo prejeto!',
+        'greeting' => 'Pozdravljeni :name,',
+        'message' => 'Hvala za vaše sporočilo! Prejeli smo ga in vam bomo odgovorili v najkrajšem možnem času.',
+        'details_title' => 'Podrobnosti sporočila:',
+        'subject_label' => 'Zadeva',
+        'message_label' => 'Sporočilo',
+        'date' => 'Datum pošiljanja',
+        'response_time' => 'Odgovorili bomo v 24–48 delovnih urah.',
+        'footer_text' => 'To je samodejno sporočilo sistema za kontakt.',
+        'date_time' => 'Datum in čas: :datetime',
+    ],
+
     // Kontaktna obvestila
     'contact_notification' => [
         'subject' => 'Novo kontaktno sporočilo - :app_name',
