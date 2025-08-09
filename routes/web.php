@@ -10,6 +10,7 @@ use App\Http\Controllers\CatProfileController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\NewsController;
 
 // Locale switching route
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
@@ -40,6 +41,10 @@ Route::get('/', function () {
         'professionalCityCounts' => $professionalCityCounts,
     ]);
 })->name('welcome');
+
+// News (publiche)
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 
 // Contact routes
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

@@ -26,6 +26,7 @@ class SitemapController extends Controller
                 ['loc' => route('public.adoptions.cities'),   'changefreq' => 'weekly', 'priority' => '0.5', 'lastmod' => $now],
                 ['loc' => route('professionals.index'),       'changefreq' => 'daily',  'priority' => '0.6', 'lastmod' => $now],
                 ['loc' => route('professionals.cities'),      'changefreq' => 'weekly', 'priority' => '0.4', 'lastmod' => $now],
+                ['loc' => route('news.index'),                'changefreq' => 'daily',  'priority' => '0.6', 'lastmod' => $now],
             ];
 
             // Città adozioni (COALESCE tra proprietario e associazione)
@@ -91,14 +92,56 @@ class SitemapController extends Controller
                     'lastmod' => optional($u->updated_at)->toAtomString() ?? $now,
                 ])->all();
 
-            $urls = array_merge($baseUrls, $adoptionCityUrls, $proCityUrls, $catUrls, $professionalUrls);
+            // News pubblicate (aggiungi fino a 1000), includi slugs tradotti
+            $news = \App\Models\News::query()
+                ->with('translations')
+                ->published()
+                ->orderByDesc('published_at')
+                ->limit(1000)
+                ->get();
 
-            // Aggiungi hreflang alternates per tutte le lingue supportate
+            $newsUrls = [];
+            foreach ($news as $n) {
+                $localesAvailable = $n->translations->pluck('locale')->unique()->values()->all();
+                if (empty($localesAvailable)) {
+                    $localesAvailable = [$n->locale];
+                } else {
+                    // Aggiungi sempre la lingua originale all'elenco disponibile
+                    if (!in_array($n->locale, $localesAvailable, true)) {
+                        $localesAvailable[] = $n->locale;
+                    }
+                }
+
+                // URL lingua originale
+                $newsUrls[] = [
+                    'loc' => route('news.show', $n->slug),
+                    'changefreq' => 'weekly',
+                    'priority' => '0.5',
+                    'lastmod' => optional($n->updated_at ?? $n->published_at)->toAtomString() ?? $now,
+                    'locales' => $localesAvailable,
+                ];
+
+                // URL per ciascuna traduzione
+                foreach ($n->translations as $t) {
+                    $newsUrls[] = [
+                        'loc' => route('news.show', $t->slug),
+                        'changefreq' => 'weekly',
+                        'priority' => '0.5',
+                        'lastmod' => optional($n->updated_at ?? $n->published_at)->toAtomString() ?? $now,
+                        'locales' => $localesAvailable,
+                    ];
+                }
+            }
+
+            $urls = array_merge($baseUrls, $adoptionCityUrls, $proCityUrls, $catUrls, $professionalUrls, $newsUrls);
+
+            // Aggiungi hreflang alternates limitati alle lingue disponibili per ciascun URL
             $urls = array_map(function (array $u) use ($locales) {
                 $loc = $u['loc'];
                 $alternates = [];
+                $availableLocales = $u['locales'] ?? $locales; // se specificato, usa solo quelle disponibili
 
-                foreach ($locales as $locale) {
+                foreach ($availableLocales as $locale) {
                     if ($locale === 'it') {
                         $alternates[] = [
                             'hreflang' => 'it',

@@ -1,0 +1,32 @@
+<x-main-layout>
+    <x-slot name="header">
+        <h1 class="text-2xl font-bold">📰 {{ __('news.latest_news') }}</h1>
+    </x-slot>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        @if($news->count())
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($news as $item)
+                    <a href="{{ route('news.show', $item->slug) }}" class="block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden hover:shadow-lg transition">
+                        @if($item->cover_image)
+                            <img src="{{ Storage::url($item->cover_image) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
+                        @endif
+                        <div class="p-5">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">{{ optional($item->published_at)->format('d/m/Y') }}</div>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-1">{{ $item->title }}</h2>
+                            @if($item->excerpt)
+                                <p class="mt-2 text-gray-600 dark:text-gray-300">{{ $item->excerpt }}</p>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="mt-8">
+                {{ $news->links() }}
+            </div>
+        @else
+            <div class="text-gray-600 dark:text-gray-300">{{ __('news.no_news') }}</div>
+        @endif
+    </div>
+</x-main-layout>

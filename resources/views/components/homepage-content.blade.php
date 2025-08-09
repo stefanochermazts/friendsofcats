@@ -97,6 +97,60 @@
         </div>
     </section>
 
+    {{-- News Section --}}
+    <section class="py-16 bg-white dark:bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">📰 {{ __('news.latest_news') }}</h2>
+                <a href="{{ route('news.index') }}" class="text-orange-600 dark:text-orange-400 hover:underline">{{ __('news.view_all') }}</a>
+            </div>
+
+            @php
+                $locale = app()->getLocale();
+                $latestNews = \App\Models\News::query()
+                    ->with('translations')
+                    ->published()
+                    ->recent()
+                    ->get()
+                    ->filter(fn($n) => $n->hasTranslation($locale) || $n->locale === $locale)
+                    ->map(function ($n) use ($locale) {
+                        $t = $n->translation($locale);
+                        if ($t) {
+                            $n->title = $t->title;
+                            $n->excerpt = $t->excerpt;
+                            $n->body = $t->body;
+                            $n->meta_title = $t->meta_title;
+                            $n->meta_description = $t->meta_description;
+                            $n->slug = $t->slug;
+                        }
+                        return $n;
+                    })
+                    ->take(3);
+            @endphp
+
+            @if($latestNews->count())
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($latestNews as $item)
+                        <a href="{{ route('news.show', $item->slug) }}" class="block bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden hover:shadow-lg transition">
+                            @if($item->cover_image)
+                                <img src="{{ Storage::url($item->cover_image) }}" alt="{{ $item->title }}" class="w-full h-44 object-cover">
+                            @endif
+                            <div class="p-5">
+                                <div class="text-xs text-gray-500 dark:text-gray-400">{{ optional($item->published_at)->format('d/m/Y') }}</div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">{{ $item->title }}</h3>
+                                @if($item->excerpt)
+                                    <p class="mt-2 text-gray-600 dark:text-gray-300">{{ \Illuminate\Support\Str::limit($item->excerpt, 120) }}</p>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-gray-600 dark:text-gray-300">{{ __('news.no_news') }}</div>
+            @endif
+        </div>
+    </section>
+
     {{-- Core Features Section --}}
     <section class="py-24 bg-white dark:bg-gray-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
