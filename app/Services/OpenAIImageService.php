@@ -35,19 +35,21 @@ class OpenAIImageService
                 'prompt' => $prompt,
                 'size' => '1920x1080',
                 'n' => 1,
-                'response_format' => 'b64_json',
             ],
         ]);
 
         $data = json_decode((string) $response->getBody(), true);
-        $b64 = $data['data'][0]['b64_json'] ?? null;
-        if (!$b64) {
-            return ['ok' => false, 'error' => 'No image returned'];
+        $url = $data['data'][0]['url'] ?? null;
+        if (!$url) {
+            return ['ok' => false, 'error' => 'No image URL returned'];
         }
 
-        $binary = base64_decode($b64);
-        $path = 'news/covers/news_' . $newsId . '_' . time() . '.jpg';
-        Storage::disk('public')->put($path, $binary);
+        // Scarica l'immagine dall'URL
+        $img = $this->http->get($url);
+        $contentType = $img->getHeaderLine('Content-Type');
+        $ext = str_contains($contentType, 'png') ? 'png' : 'jpg';
+        $path = 'news/covers/news_' . $newsId . '_' . time() . '.' . $ext;
+        Storage::disk('public')->put($path, (string) $img->getBody());
 
         return ['ok' => true, 'path' => $path];
     }
