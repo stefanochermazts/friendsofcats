@@ -30,10 +30,11 @@ class AdminMiddleware
             ]);
             return redirect()->to('/admin/login');
         }
-        // Superadmin fallback via ENV (lista email separata da virgola)
-        $superAdmins = array_filter(array_map('trim', explode(',', (string) env('FILAMENT_SUPERADMIN_EMAILS', ''))));
+        // Superadmin fallback via ENV (lista email separata da virgola) - case-insensitive
+        $superAdmins = array_map('strtolower', array_filter(array_map('trim', explode(',', (string) env('FILAMENT_SUPERADMIN_EMAILS', '')))));
         $user = auth()->user();
-        if ($user->isAdmin() || (in_array($user->email, $superAdmins, true))) {
+        $email = strtolower((string) $user->email);
+        if ($user->isAdmin() || in_array($email, $superAdmins, true)) {
             return $next($request);
         }
 
