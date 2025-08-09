@@ -15,8 +15,9 @@ class SitemapController extends Controller
 {
     public function index(): Response
     {
-        $xml = Cache::remember('sitemap.xml', now()->addDay(), function () {
+        $xml = Cache::remember('sitemap.v2.xml', now()->addDay(), function () {
             $now = now()->toAtomString();
+            $locales = ['it', 'en', 'de', 'fr', 'es', 'sl'];
 
             $baseUrls = [
                 ['loc' => route('welcome'),                   'changefreq' => 'daily',  'priority' => '0.8', 'lastmod' => $now],
@@ -92,9 +93,64 @@ class SitemapController extends Controller
 
             $urls = array_merge($baseUrls, $adoptionCityUrls, $proCityUrls, $catUrls, $professionalUrls);
 
+            // Aggiungi hreflang alternates per tutte le lingue supportate
+            $urls = array_map(function (array $u) use ($locales) {
+                $loc = $u['loc'];
+                $alternates = [];
+
+                foreach ($locales as $locale) {
+                    if ($locale === 'it') {
+                        $alternates[] = [
+                            'hreflang' => 'it',
+                            'href' => $loc,
+                        ];
+                    } else {
+                        $alternates[] = [
+                            'hreflang' => $locale,
+                            'href' => self::buildUrlWithLocale($loc, $locale),
+                        ];
+                    }
+                }
+
+                // x-default punta alla versione di default (italiano senza query param)
+                $alternates[] = [
+                    'hreflang' => 'x-default',
+                    'href' => $loc,
+                ];
+
+                $u['alternates'] = $alternates;
+                return $u;
+            }, $urls);
+
             return view('sitemap.xml', compact('urls'))->render();
         });
 
         return response($xml, 200)->header('Content-Type', 'application/xml; charset=UTF-8');
+    }
+
+    /**
+     * Costruisce un URL aggiungendo/sostituendo il parametro di query "locale".
+     */
+    private static function buildUrlWithLocale(string $url, string $locale): string
+    {
+        $parts = parse_url($url) ?: [];
+
+        $scheme = $parts['scheme'] ?? '';
+        $host = $parts['host'] ?? '';
+        $port = isset($parts['port']) ? (':' . $parts['port']) : '';
+        $path = $parts['path'] ?? '';
+        $fragment = isset($parts['fragment']) ? ('#' . $parts['fragment']) : '';
+
+        $params = [];
+        if (isset($parts['query']) && $parts['query'] !== '') {
+            parse_str($parts['query'], $params);
+        }
+        $params['locale'] = $locale;
+        $queryString = http_build_query($params);
+
+        $authority = $host !== '' ? ($host . $port) : '';
+        $base = $scheme !== '' ? ($scheme . '://' . $authority) : $authority;
+
+        return rtrim($base, '/') . $path . ($queryString ? ('?' . $queryString) : '') . $fragment;
     }
 } 
