@@ -48,8 +48,8 @@
                         </a>
                     </div>
                     
-                    {{-- Navigation --}}
-                    <div class="flex items-center space-x-4">
+                    {{-- Navigation (desktop) --}}
+                    <div class="hidden md:flex items-center space-x-4">
                         {{-- Main Navigation Menu --}}
                         <x-main-navigation />
                         
@@ -88,6 +88,9 @@
                             @endauth
                         </div>
                     </div>
+
+                    {{-- Mobile Menu Toggle --}}
+                    <x-mobile-menu />
                 </div>
             </div>
         </header>

@@ -1,11 +1,13 @@
 <x-main-layout>
     <x-slot name="header">
-        <h1 class="text-2xl font-bold">🗂️ {{ $taxonomy->name }}</h1>
+        <h1 class="text-2xl font-bold">🗂️ {{ __('taxonomy.' . $taxonomy->slug . '.label', [], app()->getLocale()) }}</h1>
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        @if($taxonomy->description)
-            <p class="mb-6 text-gray-600 dark:text-gray-300">{{ $taxonomy->description }}</p>
+        @php($slug = $taxonomy->slug)
+        @php($desc = __('taxonomy.' . $slug . '.description'))
+        @if($desc && $desc !== 'taxonomy.' . $slug . '.description')
+            <p class="mb-6 text-gray-600 dark:text-gray-300">{{ $desc }}</p>
         @endif
 
         @if($news->count())
@@ -26,7 +28,7 @@
                 @endforeach
             </div>
         @else
-            <div class="text-gray-600 dark:text-gray-300">Nessun articolo in questa sezione.</div>
+            <div class="text-gray-600 dark:text-gray-300">{{ __('taxonomy.empty') }}</div>
         @endif
     </div>
 </x-main-layout>

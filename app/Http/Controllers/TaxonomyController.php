@@ -12,6 +12,9 @@ class TaxonomyController extends Controller
     public function show(string $slug): View
     {
         $taxonomy = Taxonomy::query()->where('slug', $slug)->firstOrFail();
+        // Override name/description with localized strings if available
+        $taxonomy->name = trans('taxonomy.' . $slug . '.label');
+        $taxonomy->description = trans('taxonomy.' . $slug . '.description');
 
         $locale = app()->getLocale();
         $news = $taxonomy->news()

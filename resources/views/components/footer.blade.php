@@ -7,25 +7,25 @@
                 </x-cat-logo>
             </a>
 
-            <nav aria-label="Footer">
+            <nav aria-label="{{ __('footer.aria_label') }}">
                 <ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm text-gray-600 dark:text-gray-300">
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('public.adoptions.index') }}">Adozioni</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('professionals.index') }}">Professionisti</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/guide') }}">Guide</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/salute') }}">Salute</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/alimentazione') }}">Alimentazione</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/comportamento') }}">Comportamento</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/cura') }}">Cura</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/razze') }}">Razze</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/curiosita') }}">Curiosità</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('news.index') }}">News</a></li>
-                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('contact') }}">Contatti</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('public.adoptions.index') }}">{{ __('adoptions.title') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('professionals.index') }}">{{ __('professionals.directory_title') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/guide') }}">{{ __('taxonomy.guide.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/salute') }}">{{ __('taxonomy.salute.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/alimentazione') }}">{{ __('taxonomy.alimentazione.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/comportamento') }}">{{ __('taxonomy.comportamento.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/cura') }}">{{ __('taxonomy.cura.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/razze') }}">{{ __('taxonomy.razze.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ url('/curiosita') }}">{{ __('taxonomy.curiosita.label') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('news.index') }}">{{ __('news.title') }}</a></li>
+                    <li><a class="hover:text-orange-600 dark:hover:text-orange-400" href="{{ route('contact') }}">{{ __('contact.title') }}</a></li>
                 </ul>
             </nav>
         </div>
 
         <div class="mt-6 text-xs text-gray-500 dark:text-gray-400">
-            © {{ date('Y') }} catfriends.club — Tutti i diritti riservati
+            {{ __('footer.copyright', ['year' => date('Y')]) }}
         </div>
     </div>
 </footer>
