@@ -166,4 +166,16 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
+// Robots.txt: allow all and reference sitemap
+Route::get('/robots.txt', function () {
+    $lines = [
+        'User-agent: *',
+        'Allow: /',
+        'Sitemap: ' . route('sitemap'),
+        '',
+    ];
+    return response(implode("\n", $lines), 200)
+        ->header('Content-Type', 'text/plain; charset=UTF-8');
+});
+
 require __DIR__.'/auth.php';
