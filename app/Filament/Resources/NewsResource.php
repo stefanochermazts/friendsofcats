@@ -24,6 +24,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
+use App\Models\Taxonomy;
 
 class NewsResource extends Resource
 {
@@ -61,6 +62,13 @@ class NewsResource extends Resource
                 TextInput::make('slug')->label('Slug')->required()->unique(ignoreRecord: true)->helperText('Se lasci vuoto, verrà generato dal titolo al blur.'),
                 Textarea::make('excerpt')->label('Sommario')->rows(3)->maxLength(500),
                 RichEditor::make('body')->label('Contenuto')->required()->columnSpanFull(),
+                \Filament\Forms\Components\Select::make('taxonomies')
+                    ->label('Tassonomie')
+                    ->multiple()
+                    ->preload()
+                    ->options(fn()=> Taxonomy::query()->pluck('name','id'))
+                    ->relationship('taxonomies', 'name')
+                    ->columnSpanFull(),
                 FileUpload::make('cover_image')->label('Immagine di copertina')->image()->directory('news')->disk('public'),
                 Select::make('is_published')
                     ->label('Pubblicata')

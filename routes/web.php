@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TaxonomyController;
 
 // Locale switching route
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
@@ -46,6 +47,10 @@ Route::get('/', function () {
 // News (publiche)
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+// News taxonomy pages
+Route::get('/{taxonomySlug}', [TaxonomyController::class, 'show'])
+    ->whereIn('taxonomySlug', ['guide','salute','alimentazione','comportamento','cura','adozioni','razze','curiosita'])
+    ->name('news.taxonomy');
 
 // Contact routes
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -61,6 +62,11 @@ class News extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(NewsTranslation::class);
+    }
+
+    public function taxonomies(): BelongsToMany
+    {
+        return $this->belongsToMany(Taxonomy::class, 'news_taxonomy');
     }
 
     public function hasTranslation(string $locale): bool
