@@ -9,6 +9,7 @@ use App\Http\Controllers\CatBookController;
 use App\Http\Controllers\CatProfileController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SitemapController;
 
 // Locale switching route
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
@@ -162,5 +163,7 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
     Route::get('/my-follows', [FollowController::class, 'myFollows'])->name('my.follows');
     Route::get('/my-followers', [FollowController::class, 'myFollowers'])->name('my.followers');
 });
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 require __DIR__.'/auth.php';
