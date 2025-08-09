@@ -23,7 +23,7 @@ class OpenAIImageService
         $this->model = (string) config('services.openai.image_model', 'gpt-image-1');
     }
 
-    public function generateCover(string $prompt, int $newsId): array
+    public function generateCover(string $prompt, int $newsId, string $size = '1024x1024'): array
     {
         $response = $this->http->post('images/generations', [
             'headers' => [
@@ -33,7 +33,7 @@ class OpenAIImageService
             'json' => [
                 'model' => $this->model,
                 'prompt' => $prompt,
-                'size' => '1920x1080',
+                'size' => $size,
                 'n' => 1,
             ],
         ]);

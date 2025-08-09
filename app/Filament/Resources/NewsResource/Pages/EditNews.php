@@ -34,6 +34,12 @@ class EditNews extends EditRecord
                     \Filament\Forms\Components\TextInput::make('ora')->label('ORA DEL GIORNO')->placeholder('mattina/sera'),
                     \Filament\Forms\Components\TextInput::make('tipo_luce')->label('TIPO DI LUCE')->placeholder('diffusa/morbida'),
                     \Filament\Forms\Components\TextInput::make('altezza')->label('ALTEZZA CAMERA')->placeholder('altezza occhi gatto'),
+                    \Filament\Forms\Components\Select::make('size')->label('Formato')
+                        ->options([
+                            '1024x1024' => 'Quadrato 1024×1024',
+                            '1024x1536' => 'Verticale 1024×1536',
+                            '1536x1024' => 'Orizzontale 1536×1024',
+                        ])->default('1024x1024'),
                 ])
                 ->action(function (array $data, OpenAIImageService $img): void {
                     $record = $this->getRecord();
@@ -54,7 +60,7 @@ class EditNews extends EditRecord
                     ];
                     $finalPrompt = str_replace(array_keys($vars), array_values($vars), $prompt);
 
-                    $res = $img->generateCover($finalPrompt, (int) $record->id);
+                    $res = $img->generateCover($finalPrompt, (int) $record->id, (string) ($data['size'] ?? '1024x1024'));
                     if (!($res['ok'] ?? false)) {
                         Notification::make()->title('Errore generazione immagine')->body($res['error'] ?? '')->danger()->send();
                         return;
