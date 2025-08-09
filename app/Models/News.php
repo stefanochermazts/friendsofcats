@@ -24,6 +24,7 @@ class News extends Model
         'excerpt',
         'body',
         'cover_image',
+        'cover_alt',
         'is_published',
         'published_at',
         'meta_title',
