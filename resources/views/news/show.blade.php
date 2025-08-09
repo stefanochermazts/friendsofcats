@@ -7,6 +7,17 @@
         <header class="mb-6">
             <div class="text-sm text-gray-500 dark:text-gray-400">{{ optional($item->published_at)->format('d/m/Y') }}</div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $item->title }}</h1>
+            @if($item->relationLoaded('taxonomies') && $item->taxonomies->count())
+                <div class="mt-3 flex flex-wrap gap-2">
+                    @foreach($item->taxonomies as $tx)
+                        @php($slug = $tx->slug)
+                        <a href="{{ route('news.taxonomy', ['taxonomySlug' => $slug]) }}"
+                           class="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300 border border-orange-200 dark:border-orange-800 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition">
+                            {{ __('taxonomy.' . $slug . '.label') }}
+                        </a>
+                    @endforeach
+                </div>
+            @endif
             @if($item->excerpt)
                 <p class="mt-2 text-gray-600 dark:text-gray-300">{{ $item->excerpt }}</p>
             @endif

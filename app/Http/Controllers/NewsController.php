@@ -61,7 +61,7 @@ class NewsController extends Controller
         // Cerca prima una traduzione con questo slug
         $translation = \App\Models\NewsTranslation::query()->where('slug', $slug)->first();
         if ($translation) {
-            $news = $translation->news()->with('translations')->first();
+            $news = $translation->news()->with(['translations','taxonomies'])->first();
             // Forza vista nella lingua della traduzione
             $item = (clone $news);
             $item->setRawAttributes(array_merge($news->getAttributes(), [
@@ -77,7 +77,7 @@ class NewsController extends Controller
         }
 
         // Fallback: slug originale sulla tabella principale
-        $news = News::query()->published()->where('slug', $slug)->first();
+        $news = News::query()->with('taxonomies')->published()->where('slug', $slug)->first();
         if (!$news) {
             return redirect()->route('news.index');
         }
