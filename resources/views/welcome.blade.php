@@ -114,5 +114,6 @@
                 :adoption-city-counts="$adoptionCityCounts" 
                 :professional-city-counts="$professionalCityCounts" />
         </main>
+        <x-footer />
     </body>
 </html>

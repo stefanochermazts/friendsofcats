@@ -153,6 +153,8 @@
             {{ $slot }}
         </main>
         
+        <x-footer />
+
         <!-- Additional scripts -->
         @stack('scripts')
     </body>
