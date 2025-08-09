@@ -19,7 +19,7 @@ return [
     'registration_notification' => [
         'subject' => 'Nouvel utilisateur inscrit - :app_name',
         'title' => '🎉 Nouvel utilisateur inscrit !',
-        'subtitle' => 'Un nouvel utilisateur vient de s\'inscrire sur :app_name',
+        'subtitle' => 'Un nouvel utilisateur s\'est inscrit sur :app_name',
         'user_details' => 'Détails de l\'utilisateur :',
         'name' => 'Nom :',
         'email' => 'Email :',
@@ -27,6 +27,29 @@ return [
         'role' => 'Rôle :',
         'success_message' => 'L\'utilisateur a été inscrit avec succès et peut maintenant accéder à la plateforme.',
         'footer_text' => 'Ceci est une notification automatique envoyée par :app_name.',
+        'date_time' => 'Date et heure : :datetime',
+    ],
+
+    // Notification de contact
+    'contact_notification' => [
+        'subject' => 'Nouveau message de contact - :app_name',
+        'adoption_subject' => 'Demande d\'adoption pour :cat_name - :app_name',
+        'title' => '📧 Nouveau message de contact',
+        'adoption_title' => '🐱 Demande d\'adoption',
+        'subtitle' => 'Un nouveau message a été reçu via le formulaire de contact.',
+        'adoption_subtitle' => 'Quelqu\'un est intéressé par l\'adoption de l\'un de vos chats !',
+        'message' => 'Voici les détails du message reçu :',
+        'adoption_message' => 'Voici les détails de la demande d\'adoption :',
+        'contact_details' => 'Détails du contact :',
+        'name' => 'Nom',
+        'email' => 'Email',
+        'subject_label' => 'Objet',
+        'message_label' => 'Message',
+        'date' => 'Date d\'envoi',
+        'action_required' => 'Action requise :',
+        'adoption_action_message' => 'Veuillez répondre à cette demande d\'adoption dès que possible.',
+        'action_message' => 'Répondez au message en utilisant l\'adresse email fournie par le contact.',
+        'footer_text' => 'Cet email a été envoyé automatiquement par le système de contact.',
         'date_time' => 'Date et heure : :datetime',
     ],
 ]; 

@@ -378,7 +378,14 @@ class CatResource extends Resource
                         'Misto' => 'Misto',
                         'Sconosciuta' => 'Sconosciuta',
                     ]),
-                    
+                
+                // Nuovo: filtro per Associazione
+                Tables\Filters\SelectFilter::make('associazione_id')
+                    ->label('Associazione')
+                    ->options(fn () => User::where('role', 'associazione')->pluck('ragione_sociale', 'id')->toArray())
+                    ->searchable()
+                    ->preload(),
+                
                 Tables\Filters\SelectFilter::make('eta_range')
                     ->label('Fascia Età')
                     ->options([

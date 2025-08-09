@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'subject_professional' => 'Povpraševanje za :name',
+    'message_professional_prefill' => "Pozdravljeni :professional,\n\nvaš profil sem videl/videla na :platform in zanima me več o vaših storitvah.\n\nProsimo, sporočite razpoložljivost, cene in način naročanja.\n\nHvala,\n\nLep pozdrav",
+    'subject_adoption' => 'Zahteva za posvojitev za :cat',
+    'message_adoption_prefill' => "Pozdravljeni :association,\n\nzanimam se za posvojitev :cat, ki sem ga/jo videl/videla na vašem profilu na :platform.\n\nProsim, pošljite več informacij o postopku posvojitve in naslednjih korakih.\n\nHvala!\n\nLep pozdrav",
     // Stran kontakt
     'title' => 'Kontakt',
     'subtitle' => 'Stopite v stik z nami',

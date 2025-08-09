@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ __('friends_of_cats') }} - {{ __('platform_for_cats') }}</title>
+        @php use Illuminate\Support\Str; @endphp
         @include('layouts.partials.seo')
         <meta name="description" content="{{ __('platform_description') }}">
 
@@ -109,7 +110,9 @@
         
         {{-- Main Content --}}
         <main id="main-content" role="main" tabindex="-1">
-            <x-homepage-content />
+            <x-homepage-content 
+                :adoption-city-counts="$adoptionCityCounts" 
+                :professional-city-counts="$professionalCityCounts" />
         </main>
     </body>
 </html>

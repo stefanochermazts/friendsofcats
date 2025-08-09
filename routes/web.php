@@ -14,7 +14,30 @@ use Illuminate\Support\Facades\Route;
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
 
 Route::get('/', function () {
-    return view('welcome');
+    // Città per adozioni: considera città dell'utente proprietario o dell'associazione (fallback), senza richiedere foto
+    $adoptionCityCounts = \DB::table('cats')
+        ->leftJoin('users as u', 'cats.user_id', '=', 'u.id')
+        ->leftJoin('users as a', 'cats.associazione_id', '=', 'a.id')
+        ->where('cats.disponibile_adozione', true)
+        ->selectRaw('COALESCE(u.citta, a.citta) as citta, COUNT(cats.id) as total')
+        ->whereNotNull(\DB::raw('COALESCE(u.citta, a.citta)'))
+        ->groupByRaw('COALESCE(u.citta, a.citta)')
+        ->orderByRaw('COALESCE(u.citta, a.citta) asc')
+        ->pluck('total', 'citta');
+
+    // Città per professionisti (non forzo details completed per non escludere città)
+    $professionalCityCounts = \DB::table('users')
+        ->whereIn('role', ['veterinario', 'toelettatore'])
+        ->whereNotNull('citta')
+        ->groupBy('citta')
+        ->orderBy('citta')
+        ->selectRaw('citta, COUNT(id) as total')
+        ->pluck('total', 'citta');
+
+    return view('welcome', [
+        'adoptionCityCounts' => $adoptionCityCounts,
+        'professionalCityCounts' => $professionalCityCounts,
+    ]);
 })->name('welcome');
 
 // Contact routes
@@ -23,7 +46,16 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Public adoption routes (accessible to everyone)
 Route::get('/adoptions', [PublicAdoptionsController::class, 'index'])->name('public.adoptions.index');
-Route::get('/adoptions/{cat}', [PublicAdoptionsController::class, 'show'])->name('public.adoptions.show');
+// Cat detail constrained to numeric ID to avoid conflict with city slugs
+Route::get('/adoptions/{cat}', [PublicAdoptionsController::class, 'show'])
+    ->whereNumber('cat')
+    ->name('public.adoptions.show');
+// List all adoption cities
+Route::get('/adoptions/cities', [PublicAdoptionsController::class, 'cities'])->name('public.adoptions.cities');
+// Local SEO: adoptions/citta-slug (exclude pure digits)
+Route::get('/adoptions/{citySlug}', [PublicAdoptionsController::class, 'byCity'])
+    ->where('citySlug', '^(?!\d+$)[A-Za-z0-9\-_%]+$')
+    ->name('public.adoptions.city');
 Route::get('/api/featured-cats', [PublicAdoptionsController::class, 'featured'])->name('api.featured-cats');
 Route::get('/api/cities/suggest', [PublicAdoptionsController::class, 'suggestCities'])->name('api.cities.suggest');
 Route::post('/api/cats/{cat}/like', [PublicAdoptionsController::class, 'toggleLike'])->name('api.cats.like')->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
@@ -80,7 +112,16 @@ Route::prefix('api')->group(function () {
 
 // Professionals directory (public)
 Route::get('/professionals', [App\Http\Controllers\ProfessionalsController::class, 'index'])->name('professionals.index');
-Route::get('/professionals/{professional}', [App\Http\Controllers\ProfessionalsController::class, 'show'])->name('professionals.show');
+// Professional detail constrained to numeric ID
+Route::get('/professionals/{professional}', [App\Http\Controllers\ProfessionalsController::class, 'show'])
+    ->whereNumber('professional')
+    ->name('professionals.show');
+// List all professional cities
+Route::get('/professionals/cities', [App\Http\Controllers\ProfessionalsController::class, 'cities'])->name('professionals.cities');
+// Local SEO: professionals/citta-slug (exclude pure digits)
+Route::get('/professionals/{citySlug}', [App\Http\Controllers\ProfessionalsController::class, 'byCity'])
+    ->where('citySlug', '^(?!\d+$)[A-Za-z0-9\-_%]+$')
+    ->name('professionals.city');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

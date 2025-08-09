@@ -58,7 +58,9 @@ class ContactNotification extends Mailable
                 'logoUrlDark' => $appUrl . '/images/cat-logo-dark.svg',
                 'locale' => app()->getLocale(),
                 'translations' => EmailTranslations::getTranslations(app()->getLocale()),
-                'title' => $this->isAdoptionRequest() ? 'Richiesta di adozione' : 'Nuovo messaggio di contatto',
+                'title' => $this->isAdoptionRequest() 
+                    ? EmailTranslations::get('emails.contact_notification.adoption_title') 
+                    : EmailTranslations::get('emails.contact_notification.title'),
                 'isAdoptionRequest' => $this->isAdoptionRequest(),
                 'catName' => $this->extractCatNameFromSubject(),
             ],
@@ -80,7 +82,21 @@ class ContactNotification extends Mailable
      */
     private function isAdoptionRequest(): bool
     {
-        return str_contains(strtolower($this->contact->subject), 'richiesta adozione');
+        $subject = mb_strtolower($this->contact->subject ?? '');
+        $patterns = [
+            'richiesta adozione', // it
+            'adoption request', // en
+            "demande d'adoption", // fr
+            'adoptionsanfrage', // de
+            'solicitud de adopción', // es
+            'zahteva za posvojitev', // sl
+        ];
+        foreach ($patterns as $p) {
+            if (str_contains($subject, $p)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -88,10 +104,20 @@ class ContactNotification extends Mailable
      */
     private function extractCatNameFromSubject(): ?string
     {
-        if (preg_match('/richiesta adozione per (.+?)$/i', $this->contact->subject, $matches)) {
-            return trim($matches[1]);
+        $subject = $this->contact->subject ?? '';
+        $regexes = [
+            '/richiesta adozione per (.+)$/i', // it
+            '/adoption request for (.+)$/i', // en
+            "/demande d['’]adoption pour (.+)$/i", // fr
+            '/adoptionsanfrage f[üu]r (.+)$/i', // de (ü or u as fallback)
+            '/solicitud de adopci[oó]n para (.+)$/i', // es
+            '/zahteva za posvojitev za (.+)$/i', // sl
+        ];
+        foreach ($regexes as $re) {
+            if (preg_match($re, $subject, $m)) {
+                return trim($m[1]);
+            }
         }
-        
         return null;
     }
 }

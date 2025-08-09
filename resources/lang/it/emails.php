@@ -48,8 +48,11 @@ return [
     // Email di notifica contatto admin
     'contact_notification' => [
         'subject' => 'Nuovo messaggio di contatto - :app_name',
+        'adoption_subject' => 'Richiesta adozione per :cat_name - :app_name',
         'title' => '📧 Nuovo messaggio di contatto',
-        'subtitle' => 'È stato ricevuto un nuovo messaggio dal form di contatto.',
+        'adoption_title' => '🐱 Richiesta di adozione',
+        'adoption_subtitle' => 'Qualcuno è interessato ad adottare uno dei tuoi gatti!',
+        'adoption_message' => 'Ecco i dettagli della richiesta di adozione:',
         'message' => 'Di seguito i dettagli del messaggio ricevuto:',
         'contact_details' => 'Dettagli del contatto:',
         'name' => 'Nome',
@@ -58,6 +61,7 @@ return [
         'message_label' => 'Messaggio',
         'date' => 'Data di invio',
         'action_required' => 'Azione richiesta:',
+        'adoption_action_message' => 'Rispondi a questa richiesta di adozione il prima possibile.',
         'action_message' => 'Rispondi al messaggio utilizzando l\'email fornita dal contatto.',
         'footer_text' => 'Questa email è stata inviata automaticamente dal sistema di contatto.',
         'date_time' => 'Data e ora: :datetime',

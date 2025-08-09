@@ -306,6 +306,84 @@
         </div>
     </section>
 
+    {{-- Explore by City (Adoptions) --}}
+    <section class="py-24 bg-white dark:bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    🐱 Esplora le Adozioni per Città
+                </h2>
+                <p class="mt-3 text-gray-600 dark:text-gray-300">Scopri i gatti adottabili vicino a te</p>
+            </div>
+            @php
+                $adCities = ($adoptionCityCounts ?? ($adoptionCityCounts ?? collect()));
+            @endphp
+            @if($adCities->count())
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($adCities->take(18) as $city => $count)
+                        @php $slug = Str::of($city)->slug('-'); @endphp
+                        <a href="{{ route('public.adoptions.city', ['citySlug' => $slug]) }}" class="group block bg-gradient-to-br from-orange-50 to-pink-50 dark:from-orange-900/20 dark:to-pink-900/20 border border-orange-100 dark:border-orange-800 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400">{{ $city }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ $count }} gatti adottabili</div>
+                                </div>
+                                <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-2xl">🐾</div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+                @if($adCities->count() > 18)
+                    <div class="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">Mostro le prime 18 città</div>
+                @endif
+                <div class="text-center mt-6">
+                    <a href="{{ route('public.adoptions.cities') }}" class="inline-flex items-center px-5 py-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors">
+                        Vedi tutte le città
+                    </a>
+                </div>
+            @else
+                <div class="text-center text-gray-500 dark:text-gray-400">Nessuna città disponibile al momento.</div>
+            @endif
+        </div>
+    </section>
+
+    {{-- Explore by City (Professionals) --}}
+    <section class="py-24 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                    👩‍⚕️ Professionisti per Città
+                </h2>
+                <p class="mt-3 text-gray-600 dark:text-gray-300">Trova veterinari e toelettatori nella tua zona</p>
+            </div>
+            @php
+                $proCities = ($professionalCityCounts ?? ($professionalCityCounts ?? collect()));
+            @endphp
+            @if($proCities->count())
+                <div class="flex flex-wrap gap-3 justify-center">
+                    @foreach($proCities->take(30) as $city => $count)
+                        @php $slug = Str::of($city)->slug('-'); @endphp
+                        <a href="{{ route('professionals.city', ['citySlug' => $slug]) }}" class="inline-flex items-center px-4 py-2 rounded-full border border-purple-200 dark:border-purple-800 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-200 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-sm transition-all">
+                            <span class="mr-2">🏥</span>
+                            <span>{{ $city }}</span>
+                            <span class="ml-2 text-purple-600 dark:text-purple-400 font-semibold">{{ $count }}</span>
+                        </a>
+                    @endforeach
+                </div>
+                @if($proCities->count() > 30)
+                    <div class="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">Mostro le prime 30 città</div>
+                @endif
+                <div class="text-center mt-6">
+                    <a href="{{ route('professionals.cities') }}" class="inline-flex items-center px-5 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                        Vedi tutte le città
+                    </a>
+                </div>
+            @else
+                <div class="text-center text-gray-500 dark:text-gray-400">Nessuna città disponibile al momento.</div>
+            @endif
+        </div>
+    </section>
+
     {{-- Roles & Community Section --}}
     <section class="py-24 bg-white dark:bg-gray-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

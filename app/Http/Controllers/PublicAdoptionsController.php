@@ -296,6 +296,56 @@ class PublicAdoptionsController extends Controller
     }
 
     /**
+     * SEO: Lista adozioni filtrate per città via slug
+     */
+    public function byCity(string $citySlug, Request $request)
+    {
+        // Slug -> Nome città (accetta trattini e case-insensitive)
+        $normalizedSlug = strtolower(urldecode($citySlug));
+        $city = \DB::table('users')
+            ->whereNotNull('citta')
+            ->select('citta')
+            ->distinct()
+            ->get()
+            ->map(fn($r) => (string) $r->citta)
+            ->first(function ($name) use ($normalizedSlug) {
+                $slug = strtolower(str_replace([' '], ['-'], $name));
+                return $slug === $normalizedSlug;
+            });
+
+        if (!$city) {
+            abort(404);
+        }
+
+        // Reindirizza alla index con query string impostata
+        $params = array_merge($request->query(), [
+            'citta' => $city,
+            'raggio' => $request->get('raggio', 50),
+        ]);
+        return redirect()->route('public.adoptions.index', $params);
+    }
+
+    /**
+     * Elenco di tutte le città per adozioni con conteggi
+     */
+    public function cities(): \Illuminate\View\View
+    {
+        $adoptionCityCounts = \DB::table('cats')
+            ->leftJoin('users as u', 'cats.user_id', '=', 'u.id')
+            ->leftJoin('users as a', 'cats.associazione_id', '=', 'a.id')
+            ->where('cats.disponibile_adozione', true)
+            ->selectRaw('COALESCE(u.citta, a.citta) as citta, COUNT(cats.id) as total')
+            ->whereNotNull(\DB::raw('COALESCE(u.citta, a.citta)'))
+            ->groupByRaw('COALESCE(u.citta, a.citta)')
+            ->orderByRaw('COALESCE(u.citta, a.citta) asc')
+            ->pluck('total', 'citta');
+
+        return view('public.adoptions.cities', [
+            'adoptionCityCounts' => $adoptionCityCounts,
+        ]);
+    }
+
+    /**
      * Calcola la distanza tra due punti geografici usando la formula di Haversine
      */
     private function calculateDistance($lat1, $lng1, $lat2, $lng2): float

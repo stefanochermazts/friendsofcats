@@ -29,4 +29,27 @@ return [
         'footer_text' => 'Dies ist eine automatische Benachrichtigung von :app_name.',
         'date_time' => 'Datum und Uhrzeit: :datetime',
     ],
+
+    // Kontaktbenachrichtigung
+    'contact_notification' => [
+        'subject' => 'Neue Kontaktanfrage - :app_name',
+        'adoption_subject' => 'Adoptionsanfrage für :cat_name - :app_name',
+        'title' => '📧 Neue Kontaktanfrage',
+        'adoption_title' => '🐱 Adoptionsanfrage',
+        'subtitle' => 'Über das Kontaktformular ist eine neue Nachricht eingegangen.',
+        'adoption_subtitle' => 'Jemand interessiert sich für die Adoption einer Ihrer Katzen!',
+        'message' => 'Nachfolgend die Details der empfangenen Nachricht:',
+        'adoption_message' => 'Nachfolgend die Details der Adoptionsanfrage:',
+        'contact_details' => 'Kontaktdaten:',
+        'name' => 'Name',
+        'email' => 'E-Mail',
+        'subject_label' => 'Betreff',
+        'message_label' => 'Nachricht',
+        'date' => 'Sendedatum',
+        'action_required' => 'Erforderliche Aktion:',
+        'adoption_action_message' => 'Bitte antworten Sie auf diese Adoptionsanfrage so schnell wie möglich.',
+        'action_message' => 'Antworten Sie auf die Nachricht über die angegebene E-Mail-Adresse.',
+        'footer_text' => 'Diese E-Mail wurde automatisch vom Kontakt-System gesendet.',
+        'date_time' => 'Datum und Uhrzeit: :datetime',
+    ],
 ]; 

@@ -27,6 +27,28 @@ return [
         'footer_text' => 'To je samodejno obvestilo sistema.',
     ],
     
+    // Kontaktna obvestila
+    'contact_notification' => [
+        'subject' => 'Novo kontaktno sporočilo - :app_name',
+        'adoption_subject' => 'Zahteva za posvojitev za :cat_name - :app_name',
+        'title' => '📧 Novo kontaktno sporočilo',
+        'adoption_title' => '🐱 Zahteva za posvojitev',
+        'subtitle' => 'Prejeli ste novo sporočilo preko kontaktnega obrazca.',
+        'adoption_subtitle' => 'Nekdo je zainteresiran za posvojitev ene od vaših mačk!',
+        'message' => 'Spodaj so podrobnosti prejetega sporočila:',
+        'adoption_message' => 'Spodaj so podrobnosti zahteve za posvojitev:',
+        'contact_details' => 'Podrobnosti stika:',
+        'name' => 'Ime',
+        'email' => 'E-pošta',
+        'subject_label' => 'Zadeva',
+        'message_label' => 'Sporočilo',
+        'date' => 'Datum pošiljanja',
+        'action_required' => 'Zahtevano dejanje:',
+        'adoption_action_message' => 'Prosimo, odgovorite na to zahtevo za posvojitev čim prej.',
+        'action_message' => 'Odgovorite na sporočilo z uporabo e-pošte, ki jo je posredoval stik.',
+        'footer_text' => 'To sporočilo je bilo poslano samodejno iz kontaktnega sistema.',
+    ],
+    
     // Skupni elementi
     'common' => [
         'hello' => 'Pozdravljeni',

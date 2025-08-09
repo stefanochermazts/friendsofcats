@@ -29,4 +29,27 @@ return [
         'footer_text' => 'Esta es una notificación automática enviada por :app_name.',
         'date_time' => 'Fecha y hora: :datetime',
     ],
+
+    // Notificación de contacto
+    'contact_notification' => [
+        'subject' => 'Nuevo mensaje de contacto - :app_name',
+        'adoption_subject' => 'Solicitud de adopción para :cat_name - :app_name',
+        'title' => '📧 Nuevo mensaje de contacto',
+        'adoption_title' => '🐱 Solicitud de adopción',
+        'subtitle' => 'Se ha recibido un nuevo mensaje desde el formulario de contacto.',
+        'adoption_subtitle' => '¡Alguien está interesado en adoptar uno de tus gatos!',
+        'message' => 'A continuación se muestran los detalles del mensaje recibido:',
+        'adoption_message' => 'A continuación se muestran los detalles de la solicitud de adopción:',
+        'contact_details' => 'Detalles de contacto:',
+        'name' => 'Nombre',
+        'email' => 'Email',
+        'subject_label' => 'Asunto',
+        'message_label' => 'Mensaje',
+        'date' => 'Fecha de envío',
+        'action_required' => 'Acción requerida:',
+        'adoption_action_message' => 'Por favor, responde a esta solicitud de adopción lo antes posible.',
+        'action_message' => 'Responde al mensaje usando el email proporcionado por el contacto.',
+        'footer_text' => 'Este email fue enviado automáticamente por el sistema de contacto.',
+        'date_time' => 'Fecha y hora: :datetime',
+    ],
 ]; 

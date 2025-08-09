@@ -3,6 +3,8 @@
 return [
     'subject_professional' => 'Richiesta informazioni a :name',
     'message_professional_prefill' => "Ciao :professional,\n\nho visto il tuo profilo su :platform e vorrei avere maggiori informazioni sui tuoi servizi.\n\nPotresti gentilmente indicarmi disponibilità, costi e modalità di appuntamento?\n\nGrazie,\n\nCordiali saluti",
+    'subject_adoption' => 'Richiesta adozione per :cat',
+    'message_adoption_prefill' => "Ciao :association,\n\nsono interessato/a all'adozione di :cat, che ho visto sul vostro profilo su :platform.\n\nPotreste fornirmi maggiori informazioni sul processo di adozione e su come procedere?\n\nGrazie per il vostro lavoro con i gatti!\n\nCordiali saluti",
     'title' => 'Contattaci',
     'subtitle' => 'Siamo qui per aiutarti. Contattaci per qualsiasi domanda o richiesta.',
     'contact_info' => 'Informazioni di Contatto',

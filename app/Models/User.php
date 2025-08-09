@@ -321,4 +321,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role === 'volontario' && !$this->hasAssociazione();
     }
+
+    /**
+     * Relazione con i gatti collegati a questa associazione (tramite associazione_id)
+     */
+    public function catsAsAssociazione()
+    {
+        return $this->hasMany(\App\Models\Cat::class, 'associazione_id');
+    }
 }

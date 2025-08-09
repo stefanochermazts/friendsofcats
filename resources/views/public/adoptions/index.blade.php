@@ -39,6 +39,29 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
+            <!-- Prompt Geolocalizzazione (non invasivo) -->
+            <div id="geo-prompt" class="hidden fixed bottom-4 left-4 right-4 sm:right-auto sm:max-w-md z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg rounded-xl p-4">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-3">
+                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <div class="flex-1 text-sm text-gray-800 dark:text-gray-200">
+                        <p class="font-medium mb-1">Vuoi vedere i gatti vicino a te?</p>
+                        <p class="text-gray-600 dark:text-gray-400">Possiamo usare la tua posizione per mostrarti prima quelli più vicini. Se rifiuti, non te lo chiederemo più per 30 giorni.</p>
+                        <div class="mt-2">
+                            <label class="inline-flex items-center text-xs text-gray-600 dark:text-gray-400">
+                                <input type="checkbox" id="geo-remember-yes" class="mr-2 rounded border-gray-300 dark:border-gray-600">
+                                Ricorda per 30 giorni
+                            </label>
+                        </div>
+                        <div class="mt-3 flex gap-2">
+                            <button id="geo-allow" class="inline-flex items-center px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm">Consenti</button>
+                            <button id="geo-deny" class="inline-flex items-center px-3 py-1.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg text-sm">No, grazie</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Statistiche per Età -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 text-center shadow-sm border border-gray-100 dark:border-gray-700">
@@ -851,6 +874,110 @@
                 });
             });
         }
+
+        // Geolocation prompt (monthly opt-out)
+        (function initGeoPrompt() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const alreadyFiltered = params.has('citta') || params.has('raggio');
+                const optOutUntil = parseInt(localStorage.getItem('site_geo_opt_out_until') || '0', 10);
+                const optInUntil = parseInt(localStorage.getItem('site_geo_opt_in_until') || '0', 10);
+                const now = Date.now();
+                const geoSupported = 'geolocation' in navigator;
+
+                const setOptOutDays = (days) => {
+                    const until = Date.now() + days * 24 * 60 * 60 * 1000;
+                    localStorage.setItem('site_geo_opt_out_until', String(until));
+                };
+                const setOptInDays = (days) => {
+                    const until = Date.now() + days * 24 * 60 * 60 * 1000;
+                    localStorage.setItem('site_geo_opt_in_until', String(until));
+                };
+
+                const reverseGeocode = async (lat, lon) => {
+                    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+                    const r = await fetch(url);
+                    const data = await r.json();
+                    const city = data.address?.city || data.address?.town || data.address?.village || '';
+                    return city;
+                };
+
+                // Se l'utente ha scelto "sempre sì" negli ultimi 30 giorni, geolocalizza automaticamente
+                if (geoSupported && !alreadyFiltered && optInUntil && optInUntil > now) {
+                    navigator.geolocation.getCurrentPosition(async (pos) => {
+                        try {
+                            const lat = pos.coords.latitude;
+                            const lon = pos.coords.longitude;
+                            const city = await reverseGeocode(lat, lon);
+                            if (city) {
+                                const cityInput = document.getElementById('citta');
+                                const radiusInput = document.getElementById('raggio');
+                                if (cityInput) cityInput.value = city;
+                                if (radiusInput && !radiusInput.value) radiusInput.value = 50;
+                                localStorage.setItem('site_geo_last_city', city);
+                                localStorage.setItem('site_geo_last_lat', String(lat));
+                                localStorage.setItem('site_geo_last_lon', String(lon));
+                                const form = document.getElementById('filter-form');
+                                if (form) form.submit();
+                            }
+                        } catch (_) {
+                            // In caso di errore, non mostrare prompt e non disturbare ulteriormente
+                        }
+                    }, () => {
+                        // Se l'utente nega a livello browser, imposta opt-out per evitare ripetizioni
+                        setOptOutDays(30);
+                    }, { timeout: 10000 });
+                    return;
+                }
+
+                if (!geoSupported || alreadyFiltered || (optOutUntil && optOutUntil > now)) return;
+
+                const prompt = document.getElementById('geo-prompt');
+                const allowBtn = document.getElementById('geo-allow');
+                const denyBtn = document.getElementById('geo-deny');
+                const rememberYes = document.getElementById('geo-remember-yes');
+                if (!prompt || !allowBtn || !denyBtn) return;
+                prompt.classList.remove('hidden');
+
+                allowBtn.addEventListener('click', async function() {
+                    allowBtn.disabled = true;
+                    allowBtn.textContent = 'Attivazione...';
+                    navigator.geolocation.getCurrentPosition(async (pos) => {
+                        try {
+                            const lat = pos.coords.latitude;
+                            const lon = pos.coords.longitude;
+                            const city = await reverseGeocode(lat, lon);
+                            if (city) {
+                                const cityInput = document.getElementById('citta');
+                                const radiusInput = document.getElementById('raggio');
+                                if (cityInput) cityInput.value = city;
+                                if (radiusInput && !radiusInput.value) radiusInput.value = 50;
+                                localStorage.setItem('site_geo_last_city', city);
+                                localStorage.setItem('site_geo_last_lat', String(lat));
+                                localStorage.setItem('site_geo_last_lon', String(lon));
+                                if (rememberYes && rememberYes.checked) {
+                                    setOptInDays(30);
+                                }
+                                const form = document.getElementById('filter-form');
+                                if (form) form.submit();
+                            }
+                        } catch (_) {
+                            setOptOutDays(30);
+                        } finally {
+                            prompt.classList.add('hidden');
+                        }
+                    }, (err) => {
+                        setOptOutDays(30);
+                        prompt.classList.add('hidden');
+                    }, { timeout: 10000 });
+                });
+
+                denyBtn.addEventListener('click', function() {
+                    setOptOutDays(30);
+                    prompt.classList.add('hidden');
+                });
+            } catch (_) {}
+        })();
     });
     </script>
 </x-main-layout>

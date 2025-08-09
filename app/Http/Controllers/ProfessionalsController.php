@@ -68,6 +68,53 @@ class ProfessionalsController extends Controller
     }
 
     /**
+     * SEO: Lista professionisti filtrati per città via slug
+     */
+    public function byCity(string $citySlug, Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $normalizedSlug = strtolower(urldecode($citySlug));
+        $city = \DB::table('users')
+            ->whereIn('role', ['veterinario', 'toelettatore'])
+            ->whereNotNull('citta')
+            ->select('citta')
+            ->distinct()
+            ->get()
+            ->map(fn($r) => (string) $r->citta)
+            ->first(function ($name) use ($normalizedSlug) {
+                $slug = strtolower(str_replace([' '], ['-'], $name));
+                return $slug === $normalizedSlug;
+            });
+
+        if (!$city) {
+            abort(404);
+        }
+
+        $params = array_merge($request->query(), [
+            'citta' => $city,
+            'raggio' => $request->get('raggio', 50),
+        ]);
+        return redirect()->route('professionals.index', $params);
+    }
+
+    /**
+     * Elenco di tutte le città per professionisti con conteggi
+     */
+    public function cities(): View
+    {
+        $professionalCityCounts = \DB::table('users')
+            ->whereIn('role', ['veterinario', 'toelettatore'])
+            ->whereNotNull('citta')
+            ->groupBy('citta')
+            ->orderBy('citta')
+            ->selectRaw('citta, COUNT(id) as total')
+            ->pluck('total', 'citta');
+
+        return view('professionals.cities', [
+            'professionalCityCounts' => $professionalCityCounts,
+        ]);
+    }
+
+    /**
      * Display a specific professional's profile.
      */
     public function show(User $professional): View

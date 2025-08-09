@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'subject_professional' => 'Consulta a :name',
+    'message_professional_prefill' => "Hola :professional,\n\nHe visto tu perfil en :platform y me gustaría conocer más sobre tus servicios.\n\n¿Podrías indicarme disponibilidad, precios y cómo reservar?\n\nGracias,\n\nSaludos",
+    'subject_adoption' => 'Solicitud de adopción para :cat',
+    'message_adoption_prefill' => "Hola :association,\n\nEstoy interesado/a en adoptar a :cat, que vi en tu perfil en :platform.\n\n¿Podrías proporcionarme más información sobre el proceso de adopción y los siguientes pasos?\n\n¡Gracias!\n\nSaludos",
     'title' => 'Contáctanos',
     'subtitle' => 'Estamos aquí para ayudarte. Contáctanos para cualquier pregunta o solicitud.',
     'contact_info' => 'Información de Contacto',

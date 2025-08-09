@@ -18,6 +18,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use App\Filament\Resources\CatResource;
 
 class AssociationResource extends Resource
 {
@@ -155,27 +156,19 @@ class AssociationResource extends Resource
                     ->sortable()
                     ->copyable(),
                 
-                TextColumn::make('telefono')
-                    ->label('📞 Telefono')
-                    ->searchable()
-                    ->copyable()
-                    ->placeholder('Non specificato'),
+                // Sostituzione: Numero gatti dell'associazione
+                TextColumn::make('cats_as_associazione_count')
+                    ->label('🐱 Gatti')
+                    ->counts('catsAsAssociazione')
+                    ->sortable()
+                    ->url(fn (User $record) => CatResource::getUrl('index', [
+                        'tableFilters' => [
+                            'associazione_id' => ['value' => (string) $record->id],
+                        ],
+                    ]))
+                    ->openUrlInNewTab(),
                 
-                TextColumn::make('full_address')
-                    ->label('📍 Indirizzo')
-                    ->formatStateUsing(function (User $record): string {
-                        $address = collect([
-                            $record->indirizzo,
-                            $record->citta,
-                            $record->provincia ? "({$record->provincia})" : null,
-                            $record->cap,
-                        ])->filter()->implode(', ');
-                        
-                        return $address ?: 'Non specificato';
-                    })
-                    ->wrap()
-                    ->searchable(['indirizzo', 'citta', 'provincia', 'cap']),
-                
+                // Sostituzione: Stato completamento dettagli registrazione (già presente)
                 BadgeColumn::make('association_details_completed')
                     ->label('📝 Dettagli')
                     ->colors([

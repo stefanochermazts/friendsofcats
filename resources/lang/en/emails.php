@@ -48,7 +48,11 @@ return [
     // Contact notification email admin
     'contact_notification' => [
         'subject' => 'New contact message - :app_name',
+        'adoption_subject' => 'Adoption request for :cat_name - :app_name',
         'title' => '📧 New contact message',
+        'adoption_title' => '🐱 Adoption request',
+        'adoption_subtitle' => 'Someone is interested in adopting one of your cats!',
+        'adoption_message' => 'Here are the details of the adoption request:',
         'subtitle' => 'A new message has been received from the contact form.',
         'message' => 'Below are the details of the received message:',
         'contact_details' => 'Contact details:',
@@ -58,6 +62,7 @@ return [
         'message' => 'Message',
         'date' => 'Sent date',
         'action_required' => 'Action required:',
+        'adoption_action_message' => 'Please reply to this adoption request as soon as possible.',
         'action_message' => 'Reply to the message using the email provided by the contact.',
         'footer_text' => 'This email was sent automatically by the contact system.',
         'date_time' => 'Date and time: :datetime',
