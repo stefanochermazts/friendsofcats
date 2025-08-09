@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            // Middleware di base del pannello (NO controllo ruolo qui)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -51,10 +52,11 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                AdminMiddleware::class,
             ])
+            // Middleware per rotte autenticate del pannello (controllo sessione + ruolo admin)
             ->authMiddleware([
                 Authenticate::class,
+                AdminMiddleware::class,
             ]);
     }
 }
