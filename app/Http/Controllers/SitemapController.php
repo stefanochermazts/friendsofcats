@@ -14,9 +14,10 @@ use Illuminate\Support\Str;
 
 class SitemapController extends Controller
 {
-    public function index(): Response
+        public function index(): Response
     {
-        $xml = Cache::remember('sitemap.v2.xml', now()->addDay(), function () {
+            // Bump chiave cache per forzare rigenerazione dopo fix https
+            $xml = Cache::remember('sitemap.v3.xml', now()->addDay(), function () {
             $now = now()->toAtomString();
             $locales = ['it', 'en', 'de', 'fr', 'es', 'sl'];
 
@@ -178,7 +179,9 @@ class SitemapController extends Controller
             return view('sitemap.xml', compact('urls'))->render();
         });
 
-        return response($xml, 200)->header('Content-Type', 'application/xml; charset=UTF-8');
+            return response($xml, 200)
+                ->header('Content-Type', 'application/xml; charset=UTF-8')
+                ->header('Cache-Control', 'public, max-age=3600');
     }
 
     /**

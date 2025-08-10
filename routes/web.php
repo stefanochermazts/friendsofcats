@@ -175,9 +175,19 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
     Route::get('/my-followers', [FollowController::class, 'myFollowers'])->name('my.followers');
 });
 
-Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+// Escludiamo i middleware di sessione e CSRF per evitare Set-Cookie sulla sitemap
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])
+    ->name('sitemap')
+    ->withoutMiddleware([
+        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\VerifyCsrfToken::class,
+    ]);
 
 // Robots.txt: allow all and reference sitemap (garantisce https usando APP_URL)
+// Escludiamo i middleware di sessione e CSRF per evitare Set-Cookie su robots
 Route::get('/robots.txt', function () {
     if (config('app.url')) {
         \URL::forceRootUrl(config('app.url'));
@@ -193,8 +203,16 @@ Route::get('/robots.txt', function () {
         '',
     ];
     return response(implode("\n", $lines), 200)
-        ->header('Content-Type', 'text/plain; charset=UTF-8');
-});
+        ->header('Content-Type', 'text/plain; charset=UTF-8')
+        ->header('Cache-Control', 'public, max-age=3600');
+})
+->withoutMiddleware([
+    \App\Http\Middleware\EncryptCookies::class,
+    \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    \App\Http\Middleware\VerifyCsrfToken::class,
+]);
 
 // Admin diagnostics (enable with ADMIN_DIAG_KEY in .env and query param key)
 Route::get('/admin/diag', function () {
