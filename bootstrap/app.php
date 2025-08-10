@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
+
+        // Escludi sitemap e robots dal gruppo web per evitare session/csrf a livello globale
+        $middleware->alias([
+            'role' => \App\Http\Middleware\EnsureRoleIsSelected::class,
+        ]);
         
         // Replace default CSRF middleware with our custom one
         $middleware->replace(
@@ -21,8 +26,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\VerifyCsrfToken::class
         );
         
-        $middleware->alias([
-            'role' => \App\Http\Middleware\EnsureRoleIsSelected::class,
+        // Registra un gruppo middleware minimal per risorse pubbliche che non devono usare sessione
+        $middleware->group('public-static', [
+            \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
+            \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

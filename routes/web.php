@@ -176,7 +176,7 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
 });
 
 // Escludiamo i middleware di sessione e CSRF per evitare Set-Cookie sulla sitemap
-Route::get('/sitemap.xml', [SitemapController::class, 'index'])
+Route::middleware('public-static')->get('/sitemap.xml', [SitemapController::class, 'index'])
     ->name('sitemap')
     ->withoutMiddleware([
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
@@ -184,6 +184,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\VerifyCsrfToken::class,
+        \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
         \App\Http\Middleware\SetLocale::class,
     ]);
 
@@ -191,7 +192,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])
 
 // Robots.txt: allow all and reference sitemap (garantisce https usando APP_URL)
 // Escludiamo i middleware di sessione e CSRF per evitare Set-Cookie su robots
-Route::get('/robots.txt', function () {
+Route::middleware('public-static')->get('/robots.txt', function () {
     if (config('app.url')) {
         \URL::forceRootUrl(config('app.url'));
         if (str_starts_with(config('app.url'), 'https://')) {
@@ -215,6 +216,7 @@ Route::get('/robots.txt', function () {
     \Illuminate\Session\Middleware\StartSession::class,
     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     \App\Http\Middleware\VerifyCsrfToken::class,
+    \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
     \App\Http\Middleware\SetLocale::class,
 ]);
 
