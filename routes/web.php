@@ -179,12 +179,14 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])
     ->name('sitemap')
     ->withoutMiddleware([
-        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\VerifyCsrfToken::class,
     ]);
+
+// Nota: le richieste HEAD a /sitemap.xml verranno gestite dalla route GET di Laravel
 
 // Robots.txt: allow all and reference sitemap (garantisce https usando APP_URL)
 // Escludiamo i middleware di sessione e CSRF per evitare Set-Cookie su robots
@@ -207,7 +209,7 @@ Route::get('/robots.txt', function () {
         ->header('Cache-Control', 'public, max-age=3600');
 })
 ->withoutMiddleware([
-    \App\Http\Middleware\EncryptCookies::class,
+    \Illuminate\Cookie\Middleware\EncryptCookies::class,
     \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
     \Illuminate\Session\Middleware\StartSession::class,
     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
