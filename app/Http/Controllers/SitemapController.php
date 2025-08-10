@@ -8,6 +8,7 @@ use App\Models\Cat;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -18,6 +19,15 @@ class SitemapController extends Controller
         $xml = Cache::remember('sitemap.v2.xml', now()->addDay(), function () {
             $now = now()->toAtomString();
             $locales = ['it', 'en', 'de', 'fr', 'es', 'sl'];
+
+                // Forza root URL e schema in base a APP_URL, così gli URL risultano sempre correttamente https
+                $appUrl = (string) config('app.url');
+                if ($appUrl !== '') {
+                    URL::forceRootUrl($appUrl);
+                    if (Str::startsWith($appUrl, 'https://')) {
+                        URL::forceScheme('https');
+                    }
+                }
 
             $baseUrls = [
                 ['loc' => route('welcome'),                   'changefreq' => 'daily',  'priority' => '0.8', 'lastmod' => $now],

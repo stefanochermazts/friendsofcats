@@ -177,8 +177,15 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
-// Robots.txt: allow all and reference sitemap
+// Robots.txt: allow all and reference sitemap (garantisce https usando APP_URL)
 Route::get('/robots.txt', function () {
+    if (config('app.url')) {
+        \URL::forceRootUrl(config('app.url'));
+        if (str_starts_with(config('app.url'), 'https://')) {
+            \URL::forceScheme('https');
+        }
+    }
+
     $lines = [
         'User-agent: *',
         'Allow: /',
