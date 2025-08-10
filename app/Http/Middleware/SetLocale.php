@@ -26,13 +26,15 @@ class SetLocale
             $locale = $request->get('locale');
         }
         // Altrimenti controlla se c'è una lingua salvata in sessione
-        elseif (Session::has('locale') && in_array(Session::get('locale'), ['it', 'en', 'de', 'fr', 'es', 'sl'])) {
-            $locale = Session::get('locale');
+        elseif ($request->hasSession() && $request->session()->has('locale') && in_array($request->session()->get('locale'), ['it', 'en', 'de', 'fr', 'es', 'sl'])) {
+            $locale = $request->session()->get('locale');
         }
         
         // Imposta la lingua per l'applicazione
         App::setLocale($locale);
-        Session::put('locale', $locale);
+        if ($request->hasSession()) {
+            $request->session()->put('locale', $locale);
+        }
         
         // Debug: log del locale per verificare che funzioni
         \Log::info('SetLocale middleware: Setting locale to ' . $locale . ' for URL: ' . $request->url());

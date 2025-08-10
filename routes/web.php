@@ -184,6 +184,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\SetLocale::class,
     ]);
 
 // Nota: le richieste HEAD a /sitemap.xml verranno gestite dalla route GET di Laravel
@@ -214,6 +215,7 @@ Route::get('/robots.txt', function () {
     \Illuminate\Session\Middleware\StartSession::class,
     \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     \App\Http\Middleware\VerifyCsrfToken::class,
+    \App\Http\Middleware\SetLocale::class,
 ]);
 
 // Admin diagnostics (enable with ADMIN_DIAG_KEY in .env and query param key)
