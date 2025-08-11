@@ -25,12 +25,19 @@
         </header>
 
         @if($item->cover_image)
-            <img src="{{ Storage::url($item->cover_image) }}" alt="{{ $item->title }}" class="w-full rounded-xl mb-6">
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <div class="lg:w-2/5 xl:w-1/3">
+                    <img src="{{ Storage::url($item->cover_image) }}" alt="{{ $item->title }}" class="w-full h-auto rounded-xl object-cover max-h-96">
+                </div>
+                <div class="flex-1 prose dark:prose-invert max-w-none">
+                    {!! $item->body !!}
+                </div>
+            </div>
+        @else
+            <div class="prose dark:prose-invert max-w-none">
+                {!! $item->body !!}
+            </div>
         @endif
-
-        <div class="prose dark:prose-invert max-w-none">
-            {!! $item->body !!}
-        </div>
     </article>
     </div>
 </x-main-layout>
