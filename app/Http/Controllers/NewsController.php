@@ -73,6 +73,7 @@ class NewsController extends Controller
                 'slug' => $this->toString($translation->slug),
             ]));
             $this->sanitizeItem($item);
+            $item->body = \App\Support\Content\ContentRenderer::render($item->body ?? '');
             return view('news.show', compact('item'));
         }
 
@@ -82,6 +83,8 @@ class NewsController extends Controller
             return redirect()->route('news.index');
         }
         $this->sanitizeItem($news);
+        // Trasforma contenuto in HTML arricchito (auto-tabelle)
+        $news->body = \App\Support\Content\ContentRenderer::render($news->body ?? '');
         return view('news.show', ['item' => $news]);
     }
 

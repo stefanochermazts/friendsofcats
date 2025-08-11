@@ -3,7 +3,8 @@
         <h1 class="text-2xl font-bold">{{ $item->meta_title ?: $item->title }}</h1>
     </x-slot>
 
-    <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <article class="max-w-4xl">
         <header class="mb-6">
             <div class="text-sm text-gray-500 dark:text-gray-400">{{ optional($item->published_at)->format('d/m/Y') }}</div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $item->title }}</h1>
@@ -31,4 +32,5 @@
             {!! $item->body !!}
         </div>
     </article>
+    </div>
 </x-main-layout>

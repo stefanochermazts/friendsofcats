@@ -185,6 +185,14 @@ Route::middleware('public-static')->get('/sitemap.xml', function () {
             'Cache-Control' => 'public, max-age=3600',
         ]);
     }
+    // Se c'è il nuovo nome generato da scheduler, servilo comunque su /sitemap.xml
+    $new = public_path('sitemap_new.xml');
+    if (is_file($new)) {
+        return response()->file($new, [
+            'Content-Type' => 'application/xml; charset=UTF-8',
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
+    }
     return app(\App\Http\Controllers\SitemapController::class)->index();
 })
     ->name('sitemap')
@@ -213,7 +221,7 @@ Route::middleware('public-static')->get('/robots.txt', function () {
     $lines = [
         'User-agent: *',
         'Allow: /',
-        'Sitemap: ' . route('sitemap'),
+        'Sitemap: ' . url('/sitemap_new.xml'),
         '',
     ];
     return response(implode("\n", $lines), 200)

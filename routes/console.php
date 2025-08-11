@@ -21,14 +21,14 @@ Schedule::command('adoption:generate-posts --max-posts=5 --days-between=7')
     })
     ->description('Genera post automatici di richiesta adozione per gatti disponibili');
 
-// Scheduler: genera sitemap statica ogni 6 ore
-Schedule::command('sitemap:generate')
+// Scheduler: genera sitemap statica ogni 6 ore (file: public/sitemap_new.xml)
+Schedule::command('sitemap:generate --output=sitemap_new.xml')
     ->cron('0 */6 * * *')
     ->withoutOverlapping()
     ->onSuccess(function () {
-        \Log::info('✅ Sitemap statica rigenerata');
+        \Log::info('✅ Sitemap statica rigenerata (sitemap_new.xml)');
     })
     ->onFailure(function () {
-        \Log::error('❌ Rigenerazione sitemap statica fallita');
+        \Log::error('❌ Rigenerazione sitemap statica fallita (sitemap_new.xml)');
     })
     ->description('Rigenera public/sitemap.xml ogni 6 ore');
