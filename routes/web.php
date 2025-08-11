@@ -176,7 +176,17 @@ Route::middleware(['auth', 'verified'])->prefix('follow')->name('follow.')->grou
 });
 
 // Escludiamo i middleware di sessione e CSRF per evitare Set-Cookie sulla sitemap
-Route::middleware('public-static')->get('/sitemap.xml', [SitemapController::class, 'index'])
+// Serviamo prima il file statico se presente; fallback al controller dinamico
+Route::middleware('public-static')->get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+    if (is_file($path)) {
+        return response()->file($path, [
+            'Content-Type' => 'application/xml; charset=UTF-8',
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
+    }
+    return app(\App\Http\Controllers\SitemapController::class)->index();
+})
     ->name('sitemap')
     ->withoutMiddleware([
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
