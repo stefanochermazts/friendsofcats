@@ -44,6 +44,20 @@ class ContentRenderer
                 continue;
             }
 
+            // Caso A: tabella compressa in un unico <p> con linee separate da <br>
+            $lines = self::extractLinesFromParagraph($node);
+            if (count($lines) >= 3) {
+                $first = trim($lines[0]);
+                $subsequent = array_slice($lines, 1);
+                $pipeRows = array_values(array_filter($subsequent, fn($l) => str_starts_with(trim($l), '|')));
+                if ($first !== '' && count($pipeRows) >= 2) {
+                    $table = self::buildTableElement($doc, $first, $pipeRows);
+                    $root->replaceChild($table, $node);
+                    $i++;
+                    continue;
+                }
+            }
+
             $firstText = trim(self::getNodeText($node));
             // Il primo paragrafo non deve iniziare con |
             if ($firstText === '' || str_starts_with($firstText, '|') === true) {
@@ -97,6 +111,36 @@ class ContentRenderer
     private static function getNodeText(\DOMNode $node): string
     {
         return preg_replace("/\s+/u", ' ', $node->textContent ?? '') ?? '';
+    }
+
+    private static function extractLinesFromParagraph(\DOMElement $p): array
+    {
+        $lines = [];
+        $buffer = '';
+        foreach (iterator_to_array($p->childNodes) as $child) {
+            if ($child instanceof \DOMElement && strtolower($child->nodeName) === 'br') {
+                $lines[] = trim($buffer);
+                $buffer = '';
+                continue;
+            }
+            $buffer .= $child->textContent ?? '';
+        }
+        if (trim($buffer) !== '') {
+            $lines[] = trim($buffer);
+        }
+
+        // Se non ci sono <br>, prova a splittare per \n
+        if (count($lines) <= 1) {
+            $text = trim($p->textContent ?? '');
+            if ($text !== '') {
+                $tmp = preg_split("/\r?\n/", $text) ?: [];
+                if (count($tmp) > 1) {
+                    $lines = array_map('trim', $tmp);
+                }
+            }
+        }
+
+        return array_values(array_filter($lines, fn($l) => $l !== ''));
     }
 
     private static function splitHeader(string $header, int $expectedCols): array
